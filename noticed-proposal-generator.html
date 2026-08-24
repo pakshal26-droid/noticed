@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Noticed — Proposal Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ============================================================
+     APP CHROME (editor UI — not part of the printed proposal)
+     ============================================================ */
+
+    :root {
+      --app-bg: #14141a;
+      --app-panel: #1c1c24;
+      --app-border: #2c2c38;
+      --app-text: #e8e8ee;
+      --app-text-2: #9797a8;
+      --app-accent: #7c6fe8;
+      --app-accent-2: #4dd4a8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--app-bg);
+      color: var(--app-text);
+    }
+
+    .app {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ---------- EDITOR PANEL ---------- */
+
+    .editor {
+      width: 420px;
+      flex-shrink: 0;
+      background: var(--app-panel);
+      border-right: 1px solid var(--app-border);
+      overflow-y: auto;
+      padding: 0 0 40px 0;
+    }
+
+    .editor-header {
+      padding: 22px 24px 18px 24px;
+      border-bottom: 1px solid var(--app-border);
+      position: sticky;
+      top: 0;
+      background: var(--app-panel);
+      z-index: 5;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--app-text-2);
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 10px;
+      transition: color 0.15s;
+    }
+
+    .back-link:hover {
+      color: var(--app-accent);
+    }
+
+    .editor-header h1 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .editor-header p {
+      font-size: 12px;
+      color: var(--app-text-2);
+      margin: 4px 0 0 0;
+    }
+
+    .field-group {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--app-border);
+    }
+
+    .field-group h2 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--app-accent-2);
+      margin: 0 0 14px 0;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .field label {
+      display: block;
+      font-size: 11.5px;
+      color: var(--app-text-2);
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    .field input[type="text"],
+    .field input[type="number"],
+    .field textarea {
+      width: 100%;
+      background: #0f0f14;
+      border: 1px solid var(--app-border);
+      border-radius: 6px;
+      color: var(--app-text);
+      padding: 8px 10px;
+      font-size: 13px;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 44px;
+      line-height: 1.4;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--app-accent);
+    }
+
+    .field-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .field-row .field {
+      flex: 1;
+    }
+
+    .color-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .color-field input[type="color"] {
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      border: 1px solid var(--app-border);
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .color-field input[type="text"] {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    .upload-zone {
+      border: 1.5px dashed var(--app-border);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-zone:hover {
+      border-color: var(--app-accent);
+      background: rgba(124, 111, 232, 0.06);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-zone .upload-label {
+      font-size: 12px;
+      color: var(--app-text-2);
+    }
+
+    .upload-zone.has-image {
+      padding: 0;
+      border-style: solid;
+    }
+
+    .upload-zone.has-image img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .upload-zone .replace-hint {
+      font-size: 10.5px;
+      color: var(--app-text-2);
+      padding: 6px 0 2px 0;
+    }
+
+    /* Locations table editor */
+
+    .loc-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .loc-row .loc-num {
+      width: 20px;
+      font-size: 11px;
+      color: var(--app-text-2);
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .loc-row input {
+      flex: 1;
+      min-width: 0;
+      background: #0f0f14;
+      border: 1px solid var(--app-border);
+      border-radius: 5px;
+      color: var(--app-text);
+      padding: 6px 8px;
+      font-size: 12px;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+    }
+
+    .loc-row input:focus {
+      border-color: var(--app-accent);
+    }
+
+    .loc-row .remove-row {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      border: none;
+      background: none;
+      color: var(--app-text-2);
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .loc-row .remove-row:hover {
+      color: #e85555;
+      background: rgba(232, 85, 85, 0.12);
+    }
+
+    .add-row-btn {
+      width: 100%;
+      padding: 8px;
+      background: none;
+      border: 1.5px dashed var(--app-border);
+      border-radius: 6px;
+      color: var(--app-text-2);
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .add-row-btn:hover {
+      border-color: var(--app-accent-2);
+      color: var(--app-accent-2);
+    }
+
+    .calc-preview {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: #0f0f14;
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--app-text-2);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .calc-preview b {
+      color: var(--app-accent-2);
+    }
+
+    /* ---------- ACTION BAR ---------- */
+
+    .action-bar {
+      position: sticky;
+      bottom: 0;
+      background: var(--app-panel);
+      border-top: 1px solid var(--app-border);
+      padding: 14px 24px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 11px 16px;
+      border-radius: 7px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: var(--app-accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.88;
+    }
+
+    .btn-secondary {
+      background: none;
+      border: 1px solid var(--app-border);
+      color: var(--app-text-2);
+    }
+
+    .btn-secondary:hover {
+      color: var(--app-text);
+      border-color: var(--app-text-2);
+    }
+
+    /* ---------- PREVIEW PANEL ---------- */
+
+    .preview-panel {
+      flex: 1;
+      overflow-y: auto;
+      background: #0a0a0d;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .preview-page-wrap {
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    /* ============================================================
+     PRINTED PROPOSAL (mirrors original template exactly)
+     ============================================================ */
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    .sheet-scope {
+      --blush: #ece6ff;
+      --blush-deep: #d6d4f4;
+      --crimson: #00307e;
+      --crimson-deep: #0d0b59;
+      --mauve: #8E6B9D;
+      --mauve-soft: #b6b4d8;
+      --ink: #2B1E26;
+      --ink-soft: #6E5A66;
+      --paper: #FFFFFF;
+    }
+
+    .sheet-scope * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .sheet-scope {
+      font-family: 'Poppins', sans-serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .sheet>* {
+      flex-shrink: 0;
+    }
+
+    .sheet {
+      width: 210mm;
+      height: 297mm;
+      position: relative;
+      background:
+        radial-gradient(ellipse 380px 260px at 108% -4%, var(--blush) 0%, transparent 60%),
+        radial-gradient(ellipse 320px 240px at -8% 104%, var(--blush) 0%, transparent 55%),
+        var(--paper);
+      padding: 6mm 16mm 4mm 16mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 2.5mm;
+      border-bottom: 0.6pt solid var(--mauve-soft);
+    }
+
+    .brand-mark {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 13pt;
+      font-weight: 700;
+      letter-spacing: 0.5pt;
+      color: var(--ink);
+    }
+
+    .brand-tagline {
+      font-size: 7.4pt;
+      font-weight: 500;
+      color: var(--ink-soft);
+      letter-spacing: 0.3pt;
+      margin-top: 1.5mm;
+    }
+
+    .doc-meta {
+      text-align: right;
+    }
+
+    .doc-meta .label {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 2pt;
+      color: var(--crimson);
+    }
+
+    .doc-meta .row {
+      font-size: 8.4pt;
+      color: var(--ink-soft);
+      margin-top: 2mm;
+    }
+
+    .doc-meta .row b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6mm;
+      padding: 2mm 0 2mm 0;
+    }
+
+    .hero-copy {
+      max-width: 108mm;
+    }
+
+    .hero-eyebrow {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 2pt;
+      color: var(--mauve);
+      text-transform: uppercase;
+    }
+
+    .hero-headline {
+      font-size: 17pt;
+      line-height: 1.16;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 3mm;
+    }
+
+    .hero-headline .accent {
+      color: var(--crimson);
+    }
+
+    .hero-sub {
+      font-size: 10pt;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin-top: 2mm;
+    }
+
+    .benefits {
+      display: flex;
+      justify-content: space-between;
+      gap: 4mm;
+      padding: 2.5mm 5mm;
+      background: var(--paper);
+      border: 0.6pt solid var(--blush-deep);
+      border-radius: 4mm;
+    }
+
+    .benefit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 25%;
+    }
+
+    .benefit-icon {
+      width: 11mm;
+      height: 11mm;
+      border-radius: 50%;
+      background: var(--blush);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 3mm;
+    }
+
+    .benefit-label {
+      font-size: 7.6pt;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.2pt;
+    }
+
+    .section {
+      margin-top: 3mm;
+    }
+
+    .section-eyebrow {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 2pt;
+      color: var(--mauve);
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: 15pt;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 1.5mm;
+    }
+
+    .rate-row {
+      display: flex;
+      gap: 6mm;
+      margin-top: 6mm;
+    }
+
+    .rate-card {
+      flex: 1;
+      padding: 3mm 6mm;
+    }
+
+    .rate-card.standard {
+      background: var(--paper);
+      border: 0.6pt solid var(--blush-deep);
+    }
+
+    .rate-card.approved {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-deep) 100%);
+    }
+
+    .rate-label {
+      font-size: 7.6pt;
+      font-weight: 700;
+      letter-spacing: 1.4pt;
+      text-transform: uppercase;
+    }
+
+    .rate-card.standard .rate-label {
+      color: var(--ink-soft);
+    }
+
+    .rate-card.approved .rate-label {
+      color: #F4D7E3;
+    }
+
+    .rate-value {
+      font-size: 18pt;
+      font-weight: 700;
+      margin-top: 2mm;
+    }
+
+    .rate-card.standard .rate-value {
+      color: var(--ink-soft);
+      text-decoration: line-through;
+      text-decoration-color: var(--mauve-soft);
+      text-decoration-thickness: 1.4pt;
+    }
+
+    .rate-card.approved .rate-value {
+      color: #FFFFFF;
+    }
+
+    .rate-unit {
+      font-size: 9pt;
+      font-weight: 500;
+    }
+
+    .rate-note {
+      font-style: italic;
+      font-size: 8.6pt;
+      color: var(--ink-soft);
+      margin-top: 4mm;
+    }
+
+    .breakdown {
+      margin-top: 5mm;
+      border-top: 0.6pt solid var(--blush-deep);
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 1.4mm 0;
+      border-bottom: 0.6pt solid var(--blush-deep);
+    }
+
+    .breakdown-row .k {
+      font-size: 8.6pt;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    .breakdown-row .v {
+      font-size: 9.4pt;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .breakdown-row.calc .v {
+      color: var(--crimson);
+    }
+
+    .total-card {
+      margin-top: 4mm;
+      background: linear-gradient(160deg, var(--crimson) 0%, var(--crimson-deep) 65%, var(--ink) 130%);
+      padding: 3mm 8mm;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .total-eyebrow {
+      font-size: 8.4pt;
+      font-weight: 700;
+      letter-spacing: 2.4pt;
+      color: #F4D7E3;
+      text-transform: uppercase;
+    }
+
+    .total-value {
+      font-size: 29pt;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-top: 1mm;
+      line-height: 1;
+    }
+
+    .total-label {
+      font-size: 9.5pt;
+      font-weight: 500;
+      color: #F9E7EF;
+      margin-top: 1.5mm;
+    }
+
+    .save-badge {
+      margin-top: 2mm;
+      background: rgba(255, 255, 255, 0.16);
+      border: 0.6pt solid rgba(255, 255, 255, 0.45);
+      border-radius: 20mm;
+      padding: 2mm 7mm;
+      font-size: 8.6pt;
+      font-weight: 600;
+      color: #FFFFFF;
+      letter-spacing: 0.3pt;
+    }
+
+    .locations-section {
+      margin-top: 4mm;
+    }
+
+    .locations-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 0.6pt solid var(--blush-deep);
+      margin-top: 2mm;
+    }
+
+    .locations-table th {
+      background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-deep) 100%);
+      color: #FFFFFF;
+      padding: 2mm 4mm;
+      text-align: left;
+      font-size: 8.4pt;
+      font-weight: 700;
+      letter-spacing: 0.5pt;
+    }
+
+    .locations-table td {
+      padding: 2mm 4mm;
+      border-bottom: 0.6pt solid var(--blush-deep);
+      font-size: 8.6pt;
+      color: var(--ink);
+    }
+
+    .locations-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .map-placeholder {
+      margin-top: 3mm;
+      width: 100%;
+      background: linear-gradient(135deg, var(--blush) 0%, var(--blush-deep) 100%);
+      border: 0.6pt solid var(--mauve-soft);
+      border-radius: 2mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9pt;
+      color: var(--ink-soft);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .legend {
+      margin-top: 4mm;
+      padding: 3mm 4mm;
+      background: var(--paper);
+      border: 0.6pt solid var(--blush-deep);
+      border-radius: 2mm;
+    }
+
+    .legend-title {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 1pt;
+      color: var(--mauve);
+      text-transform: uppercase;
+      margin-bottom: 2mm;
+    }
+
+    .legend-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5mm;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+      font-size: 8.6pt;
+      color: var(--ink);
+    }
+
+    .legend-color {
+      width: 8mm;
+      height: 8mm;
+      border-radius: 2mm;
+      flex-shrink: 0;
+    }
+
+    .legend-color.purple {
+      background: var(--crimson);
+    }
+
+    .legend-pin {
+      width: 8mm;
+      height: 8mm;
+      border-radius: 50%;
+      background: #E85555;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5pt;
+      color: #FFFFFF;
+    }
+
+    .closing {
+      margin-top: 2mm;
+      text-align: center;
+      padding: 0 8mm;
+    }
+
+    .closing p {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 8.5pt;
+      line-height: 1.4;
+      color: var(--ink-soft);
+    }
+
+    .footer {
+      margin-top: auto;
+      padding-top: 2mm;
+      border-top: 0.6pt solid var(--mauve-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-size: 8pt;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .footer-tag {
+      font-size: 6.6pt;
+      color: var(--ink-soft);
+      margin-top: 1mm;
+    }
+
+    .footer-contact {
+      text-align: right;
+      font-size: 7.4pt;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    .footer-contact b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .image-placeholder {
+      margin-top: 4mm;
+      width: 50%;
+      margin-left: auto;
+      margin-right: auto;
+      background: linear-gradient(135deg, var(--blush) 0%, var(--blush-deep) 100%);
+      border: 0.6pt solid var(--mauve-soft);
+      border-radius: 2mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9pt;
+      color: var(--ink-soft);
+      text-align: center;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+    }
+
+    .image-placeholder img,
+    .map-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 2mm;
+    }
+
+    .map-placeholder {
+      min-height: 60mm;
+    }
+
+    /* ---------- PRINT MODE ---------- */
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      .editor,
+      .preview-panel-chrome {
+        display: none !important;
+      }
+
+      .print-target,
+      .print-target * {
+        visibility: visible;
+      }
+
+      .print-target {
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 0;
+      }
+
+      .preview-page-wrap {
+        box-shadow: none !important;
+      }
+
+      .preview-panel {
+        padding: 0 !important;
+        background: #fff !important;
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- ============ EDITOR ============ -->
+    <div class="editor">
+      <div class="editor-header">
+        <a href="dashboard.html" class="back-link">← Back to CRM</a>
+        <h1>Noticed — Proposal Builder</h1>
+        <p>Fill in the details, preview updates live, then export.</p>
+      </div>
+
+      <!-- BRAND -->
+      <div class="field-group">
+        <h2>Client / Brand</h2>
+        <div class="field">
+          <label>Brand name</label>
+          <input type="text" id="brandName" value="EXPRESS DRY CLEANERS">
+        </div>
+        <div class="field">
+          <label>Prepared for</label>
+          <input type="text" id="preparedFor" value="Express Dry Cleaners">
+        </div>
+      </div>
+
+
+
+      <!-- COLOR THEME -->
+      <div class="field-group">
+        <h2>Color Theme</h2>
+        <div class="field-row">
+          <div class="field">
+            <label>Accent (crimson)</label>
+            <div class="color-field">
+              <input type="color" id="colorCrimson" value="#00307e">
+              <input type="text" id="colorCrimsonHex" value="#00307e">
+            </div>
+          </div>
+          <div class="field">
+            <label>Accent deep</label>
+            <div class="color-field">
+              <input type="color" id="colorCrimsonDeep" value="#0d0b59">
+              <input type="text" id="colorCrimsonDeepHex" value="#0d0b59">
+            </div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Mauve (labels)</label>
+            <div class="color-field">
+              <input type="color" id="colorMauve" value="#8E6B9D">
+              <input type="text" id="colorMauveHex" value="#8E6B9D">
+            </div>
+          </div>
+          <div class="field">
+            <label>Blush (backgrounds)</label>
+            <div class="color-field">
+              <input type="color" id="colorBlush" value="#ece6ff">
+              <input type="text" id="colorBlushHex" value="#ece6ff">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- PRICING -->
+      <div class="field-group">
+        <h2>Pricing</h2>
+        <div class="field-row">
+          <div class="field">
+            <label>Standard rate (₹/sec)</label>
+            <input type="number" id="standardRate" value="50">
+          </div>
+          <div class="field">
+            <label>Approved rate (₹/sec)</label>
+            <input type="number" id="approvedRate" value="30">
+          </div>
+        </div>
+        <div class="field">
+          <label>Ad duration (seconds)</label>
+          <input type="number" id="duration" value="30">
+        </div>
+        <div class="calc-preview" id="calcPreview">30 × ₹30 = ₹900</div>
+      </div>
+
+      <!-- IMAGES -->
+      <div class="field-group">
+        <h2>Images</h2>
+        <div class="field">
+          <label>Advertisement image (page 1)</label>
+          <div class="upload-zone" id="adImageZone">
+            <span class="upload-label">Click or drop image</span>
+            <input type="file" accept="image/*">
+          </div>
+        </div>
+        <div class="field">
+          <label>Map image (page 2)</label>
+          <div class="upload-zone" id="mapImageZone">
+            <span class="upload-label">Click or drop image</span>
+            <input type="file" id="mapImageInput" accept="image/*">
+          </div>
+        </div>
+      </div>
+
+      <!-- LOCATIONS -->
+      <div class="field-group">
+        <h2>Screen Locations</h2>
+        <div id="locationsList"></div>
+        <button class="add-row-btn" id="addLocationBtn">+ Add location</button>
+      </div>
+
+
+
+      <div class="action-bar">
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+        <button class="btn btn-secondary" id="waBtn" style="display:none">WhatsApp</button>
+        <button class="btn btn-primary" id="downloadBtn">Download PDF</button>
+      </div>
+    </div>
+
+    <!-- ============ PREVIEW ============ -->
+    <div class="preview-panel">
+      <div class="preview-page-wrap print-target" id="printTarget">
+
+        <div class="sheet-scope" id="sheetScope">
+
+          <!-- PAGE 1 -->
+          <div class="sheet">
+            <div class="header">
+              <div class="brand-mark">
+                <div class="brand-name" id="out-brandName1">EXPRESS DRY CLEANERS</div>
+                <div class="brand-tagline" id="out-brandTagline1">HYPERLOCAL DIGITAL ADVERTISING FOR PREMIUM DRY
+                  CLEANERS</div>
+              </div>
+              <div class="doc-meta">
+                <div class="label">QUOTATION PROPOSAL</div>
+                <div class="row">Prepared For: <b id="out-preparedFor">Express Dry Cleaners</b></div>
+              </div>
+            </div>
+
+            <div class="hero">
+              <div class="hero-copy">
+                <div class="hero-eyebrow" id="out-heroEyebrow">Hyperlocal Digital Screen Advertising</div>
+                <div class="hero-headline">
+                  <span id="out-headlinePre">Drive</span> <span class="accent"
+                    id="out-headlineAccent">Foot&nbsp;Traffic</span> <span id="out-headlinePost">to Express Dry Cleaners
+                    every single day</span>
+                </div>
+                <div class="hero-sub" id="out-heroSub">Reach customers in nearby residential buildings with premium cafe
+                  advertising.</div>
+              </div>
+            </div>
+
+            <div class="benefits">
+              <div class="benefit">
+                <div class="benefit-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 5h11a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" stroke="#9B5BA6"
+                      stroke-width="1.8" />
+                    <path d="M18 9.5 22 7v10l-4-2.5" stroke="#9B5BA6" stroke-width="1.8" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div class="benefit-label" id="out-benefit1">Video<br>Advertisement</div>
+              </div>
+              <div class="benefit">
+                <div class="benefit-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z" stroke="#9B5BA6"
+                      stroke-width="1.8" />
+                    <circle cx="12" cy="9.5" r="2.6" stroke="#9B5BA6" stroke-width="1.8" />
+                  </svg>
+                </div>
+                <div class="benefit-label" id="out-benefit2">Hyperlocal<br>Audience</div>
+              </div>
+              <div class="benefit">
+                <div class="benefit-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="#9B5BA6" stroke-width="1.8" />
+                    <path d="M12 7v5l3.5 2" stroke="#9B5BA6" stroke-width="1.8" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div class="benefit-label" id="out-benefit3">Changeable Videos </div>
+              </div>
+              <div class="benefit">
+                <div class="benefit-icon">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="#9B5BA6" stroke-width="1.8" />
+                    <path d="M12 3a9 9 0 0 0 0 18Z" fill="#9B5BA6" opacity="0.18" />
+                  </svg>
+                </div>
+                <div class="benefit-label" id="out-benefit4">24-Hour<br>Visibility</div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-eyebrow">Commercial Quotation</div>
+              <div class="section-title">Investment Summary</div>
+
+              <div class="rate-row">
+                <div class="rate-card standard">
+                  <div class="rate-label">Standard Rate</div>
+                  <div class="rate-value"><span id="out-standardRate">₹50</span><span class="rate-unit"> / Second</span>
+                  </div>
+                </div>
+                <div class="rate-card approved">
+                  <div class="rate-label">Special Approved Rate</div>
+                  <div class="rate-value"><span id="out-approvedRate">₹30</span><span class="rate-unit"> / Second</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="breakdown">
+                <div class="breakdown-row">
+                  <div class="k">Description</div>
+                  <div class="v">Advertisement Duration</div>
+                </div>
+                <div class="breakdown-row">
+                  <div class="k">Duration</div>
+                  <div class="v" id="out-duration">30 Seconds</div>
+                </div>
+                <div class="breakdown-row">
+                  <div class="k">Approved Rate</div>
+                  <div class="v" id="out-approvedRateRow">₹30 / Second</div>
+                </div>
+                <div class="breakdown-row calc">
+                  <div class="k">Calculation</div>
+                  <div class="v" id="out-calcRow">30 × ₹30 = ₹900</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="total-card">
+              <div class="total-eyebrow">Total Investment</div>
+              <div class="total-value" id="out-totalValue">₹900</div>
+              <div class="total-label">Monthly Advertisement Investment</div>
+              <div class="save-badge" id="out-saveBadge">You Save ₹600 Compared to Standard Pricing</div>
+            </div>
+
+            <div class="image-placeholder" id="out-adImageWrap">
+              <span id="out-adImagePlaceholderText">Advertisement image goes here</span>
+            </div>
+
+            <div class="closing">
+              <p id="out-closingLine">We look forward to bringing Express Dry Cleaners to the screens across our network.</p>
+            </div>
+
+
+            <div class="footer">
+              <div>
+                <div class="footer-brand" id="out-brandName2">EXPRESS DRY CLEANERS</div>
+                <div class="footer-tag" id="out-footerTagline1">Hyperlocal Digital Advertising for Dry Cleaners</div>
+              </div>
+              <div class="footer-contact">
+                <div><b>Email:</b> <span id="out-email1">noticed.adv@gmail.com</span></div>
+                <div><span id="out-phone1">+91 84528 50788</span> &nbsp;·&nbsp; <span id="out-phone2">+91 84520
+                    61757</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAGE 2 -->
+          <div class="sheet">
+            <div class="header">
+              <div class="brand-mark">
+                <div class="brand-name" id="out-brandName3">EXPRESS DRY CLEANERS</div>
+                <div class="brand-tagline" id="out-brandTagline2">HYPERLOCAL DIGITAL ADVERTISING FOR PREMIUM DRY
+                  CLEANERS</div>
+              </div>
+              <div class="doc-meta">
+                <div class="label">LOCATION DETAILS</div>
+                <div class="row">Document: <b>Screen Locations</b></div>
+              </div>
+            </div>
+
+            <div class="locations-section" style="margin-top: 6mm;">
+              <div class="section-eyebrow">Our Advertising Locations</div>
+              <div class="section-title">Where Your Brand Will Be Visible</div>
+
+              <table class="locations-table">
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Location Name</th>
+                    <th>Area / Address</th>
+                  </tr>
+                </thead>
+                <tbody id="out-locationsBody">
+                </tbody>
+              </table>
+
+              <div class="map-placeholder" id="out-mapImageWrap">
+                <span id="out-mapImagePlaceholderText">Map image goes here</span>
+              </div>
+
+              <div class="legend">
+                <div class="legend-title">Map Legend</div>
+                <div class="legend-items">
+                  <div class="legend-item">
+                    <div class="legend-color purple"></div>
+                    <span id="out-legendBrand">Express Dry Cleaners</span>
+                  </div>
+                  <div class="legend-item">
+                    <div class="legend-pin">📍</div>
+                    <span>Screen Locations</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="footer">
+              <div>
+                <div class="footer-brand" id="out-brandName4">EXPRESS DRY CLEANERS</div>
+                <div class="footer-tag" id="out-footerTagline2">Hyperlocal Digital Advertising for Dry Cleaners</div>
+              </div>
+              <div class="footer-contact">
+                <div><b>Email:</b> <span id="out-email2">noticed.adv@gmail.com</span></div>
+                <div><span id="out-phone3">+91 84528 50788</span> &nbsp;·&nbsp; <span id="out-phone4">+91 84520
+                    61757</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+
+    // ---------- STATE ----------
+
+    let locations = [
+      { name: "Rajendra Vihar Building", area: "Girgaon, Prarthna Samaj" },
+      { name: "Earth View Building", area: "Girgaon, Prarthna Samaj" },
+      { name: "The 1925 by Sambhav Building", area: "Girgaon, Prarthna Samaj" },
+      { name: "Earth Castle Building", area: "Girgaon, Prarthna Samaj" },
+      { name: "Siddhesh Darshan Building", area: "Girgaon, Prarthna Samaj" },
+      { name: "Neo Clarissa Building", area: "Sikka Nagar" },
+      { name: "Darshan Heights", area: "Chira Bazaar" },
+      { name: "Bayvue Building", area: "Marine Lines" }
+    ];
+
+    let adImageData = null;
+    let mapImageData = null;
+
+    // ---------- FIELD BINDINGS ----------
+
+    const el = id => document.getElementById(id);
+
+    function fmtCurrency(n) {
+      const num = Number(n) || 0;
+      return "₹" + num.toLocaleString('en-IN');
+    }
+
+    // --- Hardcoded defaults ---
+    const DEFAULTS = {
+      tagline: 'HYPERLOCAL DIGITAL ADVERTISING FOR PREMIUM DRY CLEANERS',
+      heroEyebrow: 'Hyperlocal Digital Screen Advertising',
+      headlinePre: 'Drive',
+      headlineAccent: 'Foot Traffic',
+      heroSub: 'Reach customers in nearby residential buildings with premium cafe advertising.',
+      benefits: ['Video Advertisement', 'Hyperlocal Audience', 'Changeable Videos', '24-Hour Visibility'],
+      closingLine: 'We look forward to bringing {brand} to the screens across our network.',
+      footerTagline: 'Hyperlocal Digital Advertising',
+      email: 'noticed.adv@gmail.com',
+      phone1: '+91 84528 50788',
+      phone2: '+91 84520 61757'
+    };
+
+    function renderTextFields() {
+      const brandName = el('brandName').value;
+      const preparedFor = el('preparedFor').value;
+
+      el('out-brandName1').textContent = brandName;
+      el('out-brandName2').textContent = brandName;
+      el('out-brandName3').textContent = brandName;
+      el('out-brandName4').textContent = brandName;
+
+      el('out-brandTagline1').textContent = DEFAULTS.tagline;
+      el('out-brandTagline2').textContent = DEFAULTS.tagline;
+
+      el('out-preparedFor').textContent = preparedFor;
+      el('out-legendBrand').textContent = brandName;
+
+      // Hero — only the brand name changes
+      el('out-heroEyebrow').textContent = DEFAULTS.heroEyebrow;
+      el('out-headlinePre').textContent = DEFAULTS.headlinePre;
+      el('out-headlineAccent').textContent = DEFAULTS.headlineAccent;
+      el('out-headlinePost').textContent = 'to ' + preparedFor + ' every single day';
+      el('out-heroSub').textContent = DEFAULTS.heroSub;
+
+      // Benefits — hardcoded
+      DEFAULTS.benefits.forEach((b, i) => {
+        el('out-benefit' + (i + 1)).innerHTML = b.replace(/\s+/g, '<br>');
+      });
+
+      // Closing & Footer — hardcoded
+      el('out-closingLine').textContent = DEFAULTS.closingLine.replace('{brand}', preparedFor);
+      el('out-footerTagline1').textContent = DEFAULTS.footerTagline;
+      el('out-footerTagline2').textContent = DEFAULTS.footerTagline;
+      el('out-email1').textContent = DEFAULTS.email;
+      el('out-email2').textContent = DEFAULTS.email;
+      el('out-phone1').textContent = DEFAULTS.phone1;
+      el('out-phone2').textContent = DEFAULTS.phone1;
+      el('out-phone3').textContent = DEFAULTS.phone2;
+      el('out-phone4').textContent = DEFAULTS.phone2;
+
+      document.title = "Proposal — " + brandName;
+    }
+
+    function renderPricing() {
+      const standard = Number(el('standardRate').value) || 0;
+      const approved = Number(el('approvedRate').value) || 0;
+      const duration = Number(el('duration').value) || 0;
+
+      const standardTotal = standard * duration;
+      const approvedTotal = approved * duration;
+      const savings = standardTotal - approvedTotal;
+
+      el('out-standardRate').textContent = fmtCurrency(standard);
+      el('out-approvedRate').textContent = fmtCurrency(approved);
+      el('out-duration').textContent = duration + " Seconds";
+      el('out-approvedRateRow').textContent = fmtCurrency(approved) + " / Second";
+      el('out-calcRow').textContent = duration + " × " + fmtCurrency(approved) + " = " + fmtCurrency(approvedTotal);
+      el('out-totalValue').textContent = fmtCurrency(approvedTotal);
+      el('out-saveBadge').textContent = "You Save " + fmtCurrency(savings) + " Compared to Standard Pricing";
+
+      el('calcPreview').innerHTML = duration + " × ₹" + approved + " = <b>" + fmtCurrency(approvedTotal) + "</b> &nbsp;|&nbsp; Savings: " + fmtCurrency(savings);
+    }
+
+    function renderColors() {
+      const scope = el('sheetScope');
+      scope.style.setProperty('--crimson', el('colorCrimson').value);
+      scope.style.setProperty('--crimson-deep', el('colorCrimsonDeep').value);
+      scope.style.setProperty('--mauve', el('colorMauve').value);
+      scope.style.setProperty('--blush', el('colorBlush').value);
+
+      // keep hex text fields in sync with color pickers
+      el('colorCrimsonHex').value = el('colorCrimson').value;
+      el('colorCrimsonDeepHex').value = el('colorCrimsonDeep').value;
+      el('colorMauveHex').value = el('colorMauve').value;
+      el('colorBlushHex').value = el('colorBlush').value;
+    }
+
+    function renderLocations() {
+      const list = el('locationsList');
+      list.innerHTML = '';
+      locations.forEach((loc, i) => {
+        const row = document.createElement('div');
+        row.className = 'loc-row';
+        row.innerHTML =
+          '<span class="loc-num">' + (i + 1) + '</span>' +
+          '<input type="text" placeholder="Location name" data-idx="' + i + '" data-field="name" value="' + loc.name.replace(/"/g, '&quot;') + '">' +
+          '<input type="text" placeholder="Area / address" data-idx="' + i + '" data-field="area" value="' + loc.area.replace(/"/g, '&quot;') + '">' +
+          '<button class="remove-row" data-idx="' + i + '" title="Remove">×</button>';
+        list.appendChild(row);
+      });
+
+      list.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', e => {
+          const idx = Number(e.target.dataset.idx);
+          const field = e.target.dataset.field;
+          locations[idx][field] = e.target.value;
+          renderLocationsOutput();
+        });
+      });
+
+      list.querySelectorAll('.remove-row').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const idx = Number(e.target.dataset.idx);
+          locations.splice(idx, 1);
+          renderLocations();
+          renderLocationsOutput();
+        });
+      });
+    }
+
+    function renderLocationsOutput() {
+      const body = el('out-locationsBody');
+      body.innerHTML = '';
+      locations.forEach((loc, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + (i + 1) + '</td><td>' + escapeHtml(loc.name) + '</td><td>' + escapeHtml(loc.area) + '</td>';
+        body.appendChild(tr);
+      });
+    }
+
+    function escapeHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function renderAll() {
+      renderTextFields();
+      renderPricing();
+      renderColors();
+      renderLocationsOutput();
+    }
+
+    // ---------- EVENT WIRING ----------
+
+    document.querySelectorAll('.editor input[type="text"], .editor input[type="number"], .editor textarea')
+      .forEach(input => {
+        if (input.closest('#locationsList')) return; // handled separately
+        input.addEventListener('input', renderAll);
+      });
+
+    ['colorCrimson', 'colorCrimsonDeep', 'colorMauve', 'colorBlush'].forEach(id => {
+      el(id).addEventListener('input', renderAll);
+    });
+
+    // hex text -> color picker sync
+    [['colorCrimsonHex', 'colorCrimson'], ['colorCrimsonDeepHex', 'colorCrimsonDeep'], ['colorMauveHex', 'colorMauve'], ['colorBlushHex', 'colorBlush']].forEach(([hexId, pickerId]) => {
+      el(hexId).addEventListener('input', e => {
+        const val = e.target.value;
+        if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+          el(pickerId).value = val;
+          renderAll();
+        }
+      });
+    });
+
+    el('addLocationBtn').addEventListener('click', () => {
+      locations.push({ name: '', area: '' });
+      renderLocations();
+      renderLocationsOutput();
+    });
+
+    // ---------- IMAGE UPLOAD ----------
+
+    function setupImageUpload(zoneId, inputId, onLoad) {
+      const zone = el(zoneId);
+      // always (re)bind to whichever <input> currently lives inside this zone,
+      // rather than trusting a possibly-stale/duplicated id lookup
+      const input = zone.querySelector('input[type="file"]');
+      if (!input) return;
+      input.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          onLoad(ev.target.result);
+          zone.classList.add('has-image');
+          zone.innerHTML = '<img src="' + ev.target.result + '" alt="preview"><div class="replace-hint">Click to replace</div>' +
+            '<input type="file" accept="image/*">';
+          setupImageUpload(zoneId, inputId, onLoad);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    setupImageUpload('adImageZone', 'adImageInput', (dataUrl) => {
+      adImageData = dataUrl;
+      el('out-adImageWrap').innerHTML = '<img src="' + dataUrl + '" alt="Advertisement">';
+    });
+
+    setupImageUpload('mapImageZone', 'mapImageInput', (dataUrl) => {
+      mapImageData = dataUrl;
+      el('out-mapImageWrap').innerHTML = '<img src="' + dataUrl + '" alt="Map">';
+    });
+
+    // ---------- ACTIONS ----------
+
+    el('downloadBtn').addEventListener('click', () => {
+      window.print();
+    });
+
+    el('resetBtn').addEventListener('click', () => {
+      if (confirm('Reset all fields to blank defaults?')) {
+        document.querySelectorAll('.editor input[type="text"], .editor textarea').forEach(i => i.value = '');
+        el('standardRate').value = 50;
+        el('approvedRate').value = 30;
+        el('duration').value = 30;
+        locations = [];
+        adImageData = null;
+        mapImageData = null;
+        el('adImageZone').classList.remove('has-image');
+        el('adImageZone').innerHTML = '<span class="upload-label">Click or drop image</span><input type="file" id="adImageInput" accept="image/*">';
+        el('mapImageZone').classList.remove('has-image');
+        el('mapImageZone').innerHTML = '<span class="upload-label">Click or drop image</span><input type="file" id="mapImageInput" accept="image/*">';
+        setupImageUpload('adImageZone', 'adImageInput', (dataUrl) => {
+          adImageData = dataUrl;
+          el('out-adImageWrap').innerHTML = '<img src="' + dataUrl + '" alt="Advertisement">';
+        });
+        setupImageUpload('mapImageZone', 'mapImageInput', (dataUrl) => {
+          mapImageData = dataUrl;
+          el('out-mapImageWrap').innerHTML = '<img src="' + dataUrl + '" alt="Map">';
+        });
+        el('out-adImageWrap').innerHTML = '<span id="out-adImagePlaceholderText">Advertisement image goes here</span>';
+        el('out-mapImageWrap').innerHTML = '<span id="out-mapImagePlaceholderText">Map image goes here</span>';
+        renderLocations();
+        renderAll();
+      }
+    });
+
+    // ---------- INIT ----------
+
+    renderLocations();
+    renderAll();
+
+    // ---------- PREFILL FROM THE CRM DASHBOARD ----------
+    // The dashboard opens this page as
+    //   noticed-proposal-generator.html?brand=...&contact=...&phone=...&rate=..&duration=..
+    (function () {
+      var q = new URLSearchParams(window.location.search);
+      if (!q.toString()) return;
+
+      var lead = {
+        brand: q.get('brand') || '',
+        contact: q.get('contact') || '',
+        phone: q.get('phone') || '',
+        rate: q.get('rate') || '',
+        duration: q.get('duration') || ''
+      };
+
+      if (lead.brand) {
+        el('brandName').value = lead.brand.toUpperCase();
+        el('preparedFor').value = q.get('prepared') || lead.brand;
+      }
+      if (lead.rate) el('approvedRate').value = lead.rate;
+      if (lead.duration) el('duration').value = lead.duration;
+      renderAll();
+
+      if (!lead.phone) return;
+
+      var waBtn = el('waBtn');
+      waBtn.style.display = '';
+      waBtn.addEventListener('click', function () {
+        var digits = String(lead.phone).replace(/\D/g, '');
+        if (digits.length === 10) digits = '91' + digits;
+        else if (digits.length === 11 && digits.charAt(0) === '0') digits = '91' + digits.slice(1);
+
+        var rate = Number(el('approvedRate').value) || 0;
+        var duration = Number(el('duration').value) || 0;
+        var brand = el('preparedFor').value || 'your brand';
+
+        var msg =
+          'Hi ' + (lead.contact || 'there') + ', this is Noticed.\n\n' +
+          'Sharing our proposal for ' + brand + ' — digital screens inside premium residential lift lobbies ' +
+          'and gyms across South Mumbai.\n\n' +
+          'Approved rate: ₹' + rate + ' per second for a ' + duration + ' second ad, ' +
+          'which works out to ₹' + (rate * duration).toLocaleString('en-IN') + '.\n\n' +
+          'The full proposal PDF is attached.';
+
+        window.open('https://wa.me/' + digits + '?text=' + encodeURIComponent(msg), '_blank');
+      });
+    })();
+
+  </script>
+
+</body>
+
+</html>

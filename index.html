@@ -1,0 +1,3187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noticed — Premium DOOH Advertising in Mumbai</title>
+  <meta name="description"
+    content="Noticed helps brands connect with high-intent audiences through digital screens placed inside premium residential lift lobbies and gyms in Mumbai.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ============================================
+     DESIGN SYSTEM — NOTICED REDESIGN
+     ============================================ */
+    :root {
+      /* Brand */
+      --blue: #2b5cff;
+      --blue-hover: #1a4ae6;
+      --blue-light: #7db4ff;
+      --blue-subtle: #eef3ff;
+
+      /* Neutrals — warm palette */
+      --black: #0c0c0c;
+      --ink: #1a1a1a;
+      --ink-secondary: #6b6b6b;
+      --ink-tertiary: #999999;
+      --border: #e8e6e1;
+      --border-light: #f0eeea;
+      --surface: #fafaf8;
+      --surface-alt: #f3f2ee;
+      --white: #ffffff;
+
+      /* Soft accents (restrained) */
+      --accent-mint: #e8f5ef;
+      --accent-pink: #fbeef3;
+      --accent-blue: #edf2ff;
+      --mint-text: #1a7a52;
+      --pink-text: #9a3060;
+
+      /* Spacing */
+      --section-pad: clamp(100px, 12vw, 180px);
+      --section-pad-sm: clamp(80px, 10vw, 140px);
+      --container: 1280px;
+      --gap: 24px;
+
+      /* Radii */
+      --radius: 24px;
+      --radius-sm: 14px;
+      --radius-xs: 10px;
+      --radius-full: 100px;
+
+      /* Transitions */
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration: 0.4s;
+    }
+
+    /* ============================================
+     RESET & BASE
+     ============================================ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--ink);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 var(--gap);
+    }
+
+    /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+    .eyebrow-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    /* ============================================
+     BUTTONS
+     ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      transition: all var(--duration) var(--ease);
+      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(43, 92, 255, 0.25);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--ink);
+      background: var(--surface);
+    }
+
+    .btn-white {
+      background: var(--white);
+      color: var(--ink);
+    }
+
+    .btn-white:hover {
+      background: var(--surface);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-ghost-dark {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.9);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-ghost-dark:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-arrow::after {
+      content: "→";
+      transition: transform var(--duration) var(--ease);
+    }
+
+    .btn-arrow:hover::after {
+      transform: translateX(4px);
+    }
+
+    /* ============================================
+     NAVIGATION
+     ============================================ */
+    .nav-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      transition: all 0.35s ease;
+    }
+
+    .nav-wrap.scrolled {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 12px 24px;
+    }
+
+    .nav {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      z-index: 101;
+    }
+
+    .logo-mark {
+      height: 28px;
+      width: auto;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a {
+      color: var(--ink-secondary);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--radius-xs);
+      transition: all 0.25s ease;
+    }
+
+    .nav-links a.active {
+      color: var(--ink);
+      background: var(--surface);
+    }
+
+    .nav-links a:not(.active):hover {
+      color: var(--ink);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-actions .btn {
+      padding: 10px 22px;
+      font-size: 14px;
+    }
+
+    .nav-login {
+      color: var(--ink-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 16px;
+      transition: color 0.25s ease;
+    }
+
+    .nav-login:hover {
+      color: var(--ink);
+    }
+
+    /* Mobile nav */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px;
+      z-index: 101;
+      cursor: pointer;
+    }
+
+    .nav-burger span {
+      width: 22px;
+      height: 2px;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: all 0.3s var(--ease);
+    }
+
+    .nav-burger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .nav-burger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-burger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--white);
+      z-index: 99;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .mobile-menu a {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--ink);
+      padding: 12px 24px;
+      transition: color 0.2s ease;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--blue);
+    }
+
+    .mobile-menu .btn {
+      margin-top: 20px;
+      font-size: 16px;
+      padding: 16px 32px;
+    }
+
+    /* ============================================
+     HERO — Centered text + horizontal panning carousel
+     ============================================ */
+    .hero {
+      padding: 140px 0 0;
+      background: var(--white);
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.7s var(--ease) forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 6.5vw, 56px);
+      font-weight: 300;
+      line-height: 1.04;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.1s forwards;
+    }
+
+    .hero h1 .accent {
+      color: var(--blue);
+    }
+
+    .hero-rotating-word {
+      display: inline-block;
+      color: var(--blue);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
+      transform: translateY(0);
+      opacity: 1;
+      filter: blur(0);
+      will-change: transform, opacity, filter;
+    }
+
+    .hero-rotating-word.is-exiting {
+      opacity: 0;
+      transform: translateY(-16px);
+      filter: blur(4px);
+    }
+
+    .hero-rotating-word.is-entering {
+      opacity: 0;
+      transform: translateY(16px);
+      filter: blur(4px);
+      transition: none !important;
+    }
+
+    .hero-sub {
+      margin-top: 24px;
+      font-size: 18px;
+      line-height: 1.65;
+      color: var(--ink-secondary);
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.2s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 36px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.3s forwards;
+    }
+
+    /* ---- Hero Carousel ---- */
+    .hero-carousel {
+      margin-top: 72px;
+      position: relative;
+      width: 100%;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease) 0.4s forwards;
+    }
+
+    /* Fade masks on left and right edges */
+    .hero-carousel::before,
+    .hero-carousel::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 180px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-carousel::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--white) 0%, transparent 100%);
+    }
+
+    .hero-carousel::after {
+      right: 0;
+      background: linear-gradient(270deg, var(--white) 0%, transparent 100%);
+    }
+
+    .hero-carousel-track {
+      display: flex;
+      gap: 24px;
+      animation: panLeft 40s linear infinite;
+      width: max-content;
+      padding: 20px 0 40px;
+    }
+
+    .hero-carousel-track:hover {
+      animation-play-state: paused;
+    }
+
+    .hero-card {
+      flex-shrink: 0;
+      height: 480px;
+      width: auto;
+      border-radius: 20px;
+      background: #0c0c0c;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+      cursor: pointer;
+    }
+
+    .hero-card.is-portrait {
+      aspect-ratio: 9 / 16;
+    }
+
+    .hero-card.is-landscape {
+      aspect-ratio: 16 / 9;
+    }
+
+    .hero-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Video styling */
+    .hero-card-media {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #0c0c0c;
+      overflow: hidden;
+    }
+
+    .hero-card-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Placeholder icon */
+    .hero-card-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      z-index: 1;
+    }
+
+    .hero-card-placeholder .play-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+    }
+
+    .hero-card:hover .play-icon {
+      transform: scale(1.1);
+      box-shadow: 0 6px 24px rgba(43, 92, 255, 0.15);
+    }
+
+    .hero-card-placeholder .play-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--blue);
+      margin-left: 2px;
+    }
+
+    .hero-card-placeholder span {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-tertiary);
+    }
+
+    /* Card label at bottom */
+    .hero-card-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 20px;
+      background: linear-gradient(0deg, rgba(12, 12, 12, 0.7) 0%, transparent 100%);
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hero-card-label span {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .hero-card-label .card-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes panLeft {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.6;
+        transform: scale(1.15);
+      }
+    }
+
+    /* ============================================
+     STATS
+     ============================================ */
+    .stats-section {
+      padding: var(--section-pad) 24px var(--section-pad-sm);
+      background: var(--white);
+    }
+
+    .stats-top {
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .stats-top h2 {
+      font-size: clamp(30px, 4.2vw, 38px);
+      font-weight: 300;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+
+    .stats-top h2 .highlight {
+      color: var(--blue);
+    }
+
+    .stats-grid {
+      margin-top: 72px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 32px 20px;
+      position: relative;
+    }
+
+    .stat:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 20%;
+      bottom: 20%;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .stat .num {
+      font-size: clamp(32px, 3.6vw, 50px);
+      font-weight: 700;
+      color: var(--blue);
+
+      line-height: 1;
+    }
+
+    .stat .label {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--ink-secondary);
+      line-height: 1.45;
+    }
+
+    /* Trusted brands */
+    .trusted {
+      margin-top: 100px;
+      text-align: center;
+      padding-top: 80px;
+      border-top: 1px solid var(--border);
+    }
+
+    .trusted h3 {
+      font-size: clamp(26px, 3.6vw, 40px);
+      font-weight: 300;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .trusted h3 .highlight {
+      color: var(--blue);
+    }
+
+    .trusted>p {
+      margin: 18px auto 0;
+      max-width: 560px;
+      color: var(--ink-secondary);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    /* Logo marquee */
+    .logo-marquee-wrap {
+      margin-top: 52px;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .logo-marquee-wrap::before,
+    .logo-marquee-wrap::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 120px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .logo-marquee-wrap::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--white) 0%, transparent 100%);
+    }
+
+    .logo-marquee-wrap::after {
+      right: 0;
+      background: linear-gradient(270deg, var(--white) 0%, transparent 100%);
+    }
+
+    .logo-marquee-track {
+      display: flex;
+      align-items: center;
+      gap: 64px;
+      width: max-content;
+      animation: logoScroll 25s linear infinite;
+      padding: 16px 0;
+    }
+
+    .logo-marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .logo-marquee-track img {
+      height: 72px;
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+      opacity: 0.55;
+      filter: grayscale(1);
+      transition: opacity 0.3s ease, filter 0.3s ease;
+    }
+
+    .logo-marquee-track img:hover {
+      opacity: 1;
+      filter: grayscale(0);
+    }
+
+    @keyframes logoScroll {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(calc(-100% / 6));
+      }
+    }
+
+    /* ============================================
+     PROBLEM
+     ============================================ */
+    .problem-section {
+      padding: var(--section-pad) 24px;
+      background: var(--surface);
+    }
+
+    .problem-grid {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .problem-left {
+      position: sticky;
+      top: 120px;
+    }
+
+    .problem-left h2 {
+      font-size: clamp(34px, 4.8vw, 44px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin-top: 20px;
+    }
+
+    .problem-left h2 .wrong {
+      color: var(--blue);
+    }
+
+    .problem-left>p {
+      margin-top: 24px;
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--ink-secondary);
+      max-width: 440px;
+    }
+
+    .pill-row {
+      margin-top: 32px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: var(--radius-full);
+      transition: transform 0.2s var(--ease);
+    }
+
+    .pill:hover {
+      transform: translateY(-2px);
+    }
+
+    .pill:nth-child(1) {
+      background: var(--accent-mint);
+      color: var(--mint-text);
+    }
+
+    .pill:nth-child(2) {
+      background: var(--accent-pink);
+      color: var(--pink-text);
+    }
+
+    .pill:nth-child(3) {
+      background: var(--accent-blue);
+      color: var(--blue);
+    }
+
+    .problem-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .problem-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 38px;
+      transition: all var(--duration) var(--ease);
+    }
+
+    .problem-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+      border-color: var(--border-light);
+    }
+
+    .problem-card .idx {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--border);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .problem-card h4 {
+      margin-top: 16px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+
+    .problem-card p {
+      margin-top: 12px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-secondary);
+    }
+
+    .problem-card .rule {
+      margin-top: 24px;
+      height: 1px;
+      background: var(--border);
+      width: 60px;
+    }
+
+    /* ============================================
+     DIFFERENCE
+     ============================================ */
+    .diff-section {
+      padding: var(--section-pad) 24px;
+      background: var(--white);
+    }
+
+    .diff-header {
+      max-width: 720px;
+      margin-bottom: 72px;
+    }
+
+    .diff-header h2 {
+      margin-top: 20px;
+      font-size: clamp(34px, 5vw, 44px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+    }
+
+    .diff-header h2 .highlight {
+      color: var(--blue);
+    }
+
+    .diff-header>p {
+      margin-top: 22px;
+      color: var(--ink-secondary);
+      font-size: 17px;
+      line-height: 1.65;
+      max-width: 560px;
+    }
+
+    .diff-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 22px;
+      color: var(--blue);
+      font-weight: 600;
+      font-size: 15px;
+      transition: gap 0.3s var(--ease);
+    }
+
+    .diff-link:hover {
+      gap: 12px;
+    }
+
+    .diff-link::after {
+      content: "→";
+    }
+
+    .diff-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: var(--gap);
+    }
+
+    .diff-card {
+      border-radius: var(--radius);
+      padding: 40px;
+      transition: all var(--duration) var(--ease);
+    }
+
+    .diff-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .diff-card.card-bordered {
+      background: var(--white);
+      border: 1px solid var(--border);
+    }
+
+    .diff-card.card-bordered:hover {
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+    }
+
+    .diff-card.card-surface {
+      background: var(--surface);
+    }
+
+    .diff-card.card-surface:hover {
+      background: var(--surface-alt);
+    }
+
+    .diff-card.big {
+      grid-row: span 2;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+    }
+
+    .diff-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .diff-icon.icon-blue {
+      background: var(--accent-blue);
+    }
+
+    .diff-icon.icon-pink {
+      background: var(--accent-pink);
+    }
+
+    .diff-icon.icon-mint {
+      background: var(--accent-mint);
+    }
+
+    .diff-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .diff-tag {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-tertiary);
+    }
+
+    .diff-card h4 {
+      margin-top: 14px;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    .diff-card p {
+      margin-top: 12px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-secondary);
+    }
+
+    /* Campaign Performance Card */
+    .campaign-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 28px;
+      margin-top: auto;
+    }
+
+    .campaign-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .campaign-head h5 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .sync {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--blue);
+      background: var(--accent-blue);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+    }
+
+    .campaign-card .desc {
+      font-size: 14px;
+      color: var(--ink-secondary);
+      margin-top: 8px;
+    }
+
+    .date-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .date-chip {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--ink-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .date-chip b {
+      color: var(--ink);
+      display: block;
+      font-size: 14px;
+      margin-top: 4px;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    .campaign-stats {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .campaign-stats .cs {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      padding: 16px;
+    }
+
+    .campaign-stats .cs .n {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .campaign-stats .cs .l {
+      font-size: 11px;
+      color: var(--ink-tertiary);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .diff-card.big h4 {
+      text-align: center;
+      margin-top: 28px;
+    }
+
+    .diff-card.big>p {
+      text-align: center;
+    }
+
+    /* ============================================
+     VENUES
+     ============================================ */
+    .venues-section {
+      padding: var(--section-pad) 24px;
+      background: var(--surface);
+    }
+
+    .venues-inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .venues-head h2 {
+      font-size: clamp(32px, 4.8vw, 40px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+      margin-top: 20px;
+    }
+
+    .venues-head h2 .highlight {
+      color: var(--blue);
+    }
+
+    .venues-head p {
+      margin-top: 22px;
+      font-size: 17px;
+      color: var(--ink-secondary);
+      line-height: 1.65;
+    }
+
+    .venues-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+    }
+
+    .venue-card {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .venue-card:first-child {
+      aspect-ratio: 3/3.8;
+    }
+
+    .venue-card:last-child {
+      aspect-ratio: 3/3.8;
+    }
+
+    .venue-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease);
+    }
+
+    .venue-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .venue-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(12, 12, 12, 0.75) 100%);
+      pointer-events: none;
+    }
+
+    .venue-label {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 24px;
+      z-index: 2;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    /* ============================================
+     CLOSING CTA
+     ============================================ */
+    .cta-section {
+      position: relative;
+      padding: clamp(120px, 16vw, 220px) 24px;
+      background: var(--black);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: "";
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(43, 92, 255, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-eyebrow {
+      color: var(--blue-light);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(34px, 5.4vw, 48px);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.06em;
+      color: var(--white);
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .cta-section h2 .highlight {
+      color: var(--blue-light);
+    }
+
+    .cta-section>.container>p {
+      margin: 28px auto 0;
+      max-width: 560px;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 17px;
+      line-height: 1.65;
+      line-height: 1.65;
+    }
+
+    .cta-buttons {
+      margin-top: 44px;
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+     FOOTER
+     ============================================ */
+    footer {
+      background: var(--black);
+      padding: 80px 24px 32px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .footer-grid {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .footer-grid p {
+      margin-top: 18px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 1.65;
+      max-width: 300px;
+    }
+
+    .social-row {
+      margin-top: 24px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-row a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-row a:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-2px);
+    }
+
+    .social-row svg {
+      width: 16px;
+      height: 16px;
+      stroke: rgba(255, 255, 255, 0.65);
+    }
+
+    footer h5 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 20px;
+    }
+
+    footer .flinks {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    footer .flinks a {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.6);
+      transition: color 0.2s ease;
+    }
+
+    footer .flinks a:hover {
+      color: var(--white);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 16px;
+      transition: color 0.2s ease;
+    }
+
+    .contact-item:hover {
+      color: var(--white);
+    }
+
+    .contact-item svg {
+      width: 16px;
+      height: 16px;
+      stroke: rgba(255, 255, 255, 0.4);
+      flex-shrink: 0;
+    }
+
+    .foot-bottom {
+      max-width: var(--container);
+      margin: 64px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ============================================
+     SCROLL REVEAL
+     ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+     RESPONSIVE
+     ============================================ */
+    @media (max-width: 1024px) {
+      .hero h1 {
+        font-size: clamp(36px, 7vw, 56px);
+      }
+
+      .hero-card {
+        height: 380px;
+        width: auto;
+      }
+
+      .problem-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+
+      .problem-left {
+        position: static;
+      }
+
+      .diff-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .diff-card.big {
+        grid-row: auto;
+      }
+
+      .venues-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .venues-head {
+        text-align: center;
+      }
+
+      .venues-head p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .venues-grid {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-actions {
+        display: none;
+      }
+
+      .nav-burger {
+        display: flex;
+      }
+
+      .hero {
+        padding: 120px 0 0;
+      }
+
+      .hero h1 {
+        font-size: clamp(32px, 8vw, 46px);
+      }
+
+      .hero-card {
+        height: 320px;
+        width: auto;
+      }
+
+      .hero-carousel::before,
+      .hero-carousel::after {
+        width: 80px;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 0;
+      }
+
+      .stat:nth-child(2)::after {
+        display: none;
+      }
+
+      .stat:nth-child(1),
+      .stat:nth-child(2) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .venues-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero {
+        padding: 110px 0 0;
+      }
+
+      .hero-card {
+        height: 260px;
+        width: auto;
+        border-radius: 16px;
+      }
+
+      .hero-carousel-track {
+        gap: 16px;
+      }
+
+      .hero-carousel::before,
+      .hero-carousel::after {
+        width: 40px;
+      }
+
+      .hero-carousel {
+        margin-top: 48px;
+      }
+
+      .hero-card-placeholder .play-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .hero-card-placeholder .play-icon svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .venues-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+
+      .venue-card:first-child,
+      .venue-card:last-child {
+        aspect-ratio: 4/3;
+      }
+
+      .problem-card {
+        padding: 28px 24px;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-buttons .btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+
+      .logo-marquee-track {
+        gap: 40px;
+      }
+
+      .logo-marquee-track img {
+        height: 40px;
+      }
+
+      .logo-marquee-wrap::before,
+      .logo-marquee-wrap::after {
+        width: 60px;
+      }
+    }
+
+    /* ============================================
+     NETWORK MAP
+     ============================================ */
+    .nmap-section {
+      padding: var(--section-pad) 24px;
+      background: var(--white);
+    }
+
+    .nmap {
+      /* map palette, derived from the site tokens */
+      --nm-land: #f1f0ec;
+      --nm-land-hover: #e6e4de;
+      --nm-live: #d2ddff;
+      --nm-live-hover: #a8c0ff;
+      --nm-soon: #e9e7e2;
+      --nm-soon-hover: #dedbd4;
+      --nm-soon-line: #c6c2b8;
+      --nm-edge: var(--white);
+    }
+
+    .nmap-head {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 64px;
+    }
+
+    .nmap-head h2 {
+      margin-top: 20px;
+      font-size: clamp(32px, 4.8vw, 42px);
+      font-weight: 300;
+      line-height: 1.12;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+    }
+
+    .nmap-head h2 .highlight {
+      color: var(--blue);
+    }
+
+    .nmap-head p {
+      margin: 22px auto 0;
+      max-width: 560px;
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--ink-secondary);
+    }
+
+    .nmap-grid {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(300px, 400px) minmax(0, 1fr);
+      gap: 64px;
+      align-items: start;
+    }
+
+    /* ---- map stage ---- */
+    .nmap-stage {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .nmap-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(80vh, 820px);
+      overflow: visible;
+    }
+
+    .nmap-zoom {
+      transition: transform 0.9s var(--ease);
+    }
+
+    .nmap.is-reduced .nmap-zoom,
+    .nmap.is-reduced .nm-pin-inner,
+    .nmap.is-reduced .nm-lbl text {
+      transition: none;
+    }
+
+    /* wards */
+    .nm-ward {
+      fill: var(--nm-land);
+      stroke: var(--nm-edge);
+      stroke-width: 0.9;
+      transition: fill 0.25s ease;
+    }
+
+    .nm-ward.live {
+      fill: var(--nm-live);
+      cursor: pointer;
+    }
+
+    .nm-ward.soon {
+      fill: var(--nm-soon);
+      stroke: var(--nm-soon-line);
+      stroke-width: 1.1;
+      stroke-dasharray: 4 3;
+    }
+
+    .nm-ward:hover {
+      fill: var(--nm-land-hover);
+    }
+
+    .nm-ward.live:hover {
+      fill: var(--nm-live-hover);
+    }
+
+    .nm-ward.soon:hover {
+      fill: var(--nm-soon-hover);
+    }
+
+    /* ward labels */
+    .nm-lbl {
+      pointer-events: none;
+    }
+
+    .nm-lbl text {
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      fill: var(--ink-tertiary);
+      transition: opacity 0.4s ease, fill 0.25s ease;
+    }
+
+    .nm-lbl.live text {
+      fill: #1c3a9e;
+      font-weight: 600;
+    }
+
+    .nm-lbl.soon text {
+      fill: var(--ink-secondary);
+      font-weight: 600;
+    }
+
+    .nmap[data-view="zoom"] .nm-lbl:not(.live) text {
+      opacity: 0;
+    }
+
+    /* pins */
+    .nm-pins {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease 0.25s;
+    }
+
+    .nmap[data-view="zoom"] .nm-pins {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nm-pin {
+      cursor: pointer;
+    }
+
+    .nm-pin-inner {
+      transition: transform 0.9s var(--ease);
+    }
+
+    .nm-pin-art {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      opacity: 0;
+      transform: translateY(-14px) scale(0.6);
+    }
+
+    .nmap.is-in .nm-pin-art {
+      opacity: 1;
+      transform: none;
+      transition: transform 0.55s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.35s ease;
+    }
+
+    .nm-pin-body {
+      fill: var(--blue);
+      stroke: var(--white);
+      stroke-width: 1.4;
+    }
+
+    .nm-pin-dot {
+      fill: var(--white);
+    }
+
+    .nm-pin-ring {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 1.6;
+      opacity: 0;
+    }
+
+    .nmap.is-in .nm-pin.is-on .nm-pin-art {
+      transform: scale(1.28) translateY(-2px);
+    }
+
+    .nmap .nm-pin.is-on .nm-pin-body {
+      fill: var(--blue-hover);
+    }
+
+    .nmap .nm-pin.is-on .nm-pin-ring {
+      animation: nmapPing 1.5s cubic-bezier(0, 0.4, 0.6, 1) infinite;
+    }
+
+    @keyframes nmapPing {
+      0% {
+        r: 6;
+        opacity: 0.55;
+        stroke-width: 2;
+      }
+
+      100% {
+        r: 20;
+        opacity: 0;
+        stroke-width: 0.4;
+      }
+    }
+
+    /* cluster badge */
+    .nm-cluster {
+      transition: opacity 0.35s ease;
+      cursor: pointer;
+    }
+
+    .nmap[data-view="zoom"] .nm-cluster {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .nm-cluster-halo {
+      fill: var(--blue);
+      opacity: 0.14;
+      animation: nmapHalo 2.6s ease-out infinite;
+    }
+
+    @keyframes nmapHalo {
+      0% {
+        r: 16;
+        opacity: 0.28;
+      }
+
+      70% {
+        r: 48;
+        opacity: 0;
+      }
+
+      100% {
+        r: 48;
+        opacity: 0;
+      }
+    }
+
+    .nm-cluster-core {
+      fill: var(--blue);
+      stroke: var(--white);
+      stroke-width: 2;
+    }
+
+    .nm-cluster-txt {
+      fill: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      text-anchor: middle;
+    }
+
+    .nm-cluster-hint {
+      fill: var(--ink);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+    }
+
+    /* tooltip */
+    .nm-tip {
+      position: absolute;
+      z-index: 5;
+      pointer-events: none;
+      left: 0;
+      top: 0;
+      padding: 9px 13px;
+      border-radius: var(--radius-xs);
+      background: var(--black);
+      color: var(--white);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 500;
+      white-space: nowrap;
+      box-shadow: 0 10px 28px rgba(12, 12, 12, 0.2);
+      opacity: 0;
+      transform: translate(-50%, -120%) scale(0.96);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    .nm-tip.is-on {
+      opacity: 1;
+      transform: translate(-50%, -135%) scale(1);
+    }
+
+    .nm-tip b {
+      display: block;
+      font-weight: 600;
+    }
+
+    .nm-tip span {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 12px;
+    }
+
+    /* view toggle */
+    .nm-views {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      gap: 6px;
+      padding: 4px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      box-shadow: 0 4px 14px rgba(12, 12, 12, 0.05);
+      z-index: 4;
+    }
+
+    .nm-views button {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .nm-views button:hover {
+      color: var(--ink);
+    }
+
+    .nm-views button[aria-pressed="true"] {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .nm-views button:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+
+    /* ---- side panel ---- */
+    .nmap-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 120px;
+    }
+
+    .nm-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .nm-stat {
+      padding: 28px 22px;
+      border-right: 1px solid var(--border);
+    }
+
+    .nm-stat:last-child {
+      border-right: none;
+    }
+
+    .nm-stat b {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--blue);
+    }
+
+    .nm-stat span {
+      display: block;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--ink-secondary);
+    }
+
+    .nm-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .nm-listhead {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .nm-listhead h4 {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .nm-listhead em {
+      font-style: normal;
+      font-size: 13px;
+      color: var(--ink-tertiary);
+    }
+
+    .nm-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px 20px;
+    }
+
+    .nm-list button {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      text-align: left;
+      padding: 12px 10px;
+      border-radius: var(--radius-xs);
+      transition: background 0.25s ease;
+    }
+
+    .nm-list button:hover,
+    .nm-list button.is-on {
+      background: var(--accent-blue);
+    }
+
+    .nm-list button:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: -2px;
+    }
+
+    .nm-idx {
+      width: 22px;
+      flex: 0 0 22px;
+      padding-top: 2px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-tertiary);
+    }
+
+    .nm-place {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .nm-meta {
+      display: block;
+      margin-top: 2px;
+      font-size: 13px;
+      color: var(--ink-secondary);
+    }
+
+    .nm-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding-left: 2px;
+    }
+
+    .nm-legend>span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--ink-secondary);
+    }
+
+    .nm-sw {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      background: var(--nm-live);
+      flex-shrink: 0;
+    }
+
+    .nm-sw.soon {
+      background: var(--nm-soon);
+      border: 1px dashed var(--nm-soon-line);
+    }
+
+    .nm-sw.off {
+      background: var(--nm-land);
+    }
+
+    .nm-sw.pin {
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    @media (max-width: 1024px) {
+      .nmap-grid {
+        grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+        gap: 40px;
+      }
+
+      .nm-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .nm-stat:nth-child(2) {
+        border-right: none;
+      }
+
+      .nm-stat:nth-child(-n+2) {
+        border-bottom: 1px solid var(--border);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nmap-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .nmap-panel {
+        position: static;
+      }
+
+      .nmap-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .nmap-svg {
+        max-height: 62vh;
+      }
+
+      .nm-views {
+        position: static;
+        margin-bottom: 20px;
+      }
+
+      .nm-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .nm-card {
+        padding: 22px;
+      }
+
+      .nm-legend {
+        gap: 12px 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .nmap *,
+      .nmap *::before,
+      .nmap *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= NAV ================= -->
+  <div class="nav-wrap" id="nav-wrap">
+    <nav class="nav">
+      <a href="#" class="logo">
+        <img src="elevator-logo.svg" alt="Noticed" class="logo-mark">
+        Noticed
+      </a>
+      <div class="nav-links">
+        <a href="#home" class="active">Home</a>
+        <a href="#network">Our Network</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <a href="#login" class="nav-login">Login</a>
+        <a href="https://wa.me/918452850788" target="_blank" class="btn btn-primary"
+          style="padding:10px 22px;font-size:14px;">Get in Touch</a>
+      </div>
+      <button class="nav-burger" id="nav-burger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#home">Home</a>
+    <a href="#network">Our Network</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+    <a href="#login">Login</a>
+    <a href="https://wa.me/918452850788" target="_blank" class="btn btn-primary">Get in Touch</a>
+  </div>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <span class="hero-eyebrow">Premium DOOH Advertising</span>
+      <h1>Your Brand. Inside Every <span class="accent hero-rotating-word" id="hero-rotating-word">Residential
+          Building</span> in Mumbai.</h1>
+      <p class="hero-sub">Noticed helps brands connect with high-intent audiences through digital screens placed inside
+        premium residential lift lobbies and gyms.</p>
+      <div class="hero-cta">
+        <a href="#network" class="btn btn-primary btn-arrow">Explore Our Network</a>
+        <a href="#contact" class="btn btn-secondary">Talk to Us</a>
+      </div>
+    </div>
+
+    <!-- Horizontal panning carousel — replace placeholders with your video files -->
+    <div class="hero-carousel">
+      <div class="hero-carousel-track" id="hero-track">
+        <!-- Set 1 (original) -->
+        <div class="hero-card is-portrait">
+          <div class="hero-card-media">
+            <video src="videos/video1.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+          </div>
+          <div class="hero-card-label"><span>Lobby Display</span>
+            <div class="card-dot"></div>
+          </div>
+        </div>
+
+        <div class="hero-card is-landscape">
+          <div class="hero-card-media">
+            <video src="videos/video2.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+          </div>
+          <div class="hero-card-label"><span>Gym Screen</span>
+            <div class="card-dot"></div>
+          </div>
+        </div>
+
+        <div class="hero-card is-portrait">
+          <div class="hero-card-media">
+            <video src="videos/video3.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+          </div>
+          <div class="hero-card-label"><span>Residential Tower</span>
+            <div class="card-dot"></div>
+          </div>
+        </div>
+
+        <div class="hero-card is-portrait">
+          <div class="hero-card-media">
+            <video src="videos/video4.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+          </div>
+          <div class="hero-card-label"><span>Premium Venue</span>
+            <div class="card-dot"></div>
+          </div>
+        </div>
+
+        <div class="hero-card is-portrait">
+          <div class="hero-card-media">
+            <video src="videos/video5.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+          </div>
+          <div class="hero-card-label"><span>Lift Lobby</span>
+            <div class="card-dot"></div>
+          </div>
+        </div>
+
+        <div class="hero-card is-portrait">
+          <div class="hero-card-media">
+            <video src="videos/video6.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+          </div>
+          <div class="hero-card-label"><span>Fitness Center</span>
+            <div class="card-dot"></div>
+          </div>
+        </div>
+
+        <div class="hero-card is-portrait">
+          <div class="hero-card-media">
+            <video src="videos/video7.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
+          </div>
+          <div class="hero-card-label"><span>Residential Screen</span>
+            <div class="card-dot"></div>
+          </div>
+        </div>
+        <!-- Set 2 (duplicate for seamless loop) — auto-generated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATS ================= -->
+  <section class="stats-section" id="network">
+    <div class="container">
+      <div class="stats-top reveal">
+        <h2>Premium DOOH access<br><span class="highlight">across Mumbai</span></h2>
+      </div>
+      <div class="stats-grid">
+        <div class="stat reveal">
+          <div class="num">11+</div>
+          <div class="label">screens across <br> South Mumbai</div>
+        </div>
+        <div class="stat reveal">
+          <div class="num">400k+</div>
+          <div class="label">Monthly views</div>
+        </div>
+        <div class="stat reveal">
+          <div class="num">10+</div>
+          <div class="label">trusted premium partner venues (and growing)</div>
+        </div>
+        <div class="stat reveal">
+          <div class="num">24/7</div>
+          <div class="label">Live monitoring & quick turnaround</div>
+        </div>
+      </div>
+
+      <div class="trusted reveal">
+        <h3>Brands across F&amp;B, Fitness, D2C etc.<br><span class="highlight">have trusted us.</span></h3>
+        <p>Reach high-intent residential audiences across curated premium spaces where attention, context, and purchase
+          intent naturally come together.</p>
+        <div class="logo-marquee-wrap">
+          <div class="logo-marquee-track" id="logo-track">
+            <img src="brands/1.png" alt="Brand partner">
+            <img src="brands/2.png" alt="Brand partner">
+            <img src="brands/3.png" alt="Brand partner">
+            <img src="brands/4.png" alt="Brand partner">
+            <img src="brands/5.png" alt="Brand partner">
+            <img src="brands/6.png" alt="Brand partner">
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROBLEM ================= -->
+  <section class="problem-section">
+    <div class="problem-grid">
+      <div class="problem-left reveal">
+        <span class="eyebrow-label">The Problem</span>
+        <h2>Half your ad budget is talking to the <span class="wrong">wrong audience.</span></h2>
+        <p>Most advertising still chases reach. But reach only matters when it's the right people with the right mindset
+          and context.</p>
+        <div class="pill-row">
+          <span class="pill">Targeted audience</span>
+          <span class="pill">Right context</span>
+          <span class="pill">Repeated exposure</span>
+        </div>
+      </div>
+      <div class="problem-cards">
+        <div class="problem-card reveal">
+          <div class="idx">01</div>
+          <h4>Reach means nothing without relevance.</h4>
+          <p>Billboards and broad campaigns may reach thousands, but most of that attention is wasted on people who are
+            not your audience.</p>
+          <div class="rule"></div>
+        </div>
+        <div class="problem-card reveal">
+          <div class="idx">02</div>
+          <h4>Relevance without context is just money wasted.</h4>
+          <p>Even the right audience needs the right context. Otherwise, your budget is wasted reaching people when
+            they're least receptive.</p>
+          <div class="rule"></div>
+        </div>
+        <div class="problem-card reveal">
+          <div class="idx">03</div>
+          <h4>Low engagement time equals no attention.</h4>
+          <p>Lift lobby screens, billboards and social media ads are skipped within seconds. Be present where audiences
+            spend quality time, everyday.</p>
+          <div class="rule"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NETWORK MAP ================= -->
+  <section class="nmap-section">
+    <div class="nmap" id="network-map" data-view="overview">
+
+      <div class="nmap-head reveal">
+        <span class="eyebrow-label">Our Network</span>
+        <h2>Every screen we run, <span class="highlight">on one map.</span></h2>
+        <p id="nm-sub"></p>
+      </div>
+
+      <div class="nmap-grid">
+
+        <!-- ---------- map ---------- -->
+        <div class="nmap-stage">
+          <div class="nm-views" role="group" aria-label="Map view">
+            <button type="button" data-view-btn="overview" aria-pressed="true">South Mumbai</button>
+            <button type="button" data-view-btn="zoom" aria-pressed="false">Our screens</button>
+          </div>
+
+          <svg class="nmap-svg" viewBox="0 0 560 1006" role="img" id="nm-svg"
+            aria-label="Map of South Mumbai showing where Noticed screens are live">
+            <g class="nmap-zoom" id="nm-zoom">
+
+              <!-- Real BMC ward boundaries. Never edit the d="" values. -->
+              <g id="nm-wards">
+                <path class="nm-ward"
+                  d="M252.9,56.5 265.6,79.5 270.0,79.9 283.4,103.6 289.1,119.4 297.8,132.8 320.7,147.5 308.8,171.4 299.1,204.2 296.8,230.7 297.6,293.4 254.1,344.1 250.5,344.1 249.1,347.3 144.3,369.6 129.2,367.9 126.7,363.8 121.5,368.5 113.3,366.5 102.1,360.3 127.8,313.5 139.6,280.2 145.3,255.1 145.4,233.4 141.1,217.3 142.0,191.7 155.2,166.4 163.7,139.2 177.8,113.0 180.0,104.6 178.1,90.7 173.7,80.4 170.2,21.7 160.9,1.5 165.2,0.0 177.9,11.5 184.8,21.9 195.6,30.3 198.2,28.8 193.4,36.2 196.1,55.9 200.5,62.2 207.8,64.2 210.1,68.6 223.2,70.5 231.5,68.5 252.9,56.5Z"
+                  data-ward="G/S" />
+                <path class="nm-ward"
+                  d="M463.1,123.3 512.7,87.7 512.1,90.5 517.0,88.8 516.8,90.9 527.9,105.6 534.2,108.2 537.7,114.0 545.9,120.9 546.8,124.6 551.6,126.9 554.1,130.8 554.5,138.9 557.3,137.8 560.0,145.5 541.3,157.6 504.6,177.0 500.9,180.2 506.8,180.6 500.0,180.5 499.4,184.8 507.1,186.1 506.6,188.8 497.3,187.1 495.7,199.4 494.3,199.2 492.6,206.9 490.2,209.9 491.4,214.8 489.5,215.6 496.7,234.2 504.5,237.4 497.2,235.5 501.5,246.6 486.9,252.3 489.5,258.3 467.7,265.8 498.4,342.6 473.3,367.2 416.6,354.1 393.8,344.1 394.4,340.6 376.3,332.6 365.4,330.8 356.6,293.3 313.1,290.6 297.6,293.4 296.8,283.0 297.4,216.1 305.2,181.5 317.8,152.3 367.1,75.0 400.3,103.7 453.0,118.9 452.8,120.4 463.1,123.3Z"
+                  data-ward="F/S" />
+                <path class="nm-ward"
+                  d="M395.2,341.0 393.8,344.1 420.1,355.2 418.7,362.8 458.9,371.4 456.7,380.1 417.2,371.4 415.1,373.5 414.7,381.7 426.9,384.3 428.8,380.9 460.5,387.7 460.6,389.9 457.0,396.1 425.7,389.0 424.8,392.7 414.3,390.6 413.5,394.2 448.4,401.9 444.7,415.2 427.8,413.0 422.8,409.3 416.4,407.5 416.0,409.6 419.0,413.5 417.4,419.3 424.0,427.8 423.7,430.4 439.8,432.7 439.6,435.9 423.5,434.8 426.5,436.1 428.1,440.0 433.7,440.3 434.8,447.2 428.4,447.0 428.6,451.1 426.8,453.1 421.1,452.1 421.3,458.3 417.1,458.3 416.7,460.6 418.7,460.9 413.8,480.6 401.7,477.9 401.2,480.2 394.2,478.6 384.7,481.5 381.5,479.1 377.5,480.1 342.7,472.4 338.3,467.6 333.2,474.1 327.6,486.8 312.8,487.2 306.5,490.1 290.3,492.0 235.7,492.9 240.8,446.2 222.1,441.0 193.4,438.0 226.4,352.1 249.1,347.3 250.5,344.1 254.1,344.1 297.5,293.4 313.1,290.6 356.6,293.3 365.4,330.8 376.3,332.6 395.2,341.0Z"
+                  data-ward="E" />
+                <path class="nm-ward"
+                  d="M379.4,480.3 381.5,479.1 384.7,481.5 394.2,478.6 401.2,480.2 401.7,477.9 413.8,480.6 404.0,521.7 415.5,526.1 422.5,522.1 423.9,515.3 425.9,515.6 424.2,523.4 416.9,526.9 414.9,537.5 411.9,536.8 414.3,526.7 403.7,523.1 398.3,546.3 395.4,548.3 395.1,549.7 397.8,551.0 394.8,550.9 396.2,555.0 392.0,566.8 394.6,567.2 391.0,577.6 393.3,578.6 395.5,596.9 363.2,590.0 348.9,591.0 330.7,589.0 310.7,593.6 301.4,601.1 287.8,552.2 290.8,543.7 287.7,510.5 289.4,492.1 306.5,490.1 312.8,487.2 328.0,486.6 333.2,474.1 338.3,467.6 342.7,472.4 379.4,480.3Z"
+                  data-ward="B" />
+                <path class="nm-ward"
+                  d="M348.6,591.0 363.2,590.0 395.5,596.9 372.9,691.5 371.5,692.5 367.8,691.1 377.1,740.8 368.2,741.3 363.0,709.7 355.8,707.8 350.8,709.0 346.8,712.4 348.7,726.2 329.0,741.0 324.8,737.9 326.8,742.9 319.8,747.5 321.4,750.1 323.0,749.3 324.3,753.7 332.0,750.5 335.3,757.6 349.6,750.9 331.6,760.0 349.8,799.5 377.7,769.2 378.5,762.9 380.9,763.9 379.9,769.0 349.0,803.8 343.3,807.0 333.1,805.8 310.0,781.7 305.7,785.1 310.6,786.9 308.5,791.8 310.3,794.2 307.3,796.6 305.2,794.3 301.3,795.3 290.1,821.3 295.4,823.2 289.9,823.2 288.5,828.9 285.8,828.6 274.0,839.0 276.6,843.8 280.7,843.4 284.2,846.5 271.0,862.7 253.2,875.5 252.5,881.7 239.6,904.8 220.0,882.7 201.1,906.1 199.7,905.0 193.6,911.5 188.4,906.8 185.6,910.8 187.2,915.5 184.8,920.5 188.2,927.6 185.3,937.6 188.8,937.6 188.9,939.5 185.2,942.7 194.9,942.9 185.5,943.2 183.2,950.3 184.0,955.7 165.8,978.9 155.4,996.0 149.7,998.7 139.0,996.7 133.2,1000.8 131.2,1005.7 125.9,1004.8 114.3,995.3 101.7,981.0 93.7,967.8 90.4,957.0 86.0,933.2 85.9,917.5 89.0,899.1 95.1,883.0 111.3,858.0 134.0,828.8 189.6,767.2 217.5,731.4 227.9,706.1 231.3,689.3 232.1,669.5 229.0,646.5 243.8,642.4 253.1,636.9 266.7,632.7 281.5,616.8 310.1,593.9 330.7,589.0 348.6,591.0Z"
+                  data-ward="A" />
+                <path class="nm-ward"
+                  d="M289.3,493.1 287.7,510.5 290.8,543.7 287.8,552.2 301.4,601.1 281.5,616.8 266.7,632.7 253.1,636.9 243.8,642.4 229.0,646.5 223.8,630.5 215.9,614.3 195.9,586.1 205.5,577.0 242.3,558.2 240.1,548.2 243.8,543.9 239.6,539.1 247.7,520.1 248.3,493.5 289.3,493.1Z"
+                  data-ward="C" />
+                <path class="nm-ward"
+                  d="M194.5,438.1 222.1,441.0 241.0,446.4 235.7,492.9 248.3,493.5 247.7,520.1 239.6,539.1 243.8,543.9 240.1,548.2 242.3,558.2 205.5,577.0 195.9,586.1 187.2,575.6 159.6,555.7 136.2,546.4 118.3,544.4 108.4,556.4 113.6,557.5 108.6,561.8 105.3,561.4 103.0,564.7 100.0,565.1 94.2,572.7 92.3,570.9 89.1,574.4 90.3,576.3 82.6,581.7 76.6,590.4 69.5,594.9 64.7,596.1 62.9,594.8 60.7,597.4 56.2,598.3 54.2,601.6 46.7,601.1 43.8,611.2 32.1,622.7 28.7,628.8 26.1,644.8 19.1,660.2 23.0,659.9 12.5,663.6 7.9,660.8 6.3,657.1 13.1,642.9 12.1,636.9 13.8,631.3 12.9,625.5 3.5,614.5 0.0,590.4 2.4,590.2 5.1,580.3 20.4,548.1 56.2,487.3 61.4,469.1 69.5,423.1 73.2,411.3 78.9,397.9 102.1,360.3 116.1,367.7 122.8,368.1 126.7,363.8 129.2,367.9 143.5,369.6 226.4,352.1 206.4,402.2 194.5,438.1Z"
+                  data-ward="D" />
+              </g>
+
+              <g id="nm-labels">
+                <g class="nm-lbl" data-ward="G/S" transform="translate(216.2,216.5)"><text
+                    text-anchor="middle">Worli</text></g>
+                <g class="nm-lbl" data-ward="F/S" transform="translate(413.5,215.8)"><text
+                    text-anchor="middle">Parel</text></g>
+                <g class="nm-lbl" data-ward="E" transform="translate(321.8,400.4)"><text
+                    text-anchor="middle">Byculla</text></g>
+                <g class="nm-lbl" data-ward="B" transform="translate(347.7,533.8)"><text text-anchor="middle">Chor
+                    Bazaar</text></g>
+                <g class="nm-lbl" data-ward="A" transform="translate(239.5,785.0)"><text
+                    text-anchor="middle">Colaba</text></g>
+                <g class="nm-lbl" data-ward="C" transform="translate(256.0,573.8)"><text
+                    text-anchor="middle">Kalbadevi</text></g>
+                <g class="nm-lbl" data-ward="D" transform="translate(132.4,488.5)"><text
+                    text-anchor="middle">Girgaon</text></g>
+              </g>
+
+              <!-- overview cluster badge -->
+              <g class="nm-cluster" id="nm-cluster">
+                <circle class="nm-cluster-halo" cx="0" cy="0" r="16"></circle>
+                <circle class="nm-cluster-core" cx="0" cy="0" r="16"></circle>
+                <text class="nm-cluster-txt" x="0" y="4.5"></text>
+                <text class="nm-cluster-hint" x="25" y="5"></text>
+              </g>
+
+              <!-- pins are generated from LOCATIONS in the script below -->
+              <g class="nm-pins" id="nm-pins"></g>
+
+            </g>
+          </svg>
+
+          <div class="nm-tip" id="nm-tip" aria-hidden="true"></div>
+        </div>
+
+        <!-- ---------- side panel ---------- -->
+        <aside class="nmap-panel">
+          <div class="nm-stats reveal">
+            <!-- <div class="nm-stat"><b id="nm-count"></b><span>Screens live<br>South Mumbai</span></div> -->
+            <div class="nm-stat"><b id="nm-count"></b><span>Screens live<br>South Mumbai</span></div>
+            <div class="nm-stat"><b>400k+</b><span>Monthly views</span></div>
+            <div class="nm-stat"><b id="nm-venues"></b><span>Partner venues<br>and growing</span></div>
+            <div class="nm-stat"><b>24/7</b><span>Live monitoring</span></div>
+          </div>
+
+          <div class="nm-card reveal">
+            <div class="nm-listhead">
+              <h4>Where your brand runs</h4>
+              <em>Hover to locate &middot; click to zoom</em>
+            </div>
+            <ul class="nm-list" id="nm-list"></ul>
+          </div>
+
+          <div class="nm-legend reveal">
+            <span><i class="nm-sw"></i> Live now</span>
+            <span><i class="nm-sw soon"></i> <span id="nm-soon-legend">Coming soon</span></span>
+            <span><i class="nm-sw off"></i> Expanding</span>
+            <span><i class="nm-sw pin"></i> Screen location</span>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DIFFERENCE ================= -->
+  <section class="diff-section" id="services">
+    <div class="container">
+      <div class="diff-header reveal">
+        <span class="eyebrow-label">The Noticed Difference</span>
+        <h2>We don't chase your audience. <span class="highlight">We're already in front of them.</span></h2>
+        <p>Noticed places brands inside premium residential spaces where people already live, relax, and make
+          lifestyle-driven choices.</p>
+        <a href="#" class="diff-link">See how it works</a>
+      </div>
+
+      <div class="diff-cards">
+        <div class="diff-card card-bordered reveal">
+          <div class="diff-icon icon-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2b5cff" stroke-width="2">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+            </svg>
+          </div>
+          <div class="diff-tag">01 — The Right Audience</div>
+          <h4>Access premium residential zones where people have stronger lifestyle intent and spending capacity.</h4>
+          <p>Reach residents who are already more aligned with premium lifestyle choices and buying decisions.</p>
+        </div>
+
+        <div class="diff-card big card-surface reveal">
+          <div class="campaign-card">
+            <div class="campaign-head">
+              <h5>Campaign Performance</h5>
+              <span class="sync">&#8635; SYNC DATA</span>
+            </div>
+            <div class="desc">Detailed proof-of-play and location analytics.</div>
+            <div class="date-row">
+              <div class="date-chip">START<b>Apr 30, 2026</b></div>
+              <div class="date-chip">END<b>May 30, 2026</b></div>
+            </div>
+            <div class="campaign-stats">
+              <div class="cs">
+                <div class="n">10</div>
+                <div class="l">Total Locations</div>
+              </div>
+              <div class="cs">
+                <div class="n">92,310</div>
+                <div class="l">Total Ad Plays</div>
+              </div>
+              <div class="cs">
+                <div class="n">9231</div>
+                <div class="l">Avg Plays / Screen</div>
+              </div>
+              <div class="cs">
+                <div class="n">77 hrs</div>
+                <div class="l">Avg Duration / Screen</div>
+              </div>
+            </div>
+          </div>
+          <h4>Real-time campaign visibility</h4>
+          <p>Track impressions, venue coverage, and audience reach — all from your dashboard.</p>
+        </div>
+
+        <div class="diff-card card-bordered reveal">
+          <div class="diff-icon icon-pink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#9a3060" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18" />
+            </svg>
+          </div>
+          <div class="diff-tag">02 — The Right Environment</div>
+          <h4>Your brand appears in spaces where audiences spend time, are relaxed, and naturally attentive.</h4>
+          <p>Show up inside premium environments where your message feels natural, visible, and easier to remember.</p>
+        </div>
+
+        <div class="diff-card card-bordered reveal">
+          <div class="diff-icon icon-mint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#1a7a52" stroke-width="2">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 7v5l3 3" />
+            </svg>
+          </div>
+          <div class="diff-tag">03 — The Right Headspace</div>
+          <h4>Reach people in premium lifestyle moments when your message feels relevant, not interruptive.</h4>
+          <p>Connect with residents when they are already in a more positive, receptive, and lifestyle-driven mindset.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VENUES ================= -->
+  <section class="venues-section">
+    <div class="venues-inner">
+      <div class="venues-head reveal">
+        <span class="eyebrow-label">Venue Types</span>
+        <h2>Your brand, in places <span class="highlight">your audience already trusts.</span></h2>
+        <p>From lift lobbies to leg day, Noticed helps brands show up inside premium residential spaces where
+          high-intent audiences spend time repeatedly.</p>
+      </div>
+
+      <div class="venues-grid">
+        <div class="venue-card reveal">
+          <img src="venue-residential.jpg" alt="Residential building lift lobby">
+          <div class="venue-label">Residential Buildings</div>
+        </div>
+        <div class="venue-card reveal">
+          <img src="venue-gym.jpg" alt="Gym interior">
+          <div class="venue-label">Gyms</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLOSING CTA ================= -->
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <span class="cta-eyebrow reveal">Premium spaces. High-intent audiences. Real visibility.</span>
+      <h2 class="reveal">Your Exact Buyer Is In This Room Right Now. <span class="highlight">Is Your Brand?</span></h2>
+      <p class="reveal">Put your brand inside premium residential buildings and gyms across Mumbai where attention is
+        already warm, focused, and ready to convert.</p>
+      <div class="cta-buttons reveal">
+        <a href="https://wa.me/918452850788" target="_blank" class="btn btn-white btn-arrow">Get in Touch</a>
+        <a href="#network" class="btn btn-ghost-dark btn-arrow">Explore Our Network</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <svg class="logo-mark" viewBox="0 0 32 32" fill="none" width="26" height="26">
+            <path d="M16 2C9.4 2 4 7.2 4 13.6C4 22 16 30 16 30S28 22 28 13.6C28 7.2 22.6 2 16 2Z" fill="#2b5cff" />
+            <circle cx="16" cy="13" r="5" fill="#0c0c0c" />
+          </svg>
+          noticed
+        </div>
+        <p>Your brand, inside every premium residential space your audience already trusts.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1" />
+            </svg></a>
+          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 13v4" />
+            </svg></a>
+        </div>
+      </div>
+      <div>
+        <h5>Quick Links</h5>
+        <div class="flinks">
+          <a href="#home">Home</a>
+          <a href="#services">About Us</a>
+          <a href="#network">Our Network</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h5>Get In Touch</h5>
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="m3 7 9 6 9-6" />
+          </svg>
+          info@noticed.in
+        </div>
+        <a href="https://wa.me/918452850788" target="_blank" class="contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          WhatsApp Us
+        </a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 Noticed. All rights reserved.</span>
+      <span>Mumbai NCR · Premium DOOH Advertising</span>
+    </div>
+  </footer>
+
+  <script>
+    // ========== Hero Carousel — Duplicate cards for seamless loop ==========
+    (function () {
+      const track = document.getElementById('hero-track');
+      if (track) {
+        const cards = Array.from(track.querySelectorAll('.hero-card'));
+        cards.forEach(card => {
+          const clone = card.cloneNode(true);
+          track.appendChild(clone);
+        });
+
+        const playAllVideos = () => {
+          track.querySelectorAll('video').forEach(video => {
+            video.muted = true;
+            video.playsInline = true;
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(() => { });
+            }
+          });
+        };
+
+        playAllVideos();
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) playAllVideos();
+        });
+        window.addEventListener('focus', playAllVideos);
+      }
+    })();
+
+    // ========== Hero Word Rotator ==========
+    (function () {
+      const words = ["Residential Building", "Gym", "Fitness Centre", "Salon"];
+      const el = document.getElementById('hero-rotating-word');
+      if (!el) return;
+
+      let idx = 0;
+      setInterval(() => {
+        el.classList.add('is-exiting');
+        setTimeout(() => {
+          idx = (idx + 1) % words.length;
+          el.textContent = words[idx];
+          el.classList.remove('is-exiting');
+          el.classList.add('is-entering');
+          void el.offsetWidth;
+          el.classList.remove('is-entering');
+        }, 450);
+      }, 3200);
+    })();
+
+    // ========== Logo Marquee — Duplicate logos for seamless continuous loop ==========
+    (function () {
+      const track = document.getElementById('logo-track');
+      if (track) {
+        const logos = Array.from(track.children);
+        // Clone the set multiple times so total width is always > 2× viewport
+        for (let i = 0; i < 5; i++) {
+          logos.forEach(logo => {
+            track.appendChild(logo.cloneNode(true));
+          });
+        }
+      }
+    })();
+
+    // ========== Scroll Reveal ==========
+    const revealTargets = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // Stagger siblings
+          const siblings = entry.target.parentElement.querySelectorAll('.reveal');
+          let delay = 0;
+          siblings.forEach((sib) => {
+            if (sib === entry.target) {
+              setTimeout(() => {
+                entry.target.classList.add('visible');
+              }, delay);
+            }
+            delay += 80;
+          });
+          if (!entry.target.classList.contains('visible')) {
+            entry.target.classList.add('visible');
+          }
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealTargets.forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // ========== Nav Scroll State ==========
+    const navWrap = document.getElementById('nav-wrap');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 60) {
+        navWrap.classList.add('scrolled');
+      } else {
+        navWrap.classList.remove('scrolled');
+      }
+      lastScroll = scrollY;
+    });
+
+    // ========== Nav Active State ==========
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= 120 && rect.bottom >= 120) current = sec.id;
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    });
+
+    // ========== Mobile Menu ==========
+    const burger = document.getElementById('nav-burger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+
+    // Close mobile menu when clicking a link
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        burger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // ========== Counter Animation for Stats ==========
+    const statNums = document.querySelectorAll('.stat .num');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const finalText = el.textContent;
+          const numMatch = finalText.match(/[\d,.]+/);
+          if (numMatch) {
+            const numStr = numMatch[0].replace(/,/g, '');
+            const target = parseFloat(numStr);
+            const prefix = finalText.substring(0, finalText.indexOf(numMatch[0]));
+            const suffix = finalText.substring(finalText.indexOf(numMatch[0]) + numMatch[0].length);
+            const hasComma = numMatch[0].includes(',');
+            const duration = 1200;
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              let current = Math.round(target * eased);
+              let formatted = hasComma ? current.toLocaleString() : current.toString();
+              el.textContent = prefix + formatted + suffix;
+              if (progress < 1) requestAnimationFrame(animate);
+              else el.textContent = finalText;
+            }
+            requestAnimationFrame(animate);
+          }
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statNums.forEach(el => counterObserver.observe(el));
+  </script>
+
+  <!-- ================= NETWORK MAP SCRIPT ================= -->
+  <script>
+    (function () {
+
+      /* =========================================================
+         ============  EVERYTHING YOU EDIT IS HERE  =============
+         =========================================================
+
+         To add a screen, add one line to LOCATIONS. That is the only
+         change needed. The pin, the list row, the counts, the sentence
+         under the heading, the cluster badge and the highlighted areas
+         on the map all rebuild themselves from this array.
+
+           lat / lng : copied straight out of Google Maps
+           name      : building name
+           type      : shown under the name in the list
+           screens   : screens in that building (optional, default 1)
+         ========================================================= */
+
+      var LOCATIONS = [
+        { name: 'Earth View', type: 'Residential building', screens: 1, lat: 18.960451, lng: 72.821459 },
+        { name: 'Rajendra Vihar', type: 'Residential building', screens: 1, lat: 18.959961, lng: 72.824633 },
+        { name: '1925 Sambhav', type: 'Residential building', screens: 1, lat: 18.959260, lng: 72.820931 },
+        { name: 'Siddhesh Darshan', type: 'Residential building', screens: 2, lat: 18.958669, lng: 72.821456 },
+        { name: 'Neo Clarissa', type: 'Residential building', screens: 1, lat: 18.957593, lng: 72.823257 },
+        { name: 'Earth Castle', type: 'Residential building', screens: 1, lat: 18.956297, lng: 72.822145 },
+        { name: 'Prasad Chambers', type: 'Residential building', screens: 2, lat: 18.954396, lng: 72.817252 },
+        { name: 'Darshan Heights', type: 'Residential building', screens: 1, lat: 18.951529, lng: 72.824153 },
+        { name: 'Bayvue', type: 'Residential building', screens: 1, lat: 18.947042, lng: 72.826913 }
+      ];
+
+      /* Areas marked "coming soon". Add a screen in one of these and it
+         promotes itself to live automatically. */
+      var COMING_SOON = ['G/S', 'F/S'];   /* Worli, Parel */
+
+      /* The seven areas drawn on the map, and what the tooltip calls them. */
+      var WARDS = {
+        'A': 'Colaba, Fort, Churchgate',
+        'B': 'Chor Bazaar, Dongri, Masjid',
+        'C': 'Kalbadevi, Bhuleshwar, Marine Lines',
+        'D': 'Girgaon, Khetwadi, Tardeo',
+        'E': 'Byculla, Mazgaon',
+        'F/S': 'Parel, Sewri',
+        'G/S': 'Worli, Lower Parel, Prabhadevi'
+      };
+
+      /* =========================================================
+         ==========  NOTHING BELOW NEEDS EDITING  ===============
+         ========================================================= */
+
+      var root = document.getElementById('network-map');
+      if (!root) return;
+      var svg = document.getElementById('nm-svg');
+      var zoom = document.getElementById('nm-zoom');
+      var pinsG = document.getElementById('nm-pins');
+      var listEl = document.getElementById('nm-list');
+      var tip = document.getElementById('nm-tip');
+      var stage = root.querySelector('.nmap-stage');
+      var cluster = document.getElementById('nm-cluster');
+      var SVGNS = 'http://www.w3.org/2000/svg';
+
+      /* Projection fitted to the ward paths above. Web Mercator.
+         Do not change these three numbers or the pins will drift. */
+      var MINX = 72.79155678146928;
+      var MAXY = 19.386548397574700;
+      var SCALE = 7157.657925466066;
+      var VIEW_W = 560, VIEW_H = 1006, PAD = 26;
+      var PIN_K = 1.5;
+
+      function project(lat, lng) {
+        var my = Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI / 180) / 2)) * 180 / Math.PI;
+        return { x: (lng - MINX) * SCALE, y: (MAXY - my) * SCALE };
+      }
+
+      /* ---- 1. pins and list rows ---- */
+      var PIN = 'M0,0 C-4.6,-6.2 -7.4,-9.4 -7.4,-13.4 A7.4,7.4 0 1 1 7.4,-13.4 C7.4,-9.4 4.6,-6.2 0,0 Z';
+      var pins = [];
+
+      LOCATIONS.forEach(function (loc, i) {
+        var p = project(loc.lat, loc.lng);
+        var n = loc.screens || 1;
+
+        if (p.x < 0 || p.x > VIEW_W || p.y < 0 || p.y > VIEW_H) {
+          console.warn('[network map] "' + loc.name + '" sits outside the mapped area. ' +
+            'Check its coordinates, or the map needs extending north.');
+        }
+
+        var g = document.createElementNS(SVGNS, 'g');
+        g.setAttribute('class', 'nm-pin');
+        g.setAttribute('transform', 'translate(' + p.x.toFixed(2) + ',' + p.y.toFixed(2) + ')');
+
+        var inner = document.createElementNS(SVGNS, 'g');
+        inner.setAttribute('class', 'nm-pin-inner');
+
+        var ring = document.createElementNS(SVGNS, 'circle');
+        ring.setAttribute('class', 'nm-pin-ring');
+        ring.setAttribute('cy', '-13.4'); ring.setAttribute('r', '6');
+
+        var art = document.createElementNS(SVGNS, 'g');
+        art.setAttribute('class', 'nm-pin-art');
+        art.style.transitionDelay = (i * 55) + 'ms';
+
+        var body = document.createElementNS(SVGNS, 'path');
+        body.setAttribute('class', 'nm-pin-body'); body.setAttribute('d', PIN);
+
+        var dot = document.createElementNS(SVGNS, 'circle');
+        dot.setAttribute('class', 'nm-pin-dot');
+        dot.setAttribute('cy', '-13.4'); dot.setAttribute('r', '2.6');
+
+        art.appendChild(body); art.appendChild(dot);
+        inner.appendChild(ring); inner.appendChild(art);
+        g.appendChild(inner); pinsG.appendChild(g);
+
+        var meta = loc.type + ' \u00B7 ' + n + ' screen' + (n > 1 ? 's' : '');
+        var li = document.createElement('li');
+        li.innerHTML =
+          '<button type="button">' +
+          '<span class="nm-idx">' + (i + 1 < 10 ? '0' : '') + (i + 1) + '</span>' +
+          '<span><span class="nm-place"></span><span class="nm-meta"></span></span>' +
+          '</button>';
+        li.querySelector('.nm-place').textContent = loc.name;
+        li.querySelector('.nm-meta').textContent = meta;
+        var btn = li.querySelector('button');
+        listEl.appendChild(li);
+
+        pins.push({ g: g, inner: inner, btn: btn, loc: loc, pt: p });
+
+        function on() { toggle(i, true); }
+        function off() { toggle(i, false); }
+        g.addEventListener('mouseenter', function () { on(); showTip(g, loc.name, meta); });
+        g.addEventListener('mouseleave', function () { off(); hideTip(); });
+        btn.addEventListener('mouseenter', on);
+        btn.addEventListener('mouseleave', off);
+        btn.addEventListener('focus', on);
+        btn.addEventListener('blur', off);
+        btn.addEventListener('click', function () { setView('zoom'); });
+      });
+
+      function toggle(i, state) {
+        pins[i].g.classList.toggle('is-on', state);
+        pins[i].btn.classList.toggle('is-on', state);
+      }
+
+      /* ---- 2. which areas are live, worked out from the pins ---- */
+      var liveWards = [];
+
+      Array.prototype.forEach.call(root.querySelectorAll('.nm-ward'), function (w) {
+        var code = w.getAttribute('data-ward');
+        var hit = pins.some(function (p) { return inWard(w, p.pt); });
+        var soon = !hit && COMING_SOON.indexOf(code) > -1;
+        if (hit) liveWards.push(code);
+
+        w.classList.toggle('live', hit);
+        w.classList.toggle('soon', soon);
+
+        var lbl = root.querySelector('.nm-lbl[data-ward="' + code + '"]');
+        if (lbl) { lbl.classList.toggle('live', hit); lbl.classList.toggle('soon', soon); }
+
+        var status = hit ? 'Live now' : (soon ? 'Coming soon' : 'Expanding soon');
+        w.addEventListener('mouseenter', function () { showTip(w, WARDS[code] || code, status); });
+        w.addEventListener('mouseleave', hideTip);
+        if (hit) w.addEventListener('click', function () { setView('zoom'); });
+      });
+
+      function inWard(pathEl, pt) {
+        if (!pathEl.isPointInFill) {
+          var b = pathEl.getBBox();
+          return pt.x >= b.x && pt.x <= b.x + b.width && pt.y >= b.y && pt.y <= b.y + b.height;
+        }
+        try {
+          var p = svg.createSVGPoint ? svg.createSVGPoint() : new DOMPoint();
+          p.x = pt.x; p.y = pt.y;
+          return pathEl.isPointInFill(p);
+        } catch (e) { return false; }
+      }
+
+      /* ---- 3. counts and copy ---- */
+      var totalScreens = LOCATIONS.reduce(function (a, l) { return a + (l.screens || 1); }, 0);
+      document.getElementById('nm-count').textContent = totalScreens;
+      document.getElementById('nm-venues').textContent = LOCATIONS.length;
+      cluster.querySelector('.nm-cluster-txt').textContent = totalScreens;
+      cluster.querySelector('.nm-cluster-hint').textContent = 'screen' + (totalScreens > 1 ? 's' : '') + ' live';
+
+      function firstNames(codes) {
+        return codes.map(function (c) { return (WARDS[c] || c).split(',')[0].trim(); });
+      }
+      function join(a) {
+        if (a.length < 2) return a[0] || '';
+        return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+      }
+      var liveNames = firstNames(liveWards);
+      var soonNames = firstNames(COMING_SOON.filter(function (c) { return liveWards.indexOf(c) === -1; }));
+
+      document.getElementById('nm-sub').textContent =
+        totalScreens + ' screen' + (totalScreens > 1 ? 's' : '') +
+        ' live inside premium residential buildings' +
+        (liveNames.length ? ' across ' + join(liveNames) : '') +
+        (soonNames.length ? ', with ' + join(soonNames) + ' launching next' : '') +
+        '. Hover a location to see where your brand shows up.';
+
+      document.getElementById('nm-soon-legend').textContent =
+        soonNames.length ? 'Coming soon \u00B7 ' + soonNames.join(', ') : 'Coming soon';
+
+      /* ---- 4. zoom between the overview and the screen cluster ---- */
+      var target = null;
+
+      function computeZoom() {
+        if (!pins.length) return null;
+        var xs = pins.map(function (p) { return p.pt.x; });
+        var ys = pins.map(function (p) { return p.pt.y; });
+        var cx = (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2;
+        var cy = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2;
+        var hw = Math.max((Math.max.apply(null, xs) - Math.min.apply(null, xs)) / 2 * 1.45, 40);
+        var hh = Math.max((Math.max.apply(null, ys) - Math.min.apply(null, ys)) / 2 * 1.45, 48);
+        var s = Math.max(Math.min((VIEW_W - PAD * 2) / (hw * 2), (VIEW_H - PAD * 2) / (hh * 2)), 1);
+        return { s: s, tx: VIEW_W / 2 - cx * s, ty: VIEW_H / 2 - cy * s };
+      }
+
+      function setView(view) {
+        if (root.getAttribute('data-view') === view) return;
+        root.setAttribute('data-view', view);
+        hideTip();
+
+        Array.prototype.forEach.call(root.querySelectorAll('[data-view-btn]'), function (b) {
+          b.setAttribute('aria-pressed', String(b.getAttribute('data-view-btn') === view));
+        });
+
+        var k = 1;
+        if (view === 'zoom') {
+          target = target || computeZoom();
+          if (!target) return;
+          zoom.setAttribute('transform',
+            'translate(' + target.tx.toFixed(2) + ',' + target.ty.toFixed(2) + ') scale(' + target.s.toFixed(4) + ')');
+          k = PIN_K / target.s;
+        } else {
+          zoom.setAttribute('transform', 'translate(0,0) scale(1)');
+        }
+
+        pins.forEach(function (p) { p.inner.setAttribute('transform', 'scale(' + k + ')'); });
+        Array.prototype.forEach.call(root.querySelectorAll('.nm-lbl text'), function (t) {
+          t.setAttribute('transform', 'scale(' + k + ')');
+        });
+      }
+
+      Array.prototype.forEach.call(root.querySelectorAll('[data-view-btn]'), function (b) {
+        b.addEventListener('click', function () { setView(b.getAttribute('data-view-btn')); });
+      });
+
+      (function () {
+        if (!pins.length) { cluster.style.display = 'none'; return; }
+        var cx = 0, cy = 0;
+        pins.forEach(function (p) { cx += p.pt.x; cy += p.pt.y; });
+        cluster.setAttribute('transform',
+          'translate(' + (cx / pins.length).toFixed(1) + ',' + (cy / pins.length).toFixed(1) + ')');
+        cluster.addEventListener('click', function () { setView('zoom'); });
+      })();
+
+      /* ---- 5. tooltip and reveal ---- */
+      function showTip(el, title, sub) {
+        var b = el.getBoundingClientRect(), s = stage.getBoundingClientRect();
+        tip.innerHTML = '<b></b><span></span>';
+        tip.querySelector('b').textContent = title;
+        tip.querySelector('span').textContent = sub;
+        tip.style.left = (b.left - s.left + b.width / 2) + 'px';
+        tip.style.top = (b.top - s.top) + 'px';
+        tip.classList.add('is-on');
+      }
+      function hideTip() { tip.classList.remove('is-on'); }
+
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { root.classList.add('is-in'); io.disconnect(); }
+          });
+        }, { threshold: 0.2 });
+        io.observe(svg);
+      } else {
+        root.classList.add('is-in');
+      }
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('is-reduced');
+    })();
+  </script>
+
+</body>
+
+</html>

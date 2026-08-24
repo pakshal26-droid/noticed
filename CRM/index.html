@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Noticed CRM</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+        }
+
+        body {
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .header {
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .header p {
+            color: #777;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #111;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #111;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.95;
+        }
+
+        .success {
+            display: none;
+            margin-top: 16px;
+            text-align: center;
+            color: green;
+            font-weight: 500;
+        }
+
+        .error {
+            display: none;
+            margin-top: 16px;
+            text-align: center;
+            color: red;
+            font-weight: 500;
+        }
+
+        button.loading {
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        .nav-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #111;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>Noticed CRM</h1>
+            <p>Quick Lead Capture</p>
+        </div>
+
+        <div class="card">
+
+            <div class="field">
+                <label>Lead Type</label>
+                <select id="leadType">
+                    <option value="Brand">Brand</option>
+                    <option value="Building">Building</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Brand / Building Name</label>
+                <input id="businessName" type="text" placeholder="Enter business or building name">
+            </div>
+            <div class="field">
+                <label>Name of Contact</label>
+                <input id="contactName" type="text" placeholder="Enter contact name">
+            </div>
+
+            <div class="field">
+                <label>Contact Number</label>
+                <input id="contactNumber" type="tel" placeholder="Enter phone number">
+            </div>
+
+            <div class="field">
+                <label>Next Step</label>
+                <select id="nextStep">
+                    <option value="Send Proposal">Send Proposal</option>
+                    <option value="Follow Up">Follow Up</option>
+                    <option value="Rejection">Rejection</option>
+                </select>
+            </div>
+
+            <button id="submitBtn" onclick="submitLead()">
+                Save Lead
+            </button>
+
+            <div class="success" id="success">
+                ✅ Lead saved successfully
+            </div>
+
+            <div class="error" id="error">
+                ❌ Failed to save lead
+            </div>
+
+        </div>
+
+        <a href="noticed-proposal-generator.html" class="nav-link">Generate Proposal →</a>
+
+    </div>
+
+    <script>
+
+        const SCRIPT_URL =
+            "https://script.google.com/macros/s/AKfycbwUlDUzBx-PrHYT4xHTdR7ygaKBa5uxPsdbGa_w4DAINV5aMIXkWqidXp_Xs6pjp2rn/exec";
+
+        async function submitLead() {
+
+            const button =
+                document.getElementById("submitBtn");
+
+            const leadType =
+                document.getElementById("leadType").value;
+
+            const contactName =
+                document.getElementById("contactName").value;
+
+            const businessName =
+                document.getElementById("businessName").value;
+
+            const contactNumber =
+                document.getElementById("contactNumber").value;
+
+            const nextStep =
+                document.getElementById("nextStep").value;
+
+            if (!contactName || !contactNumber || !businessName) {
+                alert("Please fill all fields");
+                return;
+            }
+
+            button.disabled = true;
+            button.classList.add("loading");
+
+            button.innerHTML = `
+<span class="spinner"></span>
+Saving...
+`;
+
+            const formData = new FormData();
+
+            formData.append("leadType", leadType);
+            formData.append(
+                "businessName",
+                businessName
+            );
+            formData.append("contactName", contactName);
+            formData.append("contactNumber", contactNumber);
+            formData.append("nextStep", nextStep);
+            
+
+            try {
+
+                await fetch(
+                    SCRIPT_URL,
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+                document.getElementById("success").style.display =
+                    "block";
+
+                document.getElementById("error").style.display =
+                    "none";
+
+                document.getElementById("contactName").value = "";
+                document.getElementById("contactNumber").value = "";
+                document.getElementById(
+  "businessName"
+).value = "";
+
+                button.innerHTML = "✅ Saved";
+
+                setTimeout(() => {
+                    button.innerHTML = "Save Lead";
+                    button.disabled = false;
+                    button.classList.remove("loading");
+                }, 1500);
+
+            }
+            catch (err) {
+
+                document.getElementById("success").style.display =
+                    "none";
+
+                document.getElementById("error").style.display =
+                    "block";
+
+                button.innerHTML = "❌ Failed";
+
+                setTimeout(() => {
+                    button.innerHTML = "Save Lead";
+                    button.disabled = false;
+                    button.classList.remove("loading");
+                }, 1500);
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

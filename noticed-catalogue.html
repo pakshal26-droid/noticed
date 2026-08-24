@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noticed — Network Catalogue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       NOTICED — NETWORK CATALOGUE
+       A4 print-ready. Ctrl/Cmd+P → Save as PDF → Margins: None,
+       Background graphics: ON.
+       ============================================================ */
+    :root {
+      --navy: #0E2337;
+      --navy-2: #16304a;
+      --cyan: #4ECDDE;
+      --ink: #1a1a1a;
+      --ink-2: #5c6b7a;
+      --ink-3: #94a3b1;
+      --line: #dfe5ec;
+      --line-2: #eef2f6;
+      --paper: #ffffff;
+      --wash: #f4f7fb;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ink);
+      background: #6b7280;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- page shell ---------- */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 10mm auto;
+      background: var(--paper);
+      position: relative;
+      padding: 16mm 15mm 18mm;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, .25);
+    }
+
+    .page.dark {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    /* running header / footer */
+    .rh {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 6mm;
+      margin-bottom: 9mm;
+      border-bottom: 1px solid var(--line);
+      flex: 0 0 auto;
+    }
+
+    .dark .rh { border-bottom-color: rgba(255, 255, 255, .14); }
+
+    .wordmark { font-size: 15px; font-weight: 700; letter-spacing: -.02em; color: var(--navy); }
+    .dark .wordmark { color: #fff; }
+    .wordmark span { color: var(--cyan); }
+
+    .rh em {
+      font-style: normal;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    .rf {
+      margin-top: auto;
+      padding-top: 6mm;
+      border-top: 1px solid var(--line-2);
+      display: flex;
+      justify-content: space-between;
+      font-size: 8.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      flex: 0 0 auto;
+    }
+
+    .dark .rf { border-top-color: rgba(255, 255, 255, .12); color: rgba(255, 255, 255, .4); }
+
+    /* ---------- type ---------- */
+    .eyebrow {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+
+    .eyebrow.dim { color: var(--ink-3); }
+
+    h1 { font-size: 46px; line-height: 1.02; letter-spacing: -.035em; font-weight: 700; }
+    h2 { font-size: 27px; line-height: 1.12; letter-spacing: -.025em; font-weight: 700; }
+    h3 { font-size: 15px; letter-spacing: -.01em; font-weight: 700; }
+
+    .lead { font-size: 12.5px; line-height: 1.7; color: var(--ink-2); max-width: 105mm; }
+    .dark .lead { color: rgba(255, 255, 255, .68); }
+    .cy { color: var(--cyan); }
+
+    /* ---------- cover ---------- */
+    .cover-top { flex: 0 0 auto; }
+    .cover h1 { margin: 14px 0 16px; }
+
+    .cover-meta {
+      margin-top: 14mm;
+      border-left: 2px solid var(--cyan);
+      padding-left: 14px;
+    }
+
+    .cover-meta small {
+      display: block;
+      font-size: 9px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+      margin-bottom: 4px;
+    }
+
+    .cover-meta b { font-size: 14px; font-weight: 600; }
+
+    /* ---------- image placeholders ---------- */
+    .ph {
+      position: relative;
+      background: var(--wash);
+      border: 1px dashed #b9c6d4;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .dark .ph { background: rgba(255, 255, 255, .05); border-color: rgba(255, 255, 255, .25); }
+
+    .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .ph-tag {
+      padding: 10px;
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #8fa0b1;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .dark .ph-tag { color: rgba(255, 255, 255, .5); }
+    .ph-tag i { display: block; font-style: normal; font-size: 8px; letter-spacing: .06em; opacity: .75; text-transform: none; margin-top: 3px; }
+
+    .cap { font-size: 9.5px; color: var(--ink-3); margin-top: 5px; letter-spacing: .02em; }
+    .dark .cap { color: rgba(255, 255, 255, .45); }
+
+    .r43 { aspect-ratio: 4 / 3; }
+    .r34 { aspect-ratio: 3 / 4; }
+    .r11 { aspect-ratio: 1 / 1; }
+    .r169 { aspect-ratio: 16 / 9; }
+
+    /* ---------- layout helpers ---------- */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+    .body { flex: 1 1 auto; }
+    .mt { margin-top: 9mm; }
+    .mt-s { margin-top: 6mm; }
+
+    /* ---------- stat band ---------- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 8mm;
+    }
+
+    .dark .stats { border-color: rgba(255, 255, 255, .16); }
+
+    .stat { padding: 6mm 5mm; border-right: 1px solid var(--line); }
+    .dark .stat { border-right-color: rgba(255, 255, 255, .16); }
+    .stat:last-child { border-right: none; }
+
+    .stat b { display: block; font-size: 26px; line-height: 1; font-weight: 700; letter-spacing: -.03em; color: var(--navy); }
+    .dark .stat b { color: var(--cyan); }
+
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      line-height: 1.5;
+    }
+
+    /* ---------- pillars ---------- */
+    .pillar { border-top: 2px solid var(--navy); padding-top: 5mm; }
+    .pillar h3 { margin-bottom: 5px; }
+    .pillar p { font-size: 11px; line-height: 1.65; color: var(--ink-2); }
+    .pillar .n { font-size: 9px; font-weight: 700; letter-spacing: .14em; color: var(--cyan); display: block; margin-bottom: 8px; }
+
+    /* ---------- tables ---------- */
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      text-align: left;
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      padding: 0 8px 7px;
+      border-bottom: 1.5px solid var(--navy);
+    }
+
+    tbody td {
+      font-size: 10.5px;
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--line-2);
+      vertical-align: middle;
+    }
+
+    tbody tr:nth-child(even) { background: #fafcfe; }
+
+    td.num {
+      width: 22px;
+      font-weight: 700;
+      font-size: 9.5px;
+      color: var(--cyan);
+    }
+
+    td.nm { font-weight: 600; }
+
+    .pill {
+      display: inline-block;
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--wash);
+      color: var(--ink-2);
+      white-space: nowrap;
+    }
+
+    .pill.res { background: #e8f6f9; color: #17697a; }
+    .pill.com { background: #eef0f6; color: #4a5468; }
+
+    /* ---------- map ---------- */
+    .maprow { display: grid; grid-template-columns: 1.15fr 1fr; gap: 8mm; align-items: start; }
+
+    .mapbox {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--wash);
+    }
+
+    .mapsvg { display: block; width: 100%; height: auto; }
+    .mnum { font-family: 'Instrument Sans', sans-serif; font-size: 6px; font-weight: 700; fill: #fff; }
+    .mlbl { font-family: 'Instrument Sans', sans-serif; font-size: 5px; font-weight: 600; letter-spacing: .1em; fill: #9aa9bb; }
+
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 4mm; font-size: 9px; color: var(--ink-3); }
+    .legend span { display: flex; align-items: center; gap: 6px; }
+    .sw { width: 10px; height: 10px; border-radius: 2px; background: #D9E6FF; }
+    .sw.soon { background: #E9EEF6; }
+    .sw.dot { border-radius: 50%; background: var(--navy); }
+
+    .keylist { list-style: none; }
+
+    .keylist li {
+      display: flex;
+      gap: 9px;
+      align-items: baseline;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--line-2);
+      font-size: 10.5px;
+    }
+
+    .keylist li:last-child { border-bottom: none; }
+    .keylist b { width: 16px; flex: 0 0 16px; color: var(--cyan); font-size: 9.5px; }
+    .keylist span { color: var(--ink-3); font-size: 9.5px; margin-left: auto; text-align: right; }
+
+    /* ---------- spec + steps ---------- */
+    .specrow { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--line-2); font-size: 11px; }
+    .specrow b { font-weight: 600; }
+    .specrow span { color: var(--ink-2); }
+
+    .step { display: flex; gap: 5mm; padding: 5mm 0; border-bottom: 1px solid rgba(255, 255, 255, .12); }
+    .step:last-child { border-bottom: none; }
+    .step .sn { font-size: 20px; font-weight: 700; color: var(--cyan); line-height: 1; width: 12mm; flex: 0 0 12mm; letter-spacing: -.03em; }
+    .step h3 { margin-bottom: 3px; }
+    .step p { font-size: 10.5px; color: rgba(255, 255, 255, .62); line-height: 1.6; }
+
+    .areawrap { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 5mm; }
+
+    .area {
+      font-size: 10.5px;
+      font-weight: 500;
+      padding: 6px 13px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      color: var(--ink-2);
+    }
+
+    .area.soon { border-style: dashed; color: var(--ink-3); }
+
+    .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-top: 7mm; }
+
+    .ccard {
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 8px;
+      padding: 6mm;
+    }
+
+    .ccard small { display: block; font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255, 255, 255, .45); margin-bottom: 6px; }
+    .ccard b { font-size: 13px; font-weight: 600; display: block; }
+    .ccard span { font-size: 11px; color: var(--cyan); }
+
+    .note {
+      border-left: 2px solid var(--cyan);
+      padding-left: 12px;
+      font-size: 10.5px;
+      line-height: 1.65;
+      color: var(--ink-2);
+      margin-top: 6mm;
+    }
+
+    .dark .note { color: rgba(255, 255, 255, .7); }
+
+    /* ---------- print ---------- */
+    @page { size: A4; margin: 0; }
+
+    @media print {
+      body { background: #fff; }
+      .page { margin: 0; box-shadow: none; page-break-after: always; break-after: page; }
+      .page:last-child { page-break-after: auto; }
+      .ph { border-style: solid; border-color: var(--line); }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==================== 1 · COVER ==================== -->
+  <section class="page dark cover">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Network Catalogue · 2026</em>
+    </div>
+
+    <div class="cover-top">
+      <p class="eyebrow">Premium DOOH advertising</p>
+      <h1>Your Brand.<br>Inside Every<br><span class="cy">Residential Building</span><br>in Mumbai.</h1>
+      <p class="lead mt-s">Noticed helps brands connect with high-intent audiences through digital
+        screens placed inside premium residential lift lobbies and gyms.</p>
+
+      <div class="cover-meta">
+        <small>Prepared by</small>
+        <b>Noticed Engineering Solutions</b>
+      </div>
+    </div>
+
+    <!-- IMAGE 01 — hero. Best single lobby shot you have, landscape. -->
+    <div class="ph r169" style="margin-top:auto">
+      <div class="ph-tag">Image 01 · Hero<i>Your strongest lift-lobby shot — screen lit, landscape 16:9</i></div>
+      <!-- <img src="images/01-hero.jpg" alt="Noticed screen in a lift lobby"> -->
+    </div>
+
+    <div class="rf">
+      <span>noticed.adv@gmail.com</span>
+      <span>Noticed. · 2026</span>
+    </div>
+  </section>
+
+  <!-- ==================== 2 · WHAT WE ARE ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>What We Are</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">The network</p>
+      <h2>We put brands where<br>attention already is.</h2>
+      <p class="lead mt-s">A lift lobby is the one place in a building everybody passes through, every
+        day, at walking pace, with nothing else to look at. Noticed turns that moment into the most
+        reliable thirty seconds of attention in the neighbourhood.</p>
+
+      <div class="grid3 mt">
+        <div class="pillar">
+          <span class="n">01</span>
+          <h3>Residential first</h3>
+          <p>Screens sit inside the lobbies of premium residential buildings — not on the street, not
+            competing with traffic. Residents, families and their visitors, several times a day.</p>
+        </div>
+        <div class="pillar">
+          <span class="n">02</span>
+          <h3>Genuinely hyperlocal</h3>
+          <p>Every screen is within walking distance of the last. A campaign here reaches one
+            neighbourhood properly instead of a whole city thinly.</p>
+        </div>
+        <div class="pillar">
+          <span class="n">03</span>
+          <h3>Unskippable by design</h3>
+          <p>No scroll, no swipe, no ad-block. The screen plays while people wait, and it plays again
+            tomorrow, and the day after that.</p>
+        </div>
+      </div>
+
+      <div class="grid2 mt">
+        <!-- IMAGE 02 — a screen playing live content, portrait. -->
+        <div>
+          <div class="ph r34">
+            <div class="ph-tag">Image 02<i>Screen playing an ad, portrait 3:4</i></div>
+            <!-- <img src="images/02-screen-live.jpg" alt=""> -->
+          </div>
+        </div>
+        <!-- IMAGE 03 — a resident or visitor in frame near the screen. -->
+        <div>
+          <div class="ph r34">
+            <div class="ph-tag">Image 03<i>Someone waiting near the screen, portrait 3:4</i></div>
+            <!-- <img src="images/03-audience.jpg" alt=""> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf">
+      <span>Network Catalogue</span>
+      <span>02</span>
+    </div>
+  </section>
+
+  <!-- ==================== 3 · THE MAP ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Coverage Map</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">Where the screens are</p>
+      <h2>A tight cluster, on purpose.</h2>
+      <p class="lead mt-s">Every location below sits inside a two-kilometre stretch of South Mumbai.
+        One campaign covers the whole catchment of a local outlet.</p>
+
+      <div class="stats">
+        <div class="stat"><b>11+</b><span>Screens across<br>South Mumbai</span></div>
+        <div class="stat"><b>400k+</b><span>Monthly views</span></div>
+        <div class="stat"><b>10+</b><span>Trusted partner<br>venues and growing</span></div>
+        <div class="stat"><b>24/7</b><span>Live monitoring<br>&amp; quick turnaround</span></div>
+      </div>
+
+      <div class="maprow mt">
+        <div>
+          <div class="mapbox">
+            <svg class="mapsvg" viewBox="160 495 118 117" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of Noticed screen locations in South Mumbai">
+        <rect x="160" y="495" width="118" height="117" fill="#F4F7FB"/>
+        <path d="M348.6,591.0 363.2,590.0 395.5,596.9 372.9,691.5 371.5,692.5 367.8,691.1 377.1,740.8 368.2,741.3 363.0,709.7 355.8,707.8 350.8,709.0 346.8,712.4 348.7,726.2 329.0,741.0 324.8,737.9 326.8,742.9 319.8,747.5 321.4,750.1 323.0,749.3 324.3,753.7 332.0,750.5 335.3,757.6 349.6,750.9 331.6,760.0 349.8,799.5 377.7,769.2 378.5,762.9 380.9,763.9 379.9,769.0 349.0,803.8 343.3,807.0 333.1,805.8 310.0,781.7 305.7,785.1 310.6,786.9 308.5,791.8 310.3,794.2 307.3,796.6 305.2,794.3 301.3,795.3 290.1,821.3 295.4,823.2 289.9,823.2 288.5,828.9 285.8,828.6 274.0,839.0 276.6,843.8 280.7,843.4 284.2,846.5 271.0,862.7 253.2,875.5 252.5,881.7 239.6,904.8 220.0,882.7 201.1,906.1 199.7,905.0 193.6,911.5 188.4,906.8 185.6,910.8 187.2,915.5 184.8,920.5 188.2,927.6 185.3,937.6 188.8,937.6 188.9,939.5 185.2,942.7 194.9,942.9 185.5,943.2 183.2,950.3 184.0,955.7 165.8,978.9 155.4,996.0 149.7,998.7 139.0,996.7 133.2,1000.8 131.2,1005.7 125.9,1004.8 114.3,995.3 101.7,981.0 93.7,967.8 90.4,957.0 86.0,933.2 85.9,917.5 89.0,899.1 95.1,883.0 111.3,858.0 134.0,828.8 189.6,767.2 217.5,731.4 227.9,706.1 231.3,689.3 232.1,669.5 229.0,646.5 243.8,642.4 253.1,636.9 266.7,632.7 281.5,616.8 310.1,593.9 330.7,589.0 348.6,591.0Z" fill="#EDF1F7" stroke="#FFFFFF" stroke-width="0.7"/>
+        <path d="M379.4,480.3 381.5,479.1 384.7,481.5 394.2,478.6 401.2,480.2 401.7,477.9 413.8,480.6 404.0,521.7 415.5,526.1 422.5,522.1 423.9,515.3 425.9,515.6 424.2,523.4 416.9,526.9 414.9,537.5 411.9,536.8 414.3,526.7 403.7,523.1 398.3,546.3 395.4,548.3 395.1,549.7 397.8,551.0 394.8,550.9 396.2,555.0 392.0,566.8 394.6,567.2 391.0,577.6 393.3,578.6 395.5,596.9 363.2,590.0 348.9,591.0 330.7,589.0 310.7,593.6 301.4,601.1 287.8,552.2 290.8,543.7 287.7,510.5 289.4,492.1 306.5,490.1 312.8,487.2 328.0,486.6 333.2,474.1 338.3,467.6 342.7,472.4 379.4,480.3Z" fill="#EDF1F7" stroke="#FFFFFF" stroke-width="0.7"/>
+        <path d="M289.3,493.1 287.7,510.5 290.8,543.7 287.8,552.2 301.4,601.1 281.5,616.8 266.7,632.7 253.1,636.9 243.8,642.4 229.0,646.5 223.8,630.5 215.9,614.3 195.9,586.1 205.5,577.0 242.3,558.2 240.1,548.2 243.8,543.9 239.6,539.1 247.7,520.1 248.3,493.5 289.3,493.1Z" fill="#D9E6FF" stroke="#FFFFFF" stroke-width="0.7"/>
+        <path d="M194.5,438.1 222.1,441.0 241.0,446.4 235.7,492.9 248.3,493.5 247.7,520.1 239.6,539.1 243.8,543.9 240.1,548.2 242.3,558.2 205.5,577.0 195.9,586.1 187.2,575.6 159.6,555.7 136.2,546.4 118.3,544.4 108.4,556.4 113.6,557.5 108.6,561.8 105.3,561.4 103.0,564.7 100.0,565.1 94.2,572.7 92.3,570.9 89.1,574.4 90.3,576.3 82.6,581.7 76.6,590.4 69.5,594.9 64.7,596.1 62.9,594.8 60.7,597.4 56.2,598.3 54.2,601.6 46.7,601.1 43.8,611.2 32.1,622.7 28.7,628.8 26.1,644.8 19.1,660.2 23.0,659.9 12.5,663.6 7.9,660.8 6.3,657.1 13.1,642.9 12.1,636.9 13.8,631.3 12.9,625.5 3.5,614.5 0.0,590.4 2.4,590.2 5.1,580.3 20.4,548.1 56.2,487.3 61.4,469.1 69.5,423.1 73.2,411.3 78.9,397.9 102.1,360.3 116.1,367.7 122.8,368.1 126.7,363.8 129.2,367.9 143.5,369.6 226.4,352.1 206.4,402.2 194.5,438.1Z" fill="#D9E6FF" stroke="#FFFFFF" stroke-width="0.7"/>
+        <path d="M395.2,341.0 393.8,344.1 420.1,355.2 418.7,362.8 458.9,371.4 456.7,380.1 417.2,371.4 415.1,373.5 414.7,381.7 426.9,384.3 428.8,380.9 460.5,387.7 460.6,389.9 457.0,396.1 425.7,389.0 424.8,392.7 414.3,390.6 413.5,394.2 448.4,401.9 444.7,415.2 427.8,413.0 422.8,409.3 416.4,407.5 416.0,409.6 419.0,413.5 417.4,419.3 424.0,427.8 423.7,430.4 439.8,432.7 439.6,435.9 423.5,434.8 426.5,436.1 428.1,440.0 433.7,440.3 434.8,447.2 428.4,447.0 428.6,451.1 426.8,453.1 421.1,452.1 421.3,458.3 417.1,458.3 416.7,460.6 418.7,460.9 413.8,480.6 401.7,477.9 401.2,480.2 394.2,478.6 384.7,481.5 381.5,479.1 377.5,480.1 342.7,472.4 338.3,467.6 333.2,474.1 327.6,486.8 312.8,487.2 306.5,490.1 290.3,492.0 235.7,492.9 240.8,446.2 222.1,441.0 193.4,438.0 226.4,352.1 249.1,347.3 250.5,344.1 254.1,344.1 297.5,293.4 313.1,290.6 356.6,293.3 365.4,330.8 376.3,332.6 395.2,341.0Z" fill="#EDF1F7" stroke="#FFFFFF" stroke-width="0.7"/>
+        <path d="M463.1,123.3 512.7,87.7 512.1,90.5 517.0,88.8 516.8,90.9 527.9,105.6 534.2,108.2 537.7,114.0 545.9,120.9 546.8,124.6 551.6,126.9 554.1,130.8 554.5,138.9 557.3,137.8 560.0,145.5 541.3,157.6 504.6,177.0 500.9,180.2 506.8,180.6 500.0,180.5 499.4,184.8 507.1,186.1 506.6,188.8 497.3,187.1 495.7,199.4 494.3,199.2 492.6,206.9 490.2,209.9 491.4,214.8 489.5,215.6 496.7,234.2 504.5,237.4 497.2,235.5 501.5,246.6 486.9,252.3 489.5,258.3 467.7,265.8 498.4,342.6 473.3,367.2 416.6,354.1 393.8,344.1 394.4,340.6 376.3,332.6 365.4,330.8 356.6,293.3 313.1,290.6 297.6,293.4 296.8,283.0 297.4,216.1 305.2,181.5 317.8,152.3 367.1,75.0 400.3,103.7 453.0,118.9 452.8,120.4 463.1,123.3Z" fill="#E9EEF6" stroke="#FFFFFF" stroke-width="0.7"/>
+        <path d="M252.9,56.5 265.6,79.5 270.0,79.9 283.4,103.6 289.1,119.4 297.8,132.8 320.7,147.5 308.8,171.4 299.1,204.2 296.8,230.7 297.6,293.4 254.1,344.1 250.5,344.1 249.1,347.3 144.3,369.6 129.2,367.9 126.7,363.8 121.5,368.5 113.3,366.5 102.1,360.3 127.8,313.5 139.6,280.2 145.3,255.1 145.4,233.4 141.1,217.3 142.0,191.7 155.2,166.4 163.7,139.2 177.8,113.0 180.0,104.6 178.1,90.7 173.7,80.4 170.2,21.7 160.9,1.5 165.2,0.0 177.9,11.5 184.8,21.9 195.6,30.3 198.2,28.8 193.4,36.2 196.1,55.9 200.5,62.2 207.8,64.2 210.1,68.6 223.2,70.5 231.5,68.5 252.9,56.5Z" fill="#E9EEF6" stroke="#FFFFFF" stroke-width="0.7"/>
+        <text x="256.0" y="573.8" class="mlbl" text-anchor="middle">KALBADEVI</text>
+        <g class="mpin"><circle cx="214.0" cy="502.8" r="5" fill="#0E2337"/><circle cx="214.0" cy="502.8" r="5" fill="none" stroke="#4ECDDE" stroke-width="0.9"/><text x="214.0" y="504.7" text-anchor="middle" class="mnum">1</text></g>
+        <g class="mpin"><circle cx="236.7" cy="506.6" r="5" fill="#0E2337"/><circle cx="236.7" cy="506.6" r="5" fill="none" stroke="#4ECDDE" stroke-width="0.9"/><text x="236.7" y="508.5" text-anchor="middle" class="mnum">2</text></g>
+        <g class="mpin"><circle cx="210.3" cy="511.9" r="5" fill="#0E2337"/><circle cx="210.3" cy="511.9" r="5" fill="none" stroke="#4ECDDE" stroke-width="0.9"/><text x="210.3" y="513.8" text-anchor="middle" class="mnum">3</text></g>
+        <g class="mpin"><circle cx="214.0" cy="516.3" r="5" fill="#0E2337"/><circle cx="214.0" cy="516.3" r="5" fill="none" stroke="#4ECDDE" stroke-width="0.9"/><text x="214.0" y="518.2" text-anchor="middle" class="mnum">4</text></g>
+        <g class="mpin"><circle cx="183.9" cy="548.7" r="5" fill="#0E2337"/><circle cx="183.9" cy="548.7" r="5" fill="none" stroke="#4ECDDE" stroke-width="0.9"/><text x="183.9" y="550.6" text-anchor="middle" class="mnum">5</text></g>
+        <g class="mpin"><circle cx="253.1" cy="604.3" r="5" fill="#0E2337"/><circle cx="253.1" cy="604.3" r="5" fill="none" stroke="#4ECDDE" stroke-width="0.9"/><text x="253.1" y="606.2" text-anchor="middle" class="mnum">6</text></g>
+        </svg>
+          </div>
+          <div class="legend">
+            <span><i class="sw"></i> Live coverage</span>
+            <span><i class="sw soon"></i> Expanding next</span>
+            <span><i class="sw dot"></i> Screen location</span>
+          </div>
+        </div>
+
+        <div>
+          <ul class="keylist">
+            <li><b>1</b> Earth View <span>Prarthna Samaj</span></li>
+            <li><b>2</b> Rajendra Vihar <span>Khetwadi</span></li>
+            <li><b>3</b> The 1925 <span>Prarthna Samaj</span></li>
+            <li><b>4</b> Siddhesh Darshan <span>Prarthna Samaj</span></li>
+            <li><b>5</b> Prasad Chambers <span>Charni Road</span></li>
+            <li><b>6</b> Bayvue <span>Chira Bazaar</span></li>
+          </ul>
+          <p class="note">Boundaries shown are official BMC ward boundaries. Worli, Lower Parel and
+            Parel are next on the roll-out.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf">
+      <span>Network Catalogue</span>
+      <span>03</span>
+    </div>
+  </section>
+
+  <!-- ==================== 4 · DIRECTORY ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Building Directory</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">Every location</p>
+      <h2>The full network.</h2>
+
+      <table class="mt-s">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Building</th>
+            <th>Area</th>
+            <th>Type</th>
+            <th>Screens</th>
+            <th>Format</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td class="nm">Earth View</td><td>Prarthna Samaj, Girgaon</td><td><span class="pill res">Residential</span></td><td>1</td><td>Vertical · A+V</td></tr>
+          <tr><td class="num">2</td><td class="nm">Rajendra Vihar</td><td>Khetwadi, Girgaon</td><td><span class="pill res">Residential</span></td><td>1</td><td>Vertical · A+V</td></tr>
+          <tr><td class="num">3</td><td class="nm">The 1925 (Sambhav)</td><td>Prarthna Samaj, Girgaon</td><td><span class="pill res">Residential</span></td><td>1</td><td>Vertical · A+V</td></tr>
+          <tr><td class="num">4</td><td class="nm">Siddhesh Darshan</td><td>Prarthna Samaj, Girgaon</td><td><span class="pill res">Residential</span></td><td>2</td><td>Vertical · A+V</td></tr>
+          <tr><td class="num">5</td><td class="nm">Prasad Chambers</td><td>Charni Road</td><td><span class="pill com">Commercial</span></td><td>2</td><td>Horizontal · Video</td></tr>
+          <tr><td class="num">6</td><td class="nm">Bayvue</td><td>Chira Bazaar, Marine Lines</td><td><span class="pill res">Residential</span></td><td>1</td><td>Vertical · A+V</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid2 mt">
+        <!-- IMAGE 04 — building exterior or entrance. -->
+        <div>
+          <div class="ph r43">
+            <div class="ph-tag">Image 04<i>Building exterior or entrance, 4:3</i></div>
+            <!-- <img src="images/04-building.jpg" alt=""> -->
+          </div>
+        </div>
+        <!-- IMAGE 05 — the commercial screen at Prasad Chambers. -->
+        <div>
+          <div class="ph r43">
+            <div class="ph-tag">Image 05<i>Commercial lobby screen, 4:3</i></div>
+            <!-- <img src="images/05-commercial.jpg" alt=""> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf">
+      <span>Network Catalogue</span>
+      <span>04</span>
+    </div>
+  </section>
+
+  <!-- ==================== 5 · GALLERY ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>The Screens</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">Installed and running</p>
+      <h2>What it looks like<br>on the ground.</h2>
+
+      <div class="grid2 mt-s">
+        <!-- IMAGE 06 -->
+        <div>
+          <div class="ph r34">
+            <div class="ph-tag">Image 06<i>Lobby screen, portrait 3:4</i></div>
+            <!-- <img src="images/06.jpg" alt=""> -->
+          </div>
+        </div>
+        <!-- IMAGE 07 -->
+        <div>
+          <div class="ph r34">
+            <div class="ph-tag">Image 07<i>Lobby screen, portrait 3:4</i></div>
+            <!-- <img src="images/07.jpg" alt=""> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="grid3 mt">
+        <!-- IMAGE 08 -->
+        <div>
+          <div class="ph r11">
+            <div class="ph-tag">Image 08<i>Square 1:1</i></div>
+            <!-- <img src="images/08.jpg" alt=""> -->
+          </div>
+        </div>
+        <!-- IMAGE 09 -->
+        <div>
+          <div class="ph r11">
+            <div class="ph-tag">Image 09<i>Square 1:1</i></div>
+            <!-- <img src="images/09.jpg" alt=""> -->
+          </div>
+        </div>
+        <!-- IMAGE 10 -->
+        <div>
+          <div class="ph r11">
+            <div class="ph-tag">Image 10<i>Square 1:1</i></div>
+            <!-- <img src="images/10.jpg" alt=""> -->
+          </div>
+        </div>
+      </div>
+
+      <p class="note">Every screen is monitored remotely. Campaign creative can be changed the same
+        day, across the whole network or one building at a time.</p>
+    </div>
+
+    <div class="rf">
+      <span>Network Catalogue</span>
+      <span>05</span>
+    </div>
+  </section>
+
+  <!-- ==================== 6 · SPECS ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Specifications</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">Technical</p>
+      <h2>What to send us.</h2>
+      <p class="lead mt-s">If it already runs on your Instagram, it already runs on our screens.</p>
+
+      <div class="grid2 mt">
+        <div>
+          <h3 style="margin-bottom:4mm">Residential screens</h3>
+          <div class="specrow"><b>Screen size</b><span>32 inch</span></div>
+          <div class="specrow"><b>Orientation</b><span>Vertical · 9:16</span></div>
+          <div class="specrow"><b>Resolution</b><span>1080 × 1920</span></div>
+          <div class="specrow"><b>Format</b><span>Audio + video</span></div>
+          <div class="specrow"><b>File type</b><span>MP4 / MOV</span></div>
+          <div class="specrow"><b>Placement</b><span>Lift lobby</span></div>
+        </div>
+        <div>
+          <h3 style="margin-bottom:4mm">Commercial screens</h3>
+          <div class="specrow"><b>Screen size</b><span>32 inch</span></div>
+          <div class="specrow"><b>Orientation</b><span>Horizontal · 16:9</span></div>
+          <div class="specrow"><b>Resolution</b><span>1920 × 1080</span></div>
+          <div class="specrow"><b>Format</b><span>Video only, no audio</span></div>
+          <div class="specrow"><b>File type</b><span>MP4 / MOV</span></div>
+          <div class="specrow"><b>Placement</b><span>Office lobby</span></div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>15s</b><span>Standard spot</span></div>
+        <div class="stat"><b>30s</b><span>Extended spot</span></div>
+        <div class="stat"><b>5 min</b><span>Loop interval</span></div>
+        <div class="stat"><b>24 hr</b><span>To go live</span></div>
+      </div>
+
+      <div class="mt">
+        <!-- IMAGE 11 (optional) — creative mock or a close-up of a playing ad. -->
+        <div class="ph r169">
+          <div class="ph-tag">Image 11 · Optional<i>Creative close-up or before/after mock, 16:9</i></div>
+          <!-- <img src="images/11-creative.jpg" alt=""> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="rf">
+      <span>Network Catalogue</span>
+      <span>06</span>
+    </div>
+  </section>
+
+  <!-- ==================== 7 · AREAS + CONTACT ==================== -->
+  <section class="page dark">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Coverage &amp; Contact</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow">Areas we cover</p>
+      <h2>Live today.<br><span class="cy">Growing every month.</span></h2>
+
+      <div class="areawrap">
+        <span class="area" style="color:#fff;border-color:rgba(255,255,255,.35)">Girgaon</span>
+        <span class="area" style="color:#fff;border-color:rgba(255,255,255,.35)">Prarthna Samaj</span>
+        <span class="area" style="color:#fff;border-color:rgba(255,255,255,.35)">Charni Road</span>
+        <span class="area" style="color:#fff;border-color:rgba(255,255,255,.35)">Khetwadi</span>
+        <span class="area" style="color:#fff;border-color:rgba(255,255,255,.35)">Chira Bazaar</span>
+        <span class="area" style="color:#fff;border-color:rgba(255,255,255,.35)">Marine Lines</span>
+        <span class="area soon" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.22)">Worli · soon</span>
+        <span class="area soon" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.22)">Lower Parel · soon</span>
+        <span class="area soon" style="color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.22)">Parel · soon</span>
+      </div>
+
+      <div class="mt">
+        <div class="step">
+          <div class="sn">01</div>
+          <div>
+            <h3>Send us your video</h3>
+            <p>WhatsApp the file. Anything already on your feed works. We preview it on screen and send
+              you the shot back before it goes live.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">02</div>
+          <div>
+            <h3>Pick your buildings</h3>
+            <p>Choose the whole network or just the buildings closest to your outlet. A twenty-minute
+              call is usually enough to finalise.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">03</div>
+          <div>
+            <h3>Live within 24 hours</h3>
+            <p>Your ad starts playing in lobbies the next day, with proof-of-play photos from every
+              location.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact">
+        <div class="ccard">
+          <small>Pakshal Jain</small>
+          <b>+91 84528 50788</b>
+        </div>
+        <div class="ccard">
+          <small>Rishi Chowatia</small>
+          <b>+91 84520 61757</b>
+        </div>
+      </div>
+
+      <div class="ccard" style="margin-top:5mm">
+        <small>Email</small>
+        <span>noticed.adv@gmail.com</span>
+      </div>
+    </div>
+
+    <div class="rf">
+      <span>Noticed Engineering Solutions</span>
+      <span>07</span>
+    </div>
+  </section>
+
+</body>
+
+</html>

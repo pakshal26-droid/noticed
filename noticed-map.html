@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noticed — Network map</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ============================= CSS ============================= -->
+<style>
+/* ---- page shell (delete when pasting into your site) ---- */
+body{margin:0;background:#fff;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+
+/* ================= NETWORK MAP SECTION ================= */
+.nmap{
+  --ink:#0B0F19;
+  --muted:#646E7E;
+  --line:#E7EAF0;
+  --blue:#2563EB;
+  --blue-dark:#1D4ED8;
+  --land:#EFF2F7;        /* no screens yet */
+  --land-hover:#E2E7F0;
+  --live:#CBDDFF;        /* has at least one live screen */
+  --live-hover:#93B8FF;
+  --soon:#E3EAF6;        /* launching next */
+  --soon-hover:#D3DEEF;
+  --soon-line:#B9C6DC;
+  --edge:#FFFFFF;
+  --bg:#FBFCFE;
+  background:var(--bg);
+  color:var(--ink);
+  padding:96px 24px 104px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.nmap *{box-sizing:border-box}
+.nmap__inner{max-width:1180px;margin:0 auto}
+
+/* ---- heading ---- */
+.nmap__eyebrow{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin:0 0 18px;
+}
+.nmap__eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue)}
+.nmap__title{
+  margin:0 auto 14px;max-width:660px;text-align:center;
+  font-size:clamp(28px,3.6vw,44px);line-height:1.16;font-weight:600;letter-spacing:-.02em;
+}
+.nmap__title span{color:var(--blue)}
+.nmap__sub{
+  margin:0 auto;max-width:600px;text-align:center;
+  font-size:15px;line-height:1.65;color:var(--muted);
+}
+
+/* ---- layout ---- */
+.nmap__grid{
+  display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:56px;align-items:start;
+  margin-top:56px;
+}
+
+/* ---- map stage ---- */
+.nmap__stage{position:relative;isolation:isolate}
+.nmap__svg{display:block;width:100%;height:auto;max-height:min(80vh,840px);overflow:visible}
+.nmap__zoom{transition:transform .9s cubic-bezier(.22,.61,.36,1)}
+.nmap.is-reduced .nmap__zoom,
+.nmap.is-reduced .pin-inner,
+.nmap.is-reduced .lblwrap text{transition:none}
+
+/* wards */
+.ward{
+  fill:var(--land);stroke:var(--edge);stroke-width:.9;
+  transition:fill .25s ease;
+}
+.ward.live{fill:var(--live);cursor:pointer}
+.ward.soon{fill:var(--soon);stroke:var(--soon-line);stroke-width:1.1;stroke-dasharray:4 3}
+.ward:hover{fill:var(--land-hover)}
+.ward.live:hover{fill:var(--live-hover)}
+.ward.soon:hover{fill:var(--soon-hover)}
+
+/* ward labels */
+.lblwrap{pointer-events:none}
+.lblwrap text{
+  font-family:inherit;font-size:14px;font-weight:500;fill:#8A94A6;
+  transition:opacity .4s ease,fill .25s ease;
+}
+.lblwrap.live text{fill:#1E3A6E;font-weight:600}
+.lblwrap.soon text{fill:#66738A;font-weight:600}
+.nmap[data-view="zoom"] .lblwrap:not(.live) text{opacity:0}
+
+/* pins */
+.pins{opacity:0;pointer-events:none;transition:opacity .45s ease .25s}
+.nmap[data-view="zoom"] .pins{opacity:1;pointer-events:auto}
+.pin{cursor:pointer}
+.pin-inner{transition:transform .9s cubic-bezier(.22,.61,.36,1)}
+.pin-art{
+  transform-box:fill-box;transform-origin:50% 100%;
+  opacity:0;transform:translateY(-14px) scale(.6);
+}
+.nmap.is-in .pin-art{
+  opacity:1;transform:none;
+  transition:transform .55s cubic-bezier(.34,1.4,.64,1),opacity .35s ease;
+}
+.pin-body{fill:var(--blue);stroke:#fff;stroke-width:1.4}
+.pin-dot{fill:#fff}
+.pin-ring{fill:none;stroke:var(--blue);stroke-width:1.6;opacity:0}
+.nmap.is-in .pin.is-on .pin-art{transform:scale(1.28) translateY(-2px)}
+.nmap .pin.is-on .pin-body{fill:var(--blue-dark)}
+.nmap .pin.is-on .pin-ring{animation:nmapPing 1.5s cubic-bezier(0,.4,.6,1) infinite}
+@keyframes nmapPing{
+  0%{r:6;opacity:.55;stroke-width:2}
+  100%{r:20;opacity:0;stroke-width:.4}
+}
+
+/* cluster badge (overview only) */
+.cluster{transition:opacity .35s ease;cursor:pointer}
+.nmap[data-view="zoom"] .cluster{opacity:0;pointer-events:none}
+.cluster-halo{fill:var(--blue);opacity:.14;animation:nmapHalo 2.6s ease-out infinite}
+@keyframes nmapHalo{0%{r:16;opacity:.28}70%{r:48;opacity:0}100%{r:48;opacity:0}}
+.cluster-core{fill:var(--blue);stroke:#fff;stroke-width:2}
+.cluster-txt{fill:#fff;font-size:13px;font-weight:700;font-family:inherit;text-anchor:middle}
+.cluster-hint{fill:#2B3A55;font-size:14px;font-weight:600;font-family:inherit}
+
+/* tooltip */
+.nmap__tip{
+  position:absolute;z-index:5;pointer-events:none;left:0;top:0;
+  padding:9px 13px;border-radius:10px;background:#111827;color:#fff;
+  font-size:12.5px;line-height:1.45;font-weight:500;white-space:nowrap;
+  box-shadow:0 10px 28px rgba(11,15,25,.22);
+  opacity:0;transform:translate(-50%,-120%) scale(.96);
+  transition:opacity .16s ease,transform .16s ease;
+}
+.nmap__tip.is-on{opacity:1;transform:translate(-50%,-135%) scale(1)}
+.nmap__tip b{display:block;font-weight:600}
+.nmap__tip span{color:#9CA9BD;font-size:11.5px}
+
+/* view toggle */
+.nmap__views{position:absolute;top:0;left:0;display:flex;gap:6px;padding:4px;background:#fff;border:1px solid var(--line);border-radius:999px;box-shadow:0 4px 14px rgba(11,15,25,.05)}
+.nmap__views button{
+  border:0;background:transparent;font:inherit;font-size:12.5px;font-weight:500;color:var(--muted);
+  padding:7px 14px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s;
+}
+.nmap__views button:hover{color:var(--ink)}
+.nmap__views button[aria-pressed="true"]{background:var(--blue);color:#fff}
+.nmap__views button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ---- side panel ---- */
+.nmap__panel{display:flex;flex-direction:column;gap:18px;position:sticky;top:32px}
+.nmap__card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+
+.nmap__stats{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.nmap__stat{padding:24px 20px;border-right:1px solid var(--line)}
+.nmap__stat:last-child{border-right:0}
+.nmap__stat b{display:block;font-size:34px;line-height:1;font-weight:700;letter-spacing:-.03em;color:var(--blue)}
+.nmap__stat span{display:block;margin-top:10px;font-size:12px;line-height:1.5;color:var(--muted)}
+
+.nmap__listhead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:10px;flex-wrap:wrap}
+.nmap__listhead h3{margin:0;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.nmap__listhead em{font-style:normal;font-size:12px;color:var(--muted)}
+.nmap__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 18px}
+.nmap__list button{
+  width:100%;display:flex;align-items:flex-start;gap:12px;text-align:left;
+  background:transparent;border:0;font:inherit;cursor:pointer;padding:11px 10px;border-radius:10px;
+  transition:background .2s ease;
+}
+.nmap__list button:hover,.nmap__list button.is-on{background:#F2F6FF}
+.nmap__list button:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.nmap__idx{width:22px;flex:0 0 22px;font-size:11px;font-weight:600;color:#AAB3C2;padding-top:2px}
+.nmap__place{font-size:14px;font-weight:500;color:var(--ink)}
+.nmap__meta{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.nmap__legend{display:flex;flex-wrap:wrap;gap:18px;padding-left:2px}
+.nmap__legend span{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}
+.nmap__sw{width:11px;height:11px;border-radius:3px;background:var(--live)}
+.nmap__sw.soon{background:var(--soon);border:1px dashed var(--soon-line)}
+.nmap__sw.off{background:var(--land)}
+.nmap__sw.pin{border-radius:50%;background:var(--blue)}
+
+/* ---- responsive ---- */
+@media (max-width:1080px){
+  .nmap__grid{grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:36px}
+  .nmap__stats{grid-template-columns:repeat(2,1fr)}
+  .nmap__stat:nth-child(2){border-right:0}
+  .nmap__stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:860px){
+  .nmap{padding:72px 18px 80px}
+  .nmap__grid{grid-template-columns:1fr;gap:32px;margin-top:40px}
+  .nmap__panel{position:static}
+  .nmap__stage{display:flex;flex-direction:column;align-items:center}
+  .nmap__svg{max-height:64vh}
+  .nmap__views{position:static;margin:0 0 18px}
+  .nmap__list{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .nmap *{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================= HTML ============================= -->
+<section class="nmap" id="network-map" data-view="overview">
+  <div class="nmap__inner">
+
+    <p class="nmap__eyebrow">Our network</p>
+    <h2 class="nmap__title">Every screen we run, <span>on one map.</span></h2>
+    <p class="nmap__sub" id="nmapSub"></p>
+
+    <div class="nmap__grid">
+
+      <!-- ------------ map ------------ -->
+      <div class="nmap__stage">
+        <div class="nmap__views" role="group" aria-label="Map view">
+          <button type="button" data-view-btn="overview" aria-pressed="true">South Mumbai</button>
+          <button type="button" data-view-btn="zoom" aria-pressed="false">Our screens</button>
+        </div>
+
+        <svg class="nmap__svg" viewBox="0 0 560 1006" role="img" id="nmapSvg"
+             aria-label="Map of South Mumbai showing where Noticed screens are live">
+          <g class="nmap__zoom" id="nmapZoom">
+
+            <!-- Real BMC ward boundaries. Never edit the d="" values. -->
+            <g id="nmapWards">
+            <path class="ward" d="M252.9,56.5 265.6,79.5 270.0,79.9 283.4,103.6 289.1,119.4 297.8,132.8 320.7,147.5 308.8,171.4 299.1,204.2 296.8,230.7 297.6,293.4 254.1,344.1 250.5,344.1 249.1,347.3 144.3,369.6 129.2,367.9 126.7,363.8 121.5,368.5 113.3,366.5 102.1,360.3 127.8,313.5 139.6,280.2 145.3,255.1 145.4,233.4 141.1,217.3 142.0,191.7 155.2,166.4 163.7,139.2 177.8,113.0 180.0,104.6 178.1,90.7 173.7,80.4 170.2,21.7 160.9,1.5 165.2,0.0 177.9,11.5 184.8,21.9 195.6,30.3 198.2,28.8 193.4,36.2 196.1,55.9 200.5,62.2 207.8,64.2 210.1,68.6 223.2,70.5 231.5,68.5 252.9,56.5Z" data-ward="G/S"/>
+            <path class="ward" d="M463.1,123.3 512.7,87.7 512.1,90.5 517.0,88.8 516.8,90.9 527.9,105.6 534.2,108.2 537.7,114.0 545.9,120.9 546.8,124.6 551.6,126.9 554.1,130.8 554.5,138.9 557.3,137.8 560.0,145.5 541.3,157.6 504.6,177.0 500.9,180.2 506.8,180.6 500.0,180.5 499.4,184.8 507.1,186.1 506.6,188.8 497.3,187.1 495.7,199.4 494.3,199.2 492.6,206.9 490.2,209.9 491.4,214.8 489.5,215.6 496.7,234.2 504.5,237.4 497.2,235.5 501.5,246.6 486.9,252.3 489.5,258.3 467.7,265.8 498.4,342.6 473.3,367.2 416.6,354.1 393.8,344.1 394.4,340.6 376.3,332.6 365.4,330.8 356.6,293.3 313.1,290.6 297.6,293.4 296.8,283.0 297.4,216.1 305.2,181.5 317.8,152.3 367.1,75.0 400.3,103.7 453.0,118.9 452.8,120.4 463.1,123.3Z" data-ward="F/S"/>
+            <path class="ward" d="M395.2,341.0 393.8,344.1 420.1,355.2 418.7,362.8 458.9,371.4 456.7,380.1 417.2,371.4 415.1,373.5 414.7,381.7 426.9,384.3 428.8,380.9 460.5,387.7 460.6,389.9 457.0,396.1 425.7,389.0 424.8,392.7 414.3,390.6 413.5,394.2 448.4,401.9 444.7,415.2 427.8,413.0 422.8,409.3 416.4,407.5 416.0,409.6 419.0,413.5 417.4,419.3 424.0,427.8 423.7,430.4 439.8,432.7 439.6,435.9 423.5,434.8 426.5,436.1 428.1,440.0 433.7,440.3 434.8,447.2 428.4,447.0 428.6,451.1 426.8,453.1 421.1,452.1 421.3,458.3 417.1,458.3 416.7,460.6 418.7,460.9 413.8,480.6 401.7,477.9 401.2,480.2 394.2,478.6 384.7,481.5 381.5,479.1 377.5,480.1 342.7,472.4 338.3,467.6 333.2,474.1 327.6,486.8 312.8,487.2 306.5,490.1 290.3,492.0 235.7,492.9 240.8,446.2 222.1,441.0 193.4,438.0 226.4,352.1 249.1,347.3 250.5,344.1 254.1,344.1 297.5,293.4 313.1,290.6 356.6,293.3 365.4,330.8 376.3,332.6 395.2,341.0Z" data-ward="E"/>
+            <path class="ward" d="M379.4,480.3 381.5,479.1 384.7,481.5 394.2,478.6 401.2,480.2 401.7,477.9 413.8,480.6 404.0,521.7 415.5,526.1 422.5,522.1 423.9,515.3 425.9,515.6 424.2,523.4 416.9,526.9 414.9,537.5 411.9,536.8 414.3,526.7 403.7,523.1 398.3,546.3 395.4,548.3 395.1,549.7 397.8,551.0 394.8,550.9 396.2,555.0 392.0,566.8 394.6,567.2 391.0,577.6 393.3,578.6 395.5,596.9 363.2,590.0 348.9,591.0 330.7,589.0 310.7,593.6 301.4,601.1 287.8,552.2 290.8,543.7 287.7,510.5 289.4,492.1 306.5,490.1 312.8,487.2 328.0,486.6 333.2,474.1 338.3,467.6 342.7,472.4 379.4,480.3Z" data-ward="B"/>
+            <path class="ward" d="M348.6,591.0 363.2,590.0 395.5,596.9 372.9,691.5 371.5,692.5 367.8,691.1 377.1,740.8 368.2,741.3 363.0,709.7 355.8,707.8 350.8,709.0 346.8,712.4 348.7,726.2 329.0,741.0 324.8,737.9 326.8,742.9 319.8,747.5 321.4,750.1 323.0,749.3 324.3,753.7 332.0,750.5 335.3,757.6 349.6,750.9 331.6,760.0 349.8,799.5 377.7,769.2 378.5,762.9 380.9,763.9 379.9,769.0 349.0,803.8 343.3,807.0 333.1,805.8 310.0,781.7 305.7,785.1 310.6,786.9 308.5,791.8 310.3,794.2 307.3,796.6 305.2,794.3 301.3,795.3 290.1,821.3 295.4,823.2 289.9,823.2 288.5,828.9 285.8,828.6 274.0,839.0 276.6,843.8 280.7,843.4 284.2,846.5 271.0,862.7 253.2,875.5 252.5,881.7 239.6,904.8 220.0,882.7 201.1,906.1 199.7,905.0 193.6,911.5 188.4,906.8 185.6,910.8 187.2,915.5 184.8,920.5 188.2,927.6 185.3,937.6 188.8,937.6 188.9,939.5 185.2,942.7 194.9,942.9 185.5,943.2 183.2,950.3 184.0,955.7 165.8,978.9 155.4,996.0 149.7,998.7 139.0,996.7 133.2,1000.8 131.2,1005.7 125.9,1004.8 114.3,995.3 101.7,981.0 93.7,967.8 90.4,957.0 86.0,933.2 85.9,917.5 89.0,899.1 95.1,883.0 111.3,858.0 134.0,828.8 189.6,767.2 217.5,731.4 227.9,706.1 231.3,689.3 232.1,669.5 229.0,646.5 243.8,642.4 253.1,636.9 266.7,632.7 281.5,616.8 310.1,593.9 330.7,589.0 348.6,591.0Z" data-ward="A"/>
+            <path class="ward" d="M289.3,493.1 287.7,510.5 290.8,543.7 287.8,552.2 301.4,601.1 281.5,616.8 266.7,632.7 253.1,636.9 243.8,642.4 229.0,646.5 223.8,630.5 215.9,614.3 195.9,586.1 205.5,577.0 242.3,558.2 240.1,548.2 243.8,543.9 239.6,539.1 247.7,520.1 248.3,493.5 289.3,493.1Z" data-ward="C"/>
+            <path class="ward" d="M194.5,438.1 222.1,441.0 241.0,446.4 235.7,492.9 248.3,493.5 247.7,520.1 239.6,539.1 243.8,543.9 240.1,548.2 242.3,558.2 205.5,577.0 195.9,586.1 187.2,575.6 159.6,555.7 136.2,546.4 118.3,544.4 108.4,556.4 113.6,557.5 108.6,561.8 105.3,561.4 103.0,564.7 100.0,565.1 94.2,572.7 92.3,570.9 89.1,574.4 90.3,576.3 82.6,581.7 76.6,590.4 69.5,594.9 64.7,596.1 62.9,594.8 60.7,597.4 56.2,598.3 54.2,601.6 46.7,601.1 43.8,611.2 32.1,622.7 28.7,628.8 26.1,644.8 19.1,660.2 23.0,659.9 12.5,663.6 7.9,660.8 6.3,657.1 13.1,642.9 12.1,636.9 13.8,631.3 12.9,625.5 3.5,614.5 0.0,590.4 2.4,590.2 5.1,580.3 20.4,548.1 56.2,487.3 61.4,469.1 69.5,423.1 73.2,411.3 78.9,397.9 102.1,360.3 116.1,367.7 122.8,368.1 126.7,363.8 129.2,367.9 143.5,369.6 226.4,352.1 206.4,402.2 194.5,438.1Z" data-ward="D"/>
+            </g>
+
+            <g id="nmapLabels">
+            <g class="lblwrap" data-ward="G/S" transform="translate(216.2,216.5)"><text text-anchor="middle">Worli</text></g>
+            <g class="lblwrap" data-ward="F/S" transform="translate(413.5,215.8)"><text text-anchor="middle">Parel</text></g>
+            <g class="lblwrap" data-ward="E" transform="translate(321.8,400.4)"><text text-anchor="middle">Byculla</text></g>
+            <g class="lblwrap" data-ward="B" transform="translate(347.7,533.8)"><text text-anchor="middle">Chor Bazaar</text></g>
+            <g class="lblwrap" data-ward="A" transform="translate(239.5,785.0)"><text text-anchor="middle">Colaba</text></g>
+            <g class="lblwrap" data-ward="C" transform="translate(256.0,573.8)"><text text-anchor="middle">Kalbadevi</text></g>
+            <g class="lblwrap" data-ward="D" transform="translate(132.4,488.5)"><text text-anchor="middle">Girgaon</text></g>
+            </g>
+
+            <!-- overview cluster badge -->
+            <g class="cluster" id="nmapCluster">
+              <circle class="cluster-halo" cx="0" cy="0" r="16"></circle>
+              <circle class="cluster-core" cx="0" cy="0" r="16"></circle>
+              <text class="cluster-txt" x="0" y="4.5"></text>
+              <text class="cluster-hint" x="25" y="5"></text>
+            </g>
+
+            <!-- pins are generated from LOCATIONS -->
+            <g class="pins" id="nmapPins"></g>
+
+          </g>
+        </svg>
+
+        <div class="nmap__tip" id="nmapTip" aria-hidden="true"></div>
+      </div>
+
+      <!-- ------------ side panel ------------ -->
+      <aside class="nmap__panel">
+        <div class="nmap__stats">
+          <div class="nmap__stat"><b id="nmapCount"></b><span>Screens live<br>South Mumbai</span></div>
+          <div class="nmap__stat"><b>400k+</b><span>Monthly views</span></div>
+          <div class="nmap__stat"><b id="nmapVenues"></b><span>Partner venues<br>and growing</span></div>
+          <div class="nmap__stat"><b>24/7</b><span>Live monitoring</span></div>
+        </div>
+
+        <div class="nmap__card">
+          <div class="nmap__listhead">
+            <h3>Where your brand runs</h3>
+            <em>Hover to locate &middot; click to zoom</em>
+          </div>
+          <ul class="nmap__list" id="nmapList"></ul>
+        </div>
+
+        <div class="nmap__legend">
+          <span><i class="nmap__sw"></i> Live now</span>
+          <span><i class="nmap__sw soon"></i> <span id="nmapSoonLegend">Coming soon</span></span>
+          <span><i class="nmap__sw off"></i> Expanding</span>
+          <span><i class="nmap__sw pin"></i> Screen location</span>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================= JS ============================= -->
+<script>
+(function () {
+
+  /* ===========================================================
+     ==============  EVERYTHING YOU EDIT IS HERE  ==============
+     ===========================================================
+
+     To add a screen, add one line to LOCATIONS. That is the only
+     change needed. The pin, the list row, the counts, the headline
+     sentence, the cluster badge and the highlighted areas on the
+     map all rebuild themselves from this array.
+
+       lat / lng : copied straight out of Google Maps
+       name      : building name
+       type      : shown under the name in the list
+       screens   : how many screens in that building (optional, default 1)
+     =========================================================== */
+
+  var LOCATIONS = [
+    { name: 'Earth View',       type: 'Residential building', screens: 1, lat: 18.960451, lng: 72.821459 },
+    { name: 'Rajendra Vihar',   type: 'Residential building', screens: 1, lat: 18.959961, lng: 72.824633 },
+    { name: '1925',             type: 'Residential building', screens: 1, lat: 18.959260, lng: 72.820931 },
+    { name: 'Siddhesh Darshan', type: 'Residential building', screens: 1, lat: 18.958669, lng: 72.821456 },
+    { name: 'Neo Clarissa',     type: 'Residential building', screens: 1, lat: 18.957593, lng: 72.823257 },
+    { name: 'Earth Castle',     type: 'Residential building', screens: 1, lat: 18.956297, lng: 72.822145 },
+    { name: 'Prasad Chambers',  type: 'Residential building', screens: 1, lat: 18.954396, lng: 72.817252 },
+    { name: 'Darshan Heights',  type: 'Residential building', screens: 1, lat: 18.951529, lng: 72.824153 },
+    { name: 'Bayvue',           type: 'Residential building', screens: 1, lat: 18.947042, lng: 72.826913 }
+  ];
+
+  /* Areas marked "coming soon". Add a screen in one of these and it
+     promotes itself to live automatically, no need to edit this list. */
+  var COMING_SOON = ['G/S', 'F/S'];   /* Worli, Parel */
+
+  /* The seven areas drawn on the map, and what the tooltip calls them. */
+  var WARDS = {
+    'A'  : 'Colaba, Fort, Churchgate',
+    'B'  : 'Chor Bazaar, Dongri, Masjid',
+    'C'  : 'Kalbadevi, Bhuleshwar, Marine Lines',
+    'D'  : 'Girgaon, Khetwadi, Tardeo',
+    'E'  : 'Byculla, Mazgaon',
+    'F/S': 'Parel, Sewri',
+    'G/S': 'Worli, Lower Parel, Prabhadevi'
+  };
+
+  /* ===========================================================
+     ============  NOTHING BELOW NEEDS EDITING  ================
+     =========================================================== */
+
+  var root    = document.getElementById('network-map');
+  var svg     = document.getElementById('nmapSvg');
+  var zoom    = document.getElementById('nmapZoom');
+  var pinsG   = document.getElementById('nmapPins');
+  var listEl  = document.getElementById('nmapList');
+  var tip     = document.getElementById('nmapTip');
+  var stage   = root.querySelector('.nmap__stage');
+  var cluster = document.getElementById('nmapCluster');
+  var SVGNS   = 'http://www.w3.org/2000/svg';
+
+  /* Projection fitted to the ward paths above. Web Mercator.
+     Do not change these three numbers or the pins will drift. */
+  var MINX  = 72.79155678146928;
+  var MAXY  = 19.386548397574700;
+  var SCALE = 7157.657925466066;
+  var VIEW_W = 560, VIEW_H = 1006, PAD = 26;
+  var PIN_K = 1.5;   /* keeps pins and labels a constant on-screen size when zoomed */
+
+  function project(lat, lng) {
+    var my = Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI / 180) / 2)) * 180 / Math.PI;
+    return { x: (lng - MINX) * SCALE, y: (MAXY - my) * SCALE };
+  }
+
+  /* ---- 1. pins and list rows, built from LOCATIONS ---- */
+  var PIN = 'M0,0 C-4.6,-6.2 -7.4,-9.4 -7.4,-13.4 A7.4,7.4 0 1 1 7.4,-13.4 C7.4,-9.4 4.6,-6.2 0,0 Z';
+  var pins = [];
+
+  LOCATIONS.forEach(function (loc, i) {
+    var p = project(loc.lat, loc.lng);
+    var n = loc.screens || 1;
+
+    if (p.x < 0 || p.x > VIEW_W || p.y < 0 || p.y > VIEW_H) {
+      console.warn('[network map] "' + loc.name + '" sits outside the South Mumbai map area. ' +
+                   'Check its coordinates, or the map needs extending north.');
+    }
+
+    var g = document.createElementNS(SVGNS, 'g');
+    g.setAttribute('class', 'pin');
+    g.setAttribute('transform', 'translate(' + p.x.toFixed(2) + ',' + p.y.toFixed(2) + ')');
+
+    var inner = document.createElementNS(SVGNS, 'g');
+    inner.setAttribute('class', 'pin-inner');
+
+    var ring = document.createElementNS(SVGNS, 'circle');
+    ring.setAttribute('class', 'pin-ring');
+    ring.setAttribute('cy', '-13.4'); ring.setAttribute('r', '6');
+
+    var art = document.createElementNS(SVGNS, 'g');
+    art.setAttribute('class', 'pin-art');
+    art.style.transitionDelay = (i * 55) + 'ms';
+
+    var body = document.createElementNS(SVGNS, 'path');
+    body.setAttribute('class', 'pin-body'); body.setAttribute('d', PIN);
+
+    var dot = document.createElementNS(SVGNS, 'circle');
+    dot.setAttribute('class', 'pin-dot');
+    dot.setAttribute('cy', '-13.4'); dot.setAttribute('r', '2.6');
+
+    art.appendChild(body); art.appendChild(dot);
+    inner.appendChild(ring); inner.appendChild(art);
+    g.appendChild(inner); pinsG.appendChild(g);
+
+    var meta = loc.type + ' \u00B7 ' + n + ' screen' + (n > 1 ? 's' : '');
+    var li = document.createElement('li');
+    li.innerHTML =
+      '<button type="button">' +
+        '<span class="nmap__idx">' + (i + 1 < 10 ? '0' : '') + (i + 1) + '</span>' +
+        '<span><span class="nmap__place"></span><span class="nmap__meta"></span></span>' +
+      '</button>';
+    li.querySelector('.nmap__place').textContent = loc.name;
+    li.querySelector('.nmap__meta').textContent  = meta;
+    var btn = li.querySelector('button');
+    listEl.appendChild(li);
+
+    pins.push({ g: g, inner: inner, btn: btn, loc: loc, pt: p });
+
+    function on()  { toggle(i, true); }
+    function off() { toggle(i, false); }
+    g.addEventListener('mouseenter', function () { on(); showTip(g, loc.name, meta); });
+    g.addEventListener('mouseleave', function () { off(); hideTip(); });
+    btn.addEventListener('mouseenter', on);
+    btn.addEventListener('mouseleave', off);
+    btn.addEventListener('focus', on);
+    btn.addEventListener('blur', off);
+    btn.addEventListener('click', function () { setView('zoom'); });
+  });
+
+  function toggle(i, state) {
+    pins[i].g.classList.toggle('is-on', state);
+    pins[i].btn.classList.toggle('is-on', state);
+  }
+
+  /* ---- 2. work out which areas are live, from the pins themselves ---- */
+  var liveWards = [];
+
+  Array.prototype.forEach.call(root.querySelectorAll('.ward'), function (w) {
+    var code = w.getAttribute('data-ward');
+    var hit  = pins.some(function (p) { return inWard(w, p.pt); });
+    var soon = !hit && COMING_SOON.indexOf(code) > -1;
+    if (hit) liveWards.push(code);
+
+    w.classList.toggle('live', hit);
+    w.classList.toggle('soon', soon);
+
+    var lbl = root.querySelector('.lblwrap[data-ward="' + code + '"]');
+    if (lbl) { lbl.classList.toggle('live', hit); lbl.classList.toggle('soon', soon); }
+
+    var status = hit ? 'Live now' : (soon ? 'Coming soon' : 'Expanding soon');
+    w.addEventListener('mouseenter', function () { showTip(w, WARDS[code] || code, status); });
+    w.addEventListener('mouseleave', hideTip);
+    if (hit) w.addEventListener('click', function () { setView('zoom'); });
+  });
+
+  function inWard(pathEl, pt) {
+    if (!pathEl.isPointInFill) {                  /* old browsers: bounding box fallback */
+      var b = pathEl.getBBox();
+      return pt.x >= b.x && pt.x <= b.x + b.width && pt.y >= b.y && pt.y <= b.y + b.height;
+    }
+    try {
+      var p = svg.createSVGPoint ? svg.createSVGPoint() : new DOMPoint();
+      p.x = pt.x; p.y = pt.y;
+      return pathEl.isPointInFill(p);
+    } catch (e) { return false; }
+  }
+
+  /* ---- 3. counts and copy, all derived ---- */
+  var totalScreens = LOCATIONS.reduce(function (a, l) { return a + (l.screens || 1); }, 0);
+  document.getElementById('nmapCount').textContent  = totalScreens;
+  document.getElementById('nmapVenues').textContent = LOCATIONS.length;
+  cluster.querySelector('.cluster-txt').textContent  = totalScreens;
+  cluster.querySelector('.cluster-hint').textContent = 'screen' + (totalScreens > 1 ? 's' : '') + ' live';
+
+  function firstNames(codes) {
+    return codes.map(function (c) { return (WARDS[c] || c).split(',')[0].trim(); });
+  }
+  function join(a) {
+    if (a.length < 2) return a[0] || '';
+    return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+  }
+  var liveNames = firstNames(liveWards);
+  var soonNames = firstNames(COMING_SOON.filter(function (c) { return liveWards.indexOf(c) === -1; }));
+
+  document.getElementById('nmapSub').textContent =
+    totalScreens + ' screen' + (totalScreens > 1 ? 's' : '') +
+    ' live inside premium residential buildings' +
+    (liveNames.length ? ' across ' + join(liveNames) : '') +
+    (soonNames.length ? ', with ' + join(soonNames) + ' launching next' : '') +
+    '. Hover a location to see where your brand shows up.';
+
+  document.getElementById('nmapSoonLegend').textContent =
+    soonNames.length ? 'Coming soon \u00B7 ' + soonNames.join(', ') : 'Coming soon';
+
+  /* ---- 4. zoom between the overview and the screen cluster ---- */
+  var target = null;
+
+  function computeZoom() {
+    if (!pins.length) return null;
+    var xs = pins.map(function (p) { return p.pt.x; });
+    var ys = pins.map(function (p) { return p.pt.y; });
+    var cx = (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2;
+    var cy = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2;
+    var hw = Math.max((Math.max.apply(null, xs) - Math.min.apply(null, xs)) / 2 * 1.45, 40);
+    var hh = Math.max((Math.max.apply(null, ys) - Math.min.apply(null, ys)) / 2 * 1.45, 48);
+    var s  = Math.max(Math.min((VIEW_W - PAD * 2) / (hw * 2), (VIEW_H - PAD * 2) / (hh * 2)), 1);
+    return { s: s, tx: VIEW_W / 2 - cx * s, ty: VIEW_H / 2 - cy * s };
+  }
+
+  function setView(view) {
+    if (root.getAttribute('data-view') === view) return;
+    root.setAttribute('data-view', view);
+    hideTip();
+
+    Array.prototype.forEach.call(root.querySelectorAll('[data-view-btn]'), function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-view-btn') === view));
+    });
+
+    var k = 1;
+    if (view === 'zoom') {
+      target = target || computeZoom();
+      if (!target) return;
+      zoom.setAttribute('transform',
+        'translate(' + target.tx.toFixed(2) + ',' + target.ty.toFixed(2) + ') scale(' + target.s.toFixed(4) + ')');
+      k = PIN_K / target.s;
+    } else {
+      zoom.setAttribute('transform', 'translate(0,0) scale(1)');
+    }
+
+    /* counter-scale so pins and labels keep a constant on-screen size */
+    pins.forEach(function (p) { p.inner.setAttribute('transform', 'scale(' + k + ')'); });
+    Array.prototype.forEach.call(root.querySelectorAll('.lblwrap text'), function (t) {
+      t.setAttribute('transform', 'scale(' + k + ')');
+    });
+  }
+
+  Array.prototype.forEach.call(root.querySelectorAll('[data-view-btn]'), function (b) {
+    b.addEventListener('click', function () { setView(b.getAttribute('data-view-btn')); });
+  });
+
+  /* cluster badge sits at the centre of the swarm */
+  (function () {
+    if (!pins.length) { cluster.style.display = 'none'; return; }
+    var cx = 0, cy = 0;
+    pins.forEach(function (p) { cx += p.pt.x; cy += p.pt.y; });
+    cluster.setAttribute('transform',
+      'translate(' + (cx / pins.length).toFixed(1) + ',' + (cy / pins.length).toFixed(1) + ')');
+    cluster.addEventListener('click', function () { setView('zoom'); });
+  })();
+
+  /* ---- 5. tooltip and scroll reveal ---- */
+  function showTip(el, title, sub) {
+    var b = el.getBoundingClientRect(), s = stage.getBoundingClientRect();
+    tip.innerHTML = '<b></b><span></span>';
+    tip.querySelector('b').textContent = title;
+    tip.querySelector('span').textContent = sub;
+    tip.style.left = (b.left - s.left + b.width / 2) + 'px';
+    tip.style.top  = (b.top - s.top) + 'px';
+    tip.classList.add('is-on');
+  }
+  function hideTip() { tip.classList.remove('is-on'); }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { root.classList.add('is-in'); io.disconnect(); }
+      });
+    }, { threshold: 0.2 });
+    io.observe(svg);
+  } else {
+    root.classList.add('is-in');
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('is-reduced');
+})();
+</script>
+</body>
+</html>

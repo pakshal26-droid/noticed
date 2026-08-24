@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noticed — CRM Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- ============================================================
+       CSS
+       ============================================================ -->
+  <style>
+    :root {
+      --blue: #2b5cff;
+      --blue-hover: #1a4ae6;
+      --blue-soft: #edf2ff;
+      --black: #0c0c0c;
+      --ink: #1a1a1a;
+      --ink-2: #6b6b6b;
+      --ink-3: #999999;
+      --border: #e8e6e1;
+      --border-light: #f0eeea;
+      --surface: #fafaf8;
+      --surface-alt: #f3f2ee;
+      --white: #ffffff;
+      --green: #1a7a52;
+      --green-soft: #e8f5ef;
+      --amber: #9a6b16;
+      --amber-soft: #fdf3e2;
+      --red: #9a3060;
+      --red-soft: #fbeef3;
+      --radius: 18px;
+      --radius-sm: 12px;
+      --radius-xs: 9px;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ---------- top bar ---------- */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(250, 250, 248, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 19px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .brand small {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      padding-left: 10px;
+      margin-left: 4px;
+      border-left: 1px solid var(--border);
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: var(--radius-xs);
+      transition: all 0.25s var(--ease);
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--blue-hover);
+    }
+
+    .btn-ghost {
+      background: var(--white);
+      border: 1px solid var(--border);
+      color: var(--ink-2);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--ink-3);
+      color: var(--ink);
+    }
+
+    .btn-sm {
+      font-size: 12.5px;
+      padding: 7px 12px;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ---------- stats ---------- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 28px;
+    }
+
+    .stat {
+      padding: 20px 22px;
+      border-right: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat:hover {
+      background: var(--surface);
+    }
+
+    .stat.is-active {
+      background: var(--blue-soft);
+    }
+
+    .stat b {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    .stat.total b {
+      color: var(--ink);
+    }
+
+    .stat.new b {
+      color: var(--blue);
+    }
+
+    .stat.sent b {
+      color: var(--amber);
+    }
+
+    .stat.won b {
+      color: var(--green);
+    }
+
+    .stat.lost b {
+      color: var(--red);
+    }
+
+    /* ---------- toolbar ---------- */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 24px 0 16px;
+      flex-wrap: wrap;
+    }
+
+    .search {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 11px 14px 11px 38px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      background: var(--white);
+      outline: none;
+      font-size: 14px;
+    }
+
+    .search input:focus {
+      border-color: var(--blue);
+    }
+
+    .search svg {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      stroke: var(--ink-3);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    select.filter {
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      background: var(--white);
+      outline: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ---------- table ---------- */
+    .table-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: var(--surface);
+    }
+
+    .cell-name {
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .cell-sub {
+      display: block;
+      font-size: 12.5px;
+      color: var(--ink-3);
+      font-weight: 400;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 4px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    .tag.brand {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .tag.building {
+      background: var(--surface-alt);
+      color: var(--ink-2);
+    }
+
+    select.stage {
+      padding: 6px 10px;
+      border-radius: 100px;
+      border: 1px solid transparent;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      text-align: center;
+    }
+
+    select.stage.s-new {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    select.stage.s-proposal {
+      background: var(--amber-soft);
+      color: var(--amber);
+    }
+
+    select.stage.s-follow {
+      background: var(--surface-alt);
+      color: var(--ink-2);
+    }
+
+    select.stage.s-won {
+      background: var(--green-soft);
+      color: var(--green);
+    }
+
+    select.stage.s-lost {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      background: var(--white);
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--ink-2);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--ink-3);
+      background: var(--surface);
+    }
+
+    .icon-btn.wa:hover {
+      border-color: #25D366;
+      background: #eafaf0;
+    }
+
+    .icon-btn.wa:hover svg {
+      stroke: #128C4A;
+    }
+
+    .icon-btn.danger:hover {
+      border-color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .icon-btn.danger:hover svg {
+      stroke: var(--red);
+    }
+
+    .empty {
+      padding: 70px 24px;
+      text-align: center;
+      color: var(--ink-3);
+    }
+
+    .empty h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ink-2);
+      margin-bottom: 6px;
+    }
+
+    .empty p {
+      font-size: 14px;
+      max-width: 380px;
+      margin: 0 auto 18px;
+    }
+
+    /* ---------- modal ---------- */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 12, 12, 0.45);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 50;
+    }
+
+    .modal-bg.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--white);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 520px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 28px;
+    }
+
+    .modal h2 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .modal p.hint {
+      font-size: 13.5px;
+      color: var(--ink-2);
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-2);
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      outline: none;
+      font-size: 14px;
+      background: var(--white);
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--blue);
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 22px;
+    }
+
+    .code {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xs);
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    /* ---------- toast ---------- */
+    .toast {
+      position: fixed;
+      bottom: 26px;
+      left: 50%;
+      transform: translate(-50%, 20px);
+      background: var(--black);
+      color: var(--white);
+      padding: 12px 20px;
+      border-radius: 100px;
+      font-size: 13.5px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s var(--ease);
+      z-index: 60;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .filebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      color: var(--ink-3);
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ink-3);
+      flex-shrink: 0;
+    }
+
+    .dot.on {
+      background: #25D366;
+    }
+
+    @media (max-width: 900px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat:nth-child(2n) {
+        border-right: none;
+      }
+
+      .stat {
+        border-bottom: 1px solid var(--border);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .wrap {
+        padding: 0 14px 60px;
+      }
+
+      .topbar-inner {
+        padding: 12px 14px;
+      }
+
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       HTML
+       ============================================================ -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M16 2C9.4 2 4 7.2 4 13.6C4 22 16 30 16 30S28 22 28 13.6C28 7.2 22.6 2 16 2Z" fill="#2b5cff" />
+          <circle cx="16" cy="13" r="5" fill="#0c0c0c" />
+        </svg>
+        noticed <small>CRM</small>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost" id="syncBtn">Sync from Sheet</button>
+      <button class="btn btn-ghost" id="importBtn">Import</button>
+      <button class="btn btn-ghost" id="exportBtn">Export</button>
+      <button class="btn btn-ghost" id="settingsBtn">Settings</button>
+      <button class="btn btn-primary" id="addBtn">+ New lead</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="stats" id="stats">
+      <div class="stat total is-active" data-stage=""><b id="s-total">0</b><span>All leads</span></div>
+      <div class="stat new" data-stage="New"><b id="s-new">0</b><span>New</span></div>
+      <div class="stat sent" data-stage="Proposal Sent"><b id="s-sent">0</b><span>Proposal sent</span></div>
+      <div class="stat won" data-stage="Won"><b id="s-won">0</b><span>Won</span></div>
+      <div class="stat lost" data-stage="Lost"><b id="s-lost">0</b><span>Lost</span></div>
+    </div>
+
+    <div class="filebar">
+      <span class="dot" id="fileDot"></span>
+      <span id="fileStatus">Saved in this browser only</span>
+      <button class="btn btn-ghost btn-sm" id="linkFileBtn">Link a data file in the folder</button>
+    </div>
+
+    <div class="toolbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-3.5-3.5" />
+        </svg>
+        <input type="text" id="search" placeholder="Search brand, contact or number">
+      </div>
+      <select class="filter" id="typeFilter">
+        <option value="">All types</option>
+        <option value="Brand">Brands</option>
+        <option value="Building">Buildings</option>
+      </select>
+      <select class="filter" id="stageFilter">
+        <option value="">All stages</option>
+        <option>New</option>
+        <option>Proposal Sent</option>
+        <option>Follow Up</option>
+        <option>Won</option>
+        <option>Lost</option>
+      </select>
+      <select class="filter" id="sortBy">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="name">Name A–Z</option>
+      </select>
+    </div>
+
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Contact</th>
+              <th>Type</th>
+              <th>Stage</th>
+              <th>Added</th>
+              <th style="text-align:right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="empty" style="display:none">
+        <h3>No leads yet</h3>
+        <p>Add one manually, sync from your Google Sheet, or import a CSV exported from it.</p>
+        <button class="btn btn-primary" id="emptyAdd">+ Add your first lead</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ---------- lead modal ---------- -->
+  <div class="modal-bg" id="leadModal">
+    <div class="modal">
+      <h2 id="leadModalTitle">New lead</h2>
+      <p class="hint">Pricing is used to pre-fill the proposal generator.</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Lead type</label>
+          <select id="f-leadType">
+            <option>Brand</option>
+            <option>Building</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Stage</label>
+          <select id="f-stage">
+            <option>New</option>
+            <option>Proposal Sent</option>
+            <option>Follow Up</option>
+            <option>Won</option>
+            <option>Lost</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Brand / building name</label>
+        <input type="text" id="f-businessName" placeholder="Express Dry Cleaners">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Contact name</label>
+          <input type="text" id="f-contactName" placeholder="Rohan">
+        </div>
+        <div class="field">
+          <label>Contact number</label>
+          <input type="tel" id="f-contactNumber" placeholder="9876543210">
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Approved rate (₹ / second)</label>
+          <input type="number" id="f-rate" placeholder="30">
+        </div>
+        <div class="field">
+          <label>Ad duration (seconds)</label>
+          <input type="number" id="f-duration" placeholder="30">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="f-notes" rows="3" placeholder="Anything worth remembering before the next call"></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" data-close>Cancel</button>
+        <button class="btn btn-primary" id="saveLeadBtn">Save lead</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- settings modal ---------- -->
+  <div class="modal-bg" id="settingsModal">
+    <div class="modal">
+      <h2>Settings</h2>
+      <p class="hint">Stored in this browser.</p>
+
+      <div class="field">
+        <label>Google Apps Script URL (for Sync)</label>
+        <input type="text" id="f-scriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+      </div>
+
+      <div class="field">
+        <label>Proposal generator file name</label>
+        <input type="text" id="f-generatorPath" placeholder="noticed-proposal-generator.html">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Default rate (₹ / sec)</label>
+          <input type="number" id="f-defaultRate" placeholder="30">
+        </div>
+        <div class="field">
+          <label>Default duration (sec)</label>
+          <input type="number" id="f-defaultDuration" placeholder="30">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>WhatsApp message template</label>
+        <textarea id="f-waTemplate" rows="6"></textarea>
+      </div>
+      <p class="hint" style="margin:-8px 0 18px">Placeholders: {{contact}}, {{business}}, {{rate}}, {{duration}},
+        {{total}}</p>
+
+      <div class="field">
+        <label>Sync needs this in your Apps Script (add alongside your doPost)</label>
+        <div class="code" id="doGetSnippet"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" data-close>Close</button>
+        <button class="btn btn-primary" id="saveSettingsBtn">Save settings</button>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="fileInput" accept=".json,.csv" style="display:none">
+  <div class="toast" id="toast"></div>
+
+  <!-- ============================================================
+       JS
+       ============================================================ -->
+  <script>
+    (function () {
+
+      /* ==========================================================
+         STORAGE
+         ========================================================== */
+
+      var LS_LEADS = 'noticed_crm_leads';
+      var LS_CFG = 'noticed_crm_settings';
+      var memory = { leads: null, cfg: null };   // fallback if localStorage is blocked
+
+      function lsGet(key, fallback) {
+        try {
+          var raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallback;
+        } catch (e) {
+          return (key === LS_LEADS ? memory.leads : memory.cfg) || fallback;
+        }
+      }
+
+      function lsSet(key, value) {
+        try {
+          localStorage.setItem(key, JSON.stringify(value));
+        } catch (e) {
+          if (key === LS_LEADS) memory.leads = value; else memory.cfg = value;
+        }
+      }
+
+      var DEFAULT_CFG = {
+        scriptUrl: 'https://script.google.com/macros/s/AKfycbwUlDUzBx-PrHYT4xHTdR7ygaKBa5uxPsdbGa_w4DAINV5aMIXkWqidXp_Xs6pjp2rn/exec',
+        generatorPath: 'noticed-proposal-generator.html',
+        defaultRate: 30,
+        defaultDuration: 30,
+        waTemplate:
+          'Hi {{contact}}, this is Noticed.\n\n' +
+          'Sharing our proposal for {{business}} — digital screens inside premium residential lift lobbies and gyms across South Mumbai.\n\n' +
+          'Approved rate: ₹{{rate}} per second for a {{duration}} second ad, which works out to ₹{{total}}.\n\n' +
+          'The full proposal PDF is attached. Happy to walk you through it whenever suits you.'
+      };
+
+      var leads = lsGet(LS_LEADS, []);
+      var cfg = Object.assign({}, DEFAULT_CFG, lsGet(LS_CFG, {}));
+      var fileHandle = null;   // File System Access handle, session only
+
+      function saveLeads() {
+        lsSet(LS_LEADS, leads);
+        writeToFile();
+        render();
+      }
+
+      function saveCfg() {
+        lsSet(LS_CFG, cfg);
+      }
+
+      /* ==========================================================
+         HELPERS
+         ========================================================== */
+
+      var $ = function (id) { return document.getElementById(id); };
+
+      function uid() {
+        return 'l_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      }
+
+      function esc(s) {
+        var d = document.createElement('div');
+        d.textContent = s == null ? '' : String(s);
+        return d.innerHTML;
+      }
+
+      function toast(msg) {
+        var t = $('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(t._timer);
+        t._timer = setTimeout(function () { t.classList.remove('show'); }, 2600);
+      }
+
+      /* Normalise an Indian mobile number into wa.me format. */
+      function waNumber(raw) {
+        var d = String(raw || '').replace(/\D/g, '');
+        if (d.length === 10) return '91' + d;
+        if (d.length === 11 && d.charAt(0) === '0') return '91' + d.slice(1);
+        if (d.length === 12 && d.slice(0, 2) === '91') return d;
+        return d;
+      }
+
+      function fmtDate(iso) {
+        if (!iso) return '—';
+        var d = new Date(iso);
+        if (isNaN(d)) return '—';
+        return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: '2-digit' });
+      }
+
+      function stageClass(stage) {
+        return {
+          'New': 's-new',
+          'Proposal Sent': 's-proposal',
+          'Follow Up': 's-follow',
+          'Won': 's-won',
+          'Lost': 's-lost'
+        }[stage] || 's-new';
+      }
+
+      /* The lead form writes "next step"; map it onto a pipeline stage. */
+      function stageFromNextStep(nextStep) {
+        if (nextStep === 'Follow Up') return 'Follow Up';
+        if (nextStep === 'Rejection') return 'Lost';
+        return 'New';
+      }
+
+      /* Same business + same number = same lead. Used when merging. */
+      function fingerprint(lead) {
+        return (String(lead.businessName || '').trim().toLowerCase() + '|' +
+          String(lead.contactNumber || '').replace(/\D/g, ''));
+      }
+
+      function normalise(raw) {
+        var nextStep = raw.nextStep || raw['Next Step'] || raw.next_step || '';
+        return {
+          id: raw.id || uid(),
+          leadType: raw.leadType || raw['Lead Type'] || raw.type || 'Brand',
+          businessName: raw.businessName || raw['Brand / Building Name'] || raw['Business Name'] || raw.business || '',
+          contactName: raw.contactName || raw['Name of Contact'] || raw['Contact Name'] || raw.contact || '',
+          contactNumber: raw.contactNumber || raw['Contact Number'] || raw.phone || '',
+          nextStep: nextStep,
+          stage: raw.stage || raw.Stage || stageFromNextStep(nextStep),
+          rate: raw.rate || '',
+          duration: raw.duration || '',
+          notes: raw.notes || raw.Notes || '',
+          createdAt: raw.createdAt || raw.timestamp || raw.Timestamp || raw.Date || new Date().toISOString(),
+          updatedAt: raw.updatedAt || new Date().toISOString()
+        };
+      }
+
+      /* Merge incoming rows without clobbering local edits (stage, notes, pricing). */
+      function mergeLeads(incoming) {
+        var byPrint = {};
+        leads.forEach(function (l) { byPrint[fingerprint(l)] = l; });
+
+        var added = 0;
+        incoming.map(normalise).forEach(function (row) {
+          if (!row.businessName && !row.contactNumber) return;
+          var existing = byPrint[fingerprint(row)];
+          if (existing) {
+            existing.contactName = existing.contactName || row.contactName;
+            existing.leadType = existing.leadType || row.leadType;
+            if (!existing.createdAt) existing.createdAt = row.createdAt;
+          } else {
+            leads.push(row);
+            byPrint[fingerprint(row)] = row;
+            added++;
+          }
+        });
+        return added;
+      }
+
+      /* ==========================================================
+         CSV
+         ========================================================== */
+
+      function parseCSV(text) {
+        var rows = [], row = [], field = '', inQuotes = false;
+        for (var i = 0; i < text.length; i++) {
+          var c = text[i];
+          if (inQuotes) {
+            if (c === '"') {
+              if (text[i + 1] === '"') { field += '"'; i++; }
+              else inQuotes = false;
+            } else field += c;
+          } else if (c === '"') inQuotes = true;
+          else if (c === ',') { row.push(field); field = ''; }
+          else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+          else if (c !== '\r') field += c;
+        }
+        if (field.length || row.length) { row.push(field); rows.push(row); }
+        if (!rows.length) return [];
+
+        var headers = rows.shift().map(function (h) { return h.trim(); });
+        return rows.filter(function (r) {
+          return r.some(function (c) { return c.trim() !== ''; });
+        }).map(function (r) {
+          var o = {};
+          headers.forEach(function (h, i) { o[h] = (r[i] || '').trim(); });
+          return o;
+        });
+      }
+
+      function toCSV(list) {
+        var cols = ['businessName', 'contactName', 'contactNumber', 'leadType', 'stage', 'rate', 'duration', 'notes', 'createdAt'];
+        var lines = [cols.join(',')];
+        list.forEach(function (l) {
+          lines.push(cols.map(function (c) {
+            var v = l[c] == null ? '' : String(l[c]);
+            return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+          }).join(','));
+        });
+        return lines.join('\n');
+      }
+
+      /* ==========================================================
+         FILE SYSTEM (saves a JSON file into your folder)
+         ========================================================== */
+
+      var hasFS = typeof window.showSaveFilePicker === 'function';
+
+      async function linkFile() {
+        if (!hasFS) {
+          toast('This browser cannot write files directly. Use Export instead.');
+          return;
+        }
+        try {
+          fileHandle = await window.showSaveFilePicker({
+            suggestedName: 'noticed-crm-data.json',
+            types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+          });
+          await writeToFile();
+          updateFileBar();
+          toast('Linked. Every change now writes to that file.');
+        } catch (e) { /* user cancelled */ }
+      }
+
+      var writeTimer = null;
+      function writeToFile() {
+        if (!fileHandle) return;
+        clearTimeout(writeTimer);
+        writeTimer = setTimeout(async function () {
+          try {
+            var w = await fileHandle.createWritable();
+            await w.write(JSON.stringify(leads, null, 2));
+            await w.close();
+          } catch (e) {
+            toast('Could not write to the linked file.');
+          }
+        }, 400);
+      }
+
+      function updateFileBar() {
+        var dot = $('fileDot'), status = $('fileStatus'), btn = $('linkFileBtn');
+        if (fileHandle) {
+          dot.classList.add('on');
+          status.textContent = 'Auto-saving to ' + fileHandle.name;
+          btn.textContent = 'Change file';
+        } else {
+          dot.classList.remove('on');
+          status.textContent = hasFS
+            ? 'Saved in this browser only'
+            : 'Saved in this browser only (use Export to keep a copy in the folder)';
+          btn.textContent = 'Link a data file in the folder';
+          btn.style.display = hasFS ? '' : 'none';
+        }
+      }
+
+      function download(filename, content, mime) {
+        var blob = new Blob([content], { type: mime });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        a.click();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      }
+
+      /* ==========================================================
+         SYNC FROM GOOGLE SHEET
+         ========================================================== */
+
+      async function syncFromSheet() {
+        var btn = $('syncBtn');
+        if (!cfg.scriptUrl) { toast('Add your Apps Script URL in Settings first.'); return; }
+
+        btn.disabled = true;
+        btn.textContent = 'Syncing...';
+        try {
+          var res = await fetch(cfg.scriptUrl, { method: 'GET' });
+          var data = await res.json();
+          var rows = Array.isArray(data) ? data : (data.leads || data.data || []);
+          if (!Array.isArray(rows)) throw new Error('bad shape');
+          var added = mergeLeads(rows);
+          saveLeads();
+          toast(added ? added + ' new lead' + (added > 1 ? 's' : '') + ' pulled in' : 'Already up to date');
+        } catch (e) {
+          toast('Sync failed. Your script needs a doGet — see Settings.');
+        }
+        btn.disabled = false;
+        btn.textContent = 'Sync from Sheet';
+      }
+
+      /* ==========================================================
+         PROPOSAL + WHATSAPP
+         ========================================================== */
+
+      function proposalUrl(lead) {
+        var rate = lead.rate || cfg.defaultRate;
+        var duration = lead.duration || cfg.defaultDuration;
+        var q = new URLSearchParams({
+          leadId: lead.id,
+          brand: lead.businessName || '',
+          prepared: lead.businessName || '',
+          contact: lead.contactName || '',
+          phone: lead.contactNumber || '',
+          rate: rate,
+          duration: duration
+        });
+        return cfg.generatorPath + '?' + q.toString();
+      }
+
+      function openProposal(lead) {
+        window.open(proposalUrl(lead), '_blank');
+        if (lead.stage === 'New') {
+          lead.stage = 'Proposal Sent';
+          lead.updatedAt = new Date().toISOString();
+          saveLeads();
+        }
+      }
+
+      function waMessage(lead) {
+        var rate = Number(lead.rate || cfg.defaultRate) || 0;
+        var duration = Number(lead.duration || cfg.defaultDuration) || 0;
+        return cfg.waTemplate
+          .replace(/\{\{contact\}\}/g, lead.contactName || 'there')
+          .replace(/\{\{business\}\}/g, lead.businessName || 'your brand')
+          .replace(/\{\{rate\}\}/g, rate)
+          .replace(/\{\{duration\}\}/g, duration)
+          .replace(/\{\{total\}\}/g, (rate * duration).toLocaleString('en-IN'));
+      }
+
+      function sendWhatsApp(lead) {
+        var num = waNumber(lead.contactNumber);
+        if (!num) { toast('That lead has no usable phone number.'); return; }
+        window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(waMessage(lead)), '_blank');
+        if (lead.stage === 'New' || lead.stage === 'Proposal Sent') {
+          lead.stage = lead.stage === 'New' ? 'Proposal Sent' : 'Follow Up';
+          lead.updatedAt = new Date().toISOString();
+          saveLeads();
+        }
+      }
+
+      /* ==========================================================
+         RENDER
+         ========================================================== */
+
+      var filters = { search: '', type: '', stage: '', sort: 'newest' };
+
+      function visibleLeads() {
+        var q = filters.search.trim().toLowerCase();
+        var out = leads.filter(function (l) {
+          if (filters.type && l.leadType !== filters.type) return false;
+          if (filters.stage && l.stage !== filters.stage) return false;
+          if (!q) return true;
+          return (l.businessName + ' ' + l.contactName + ' ' + l.contactNumber).toLowerCase().indexOf(q) > -1;
+        });
+
+        out.sort(function (a, b) {
+          if (filters.sort === 'name') return (a.businessName || '').localeCompare(b.businessName || '');
+          var da = new Date(a.createdAt).getTime() || 0;
+          var db = new Date(b.createdAt).getTime() || 0;
+          return filters.sort === 'oldest' ? da - db : db - da;
+        });
+        return out;
+      }
+
+      function render() {
+        var counts = { total: leads.length, New: 0, 'Proposal Sent': 0, Won: 0, Lost: 0 };
+        leads.forEach(function (l) { if (counts[l.stage] !== undefined) counts[l.stage]++; });
+        $('s-total').textContent = counts.total;
+        $('s-new').textContent = counts['New'];
+        $('s-sent').textContent = counts['Proposal Sent'];
+        $('s-won').textContent = counts['Won'];
+        $('s-lost').textContent = counts['Lost'];
+
+        var list = visibleLeads();
+        var tbody = $('tbody');
+        tbody.innerHTML = '';
+        $('empty').style.display = list.length ? 'none' : 'block';
+
+        list.forEach(function (lead) {
+          var tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td><span class="cell-name">' + esc(lead.businessName || 'Untitled') + '</span>' +
+            (lead.notes ? '<span class="cell-sub">' + esc(lead.notes.slice(0, 60)) + '</span>' : '') + '</td>' +
+
+            '<td>' + esc(lead.contactName || '—') +
+            '<span class="cell-sub">' + esc(lead.contactNumber || '') + '</span></td>' +
+
+            '<td><span class="tag ' + (lead.leadType === 'Building' ? 'building' : 'brand') + '">' +
+            esc(lead.leadType) + '</span></td>' +
+
+            '<td><select class="stage ' + stageClass(lead.stage) + '">' +
+            ['New', 'Proposal Sent', 'Follow Up', 'Won', 'Lost'].map(function (s) {
+              return '<option' + (s === lead.stage ? ' selected' : '') + '>' + s + '</option>';
+            }).join('') + '</select></td>' +
+
+            '<td style="color:var(--ink-3);font-size:13px">' + fmtDate(lead.createdAt) + '</td>' +
+
+            '<td><div class="row-actions">' +
+            '<button class="icon-btn" data-act="proposal" title="Generate proposal">' +
+            '<svg viewBox="0 0 24 24"><path d="M14 3v5h5"/><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2z"/></svg></button>' +
+            '<button class="icon-btn wa" data-act="wa" title="Send on WhatsApp">' +
+            '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-12.6 7.3L3 20.5l1.8-5.2A8.5 8.5 0 1 1 21 11.5z"/></svg></button>' +
+            '<button class="icon-btn" data-act="edit" title="Edit">' +
+            '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>' +
+            '<button class="icon-btn danger" data-act="delete" title="Delete">' +
+            '<svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg></button>' +
+            '</div></td>';
+
+          tr.querySelector('select.stage').addEventListener('change', function (e) {
+            lead.stage = e.target.value;
+            lead.updatedAt = new Date().toISOString();
+            saveLeads();
+          });
+
+          tr.querySelectorAll('[data-act]').forEach(function (b) {
+            b.addEventListener('click', function () {
+              var act = b.getAttribute('data-act');
+              if (act === 'proposal') openProposal(lead);
+              else if (act === 'wa') sendWhatsApp(lead);
+              else if (act === 'edit') openLeadModal(lead);
+              else if (act === 'delete') {
+                if (confirm('Delete ' + (lead.businessName || 'this lead') + '?')) {
+                  leads = leads.filter(function (l) { return l.id !== lead.id; });
+                  saveLeads();
+                  toast('Lead deleted');
+                }
+              }
+            });
+          });
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      /* ==========================================================
+         MODALS
+         ========================================================== */
+
+      var editingId = null;
+
+      function openLeadModal(lead) {
+        editingId = lead ? lead.id : null;
+        $('leadModalTitle').textContent = lead ? 'Edit lead' : 'New lead';
+        $('f-leadType').value = lead ? lead.leadType : 'Brand';
+        $('f-stage').value = lead ? lead.stage : 'New';
+        $('f-businessName').value = lead ? lead.businessName : '';
+        $('f-contactName').value = lead ? lead.contactName : '';
+        $('f-contactNumber').value = lead ? lead.contactNumber : '';
+        $('f-rate').value = lead ? lead.rate : '';
+        $('f-duration').value = lead ? lead.duration : '';
+        $('f-notes').value = lead ? lead.notes : '';
+        $('leadModal').classList.add('open');
+        setTimeout(function () { $('f-businessName').focus(); }, 60);
+      }
+
+      function saveLeadFromModal() {
+        var business = $('f-businessName').value.trim();
+        if (!business) { toast('Give the lead a name first.'); return; }
+
+        var data = {
+          leadType: $('f-leadType').value,
+          stage: $('f-stage').value,
+          businessName: business,
+          contactName: $('f-contactName').value.trim(),
+          contactNumber: $('f-contactNumber').value.trim(),
+          rate: $('f-rate').value,
+          duration: $('f-duration').value,
+          notes: $('f-notes').value.trim(),
+          updatedAt: new Date().toISOString()
+        };
+
+        if (editingId) {
+          var lead = leads.filter(function (l) { return l.id === editingId; })[0];
+          if (lead) Object.assign(lead, data);
+          toast('Lead updated');
+        } else {
+          data.id = uid();
+          data.createdAt = new Date().toISOString();
+          leads.push(normalise(data));
+          toast('Lead added');
+        }
+        $('leadModal').classList.remove('open');
+        saveLeads();
+      }
+
+      function openSettings() {
+        $('f-scriptUrl').value = cfg.scriptUrl;
+        $('f-generatorPath').value = cfg.generatorPath;
+        $('f-defaultRate').value = cfg.defaultRate;
+        $('f-defaultDuration').value = cfg.defaultDuration;
+        $('f-waTemplate').value = cfg.waTemplate;
+        $('doGetSnippet').textContent =
+          'function doGet() {\n' +
+          '  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n' +
+          '  var rows = sheet.getDataRange().getValues();\n' +
+          '  var headers = rows.shift();\n' +
+          '  var out = rows.map(function (r) {\n' +
+          '    var o = {};\n' +
+          '    headers.forEach(function (h, i) { o[h] = r[i]; });\n' +
+          '    return o;\n' +
+          '  });\n' +
+          '  return ContentService\n' +
+          '    .createTextOutput(JSON.stringify(out))\n' +
+          '    .setMimeType(ContentService.MimeType.JSON);\n' +
+          '}\n\n' +
+          '// Redeploy as a new version, "Anyone" access.';
+        $('settingsModal').classList.add('open');
+      }
+
+      function saveSettings() {
+        cfg.scriptUrl = $('f-scriptUrl').value.trim();
+        cfg.generatorPath = $('f-generatorPath').value.trim() || DEFAULT_CFG.generatorPath;
+        cfg.defaultRate = Number($('f-defaultRate').value) || DEFAULT_CFG.defaultRate;
+        cfg.defaultDuration = Number($('f-defaultDuration').value) || DEFAULT_CFG.defaultDuration;
+        cfg.waTemplate = $('f-waTemplate').value;
+        saveCfg();
+        $('settingsModal').classList.remove('open');
+        toast('Settings saved');
+      }
+
+      /* ==========================================================
+         WIRING
+         ========================================================== */
+
+      $('addBtn').addEventListener('click', function () { openLeadModal(null); });
+      $('emptyAdd').addEventListener('click', function () { openLeadModal(null); });
+      $('saveLeadBtn').addEventListener('click', saveLeadFromModal);
+      $('settingsBtn').addEventListener('click', openSettings);
+      $('saveSettingsBtn').addEventListener('click', saveSettings);
+      $('syncBtn').addEventListener('click', syncFromSheet);
+      $('linkFileBtn').addEventListener('click', linkFile);
+
+      document.querySelectorAll('[data-close]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          b.closest('.modal-bg').classList.remove('open');
+        });
+      });
+
+      document.querySelectorAll('.modal-bg').forEach(function (bg) {
+        bg.addEventListener('click', function (e) {
+          if (e.target === bg) bg.classList.remove('open');
+        });
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          document.querySelectorAll('.modal-bg.open').forEach(function (m) { m.classList.remove('open'); });
+        }
+      });
+
+      $('exportBtn').addEventListener('click', function () {
+        var stamp = new Date().toISOString().slice(0, 10);
+        download('noticed-crm-' + stamp + '.json', JSON.stringify(leads, null, 2), 'application/json');
+        download('noticed-crm-' + stamp + '.csv', toCSV(leads), 'text/csv');
+        toast('Exported JSON and CSV to your downloads');
+      });
+
+      $('importBtn').addEventListener('click', function () { $('fileInput').click(); });
+
+      $('fileInput').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          try {
+            var rows = file.name.toLowerCase().slice(-4) === '.csv'
+              ? parseCSV(reader.result)
+              : JSON.parse(reader.result);
+            if (!Array.isArray(rows)) throw new Error('bad file');
+            var added = mergeLeads(rows);
+            saveLeads();
+            toast(added + ' lead' + (added === 1 ? '' : 's') + ' imported');
+          } catch (err) {
+            toast('Could not read that file.');
+          }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+      });
+
+      $('search').addEventListener('input', function (e) { filters.search = e.target.value; render(); });
+      $('typeFilter').addEventListener('change', function (e) { filters.type = e.target.value; render(); });
+      $('sortBy').addEventListener('change', function (e) { filters.sort = e.target.value; render(); });
+
+      $('stageFilter').addEventListener('change', function (e) {
+        filters.stage = e.target.value;
+        syncStatCards();
+        render();
+      });
+
+      document.querySelectorAll('.stat').forEach(function (card) {
+        card.addEventListener('click', function () {
+          filters.stage = card.getAttribute('data-stage');
+          $('stageFilter').value = filters.stage;
+          syncStatCards();
+          render();
+        });
+      });
+
+      function syncStatCards() {
+        document.querySelectorAll('.stat').forEach(function (c) {
+          c.classList.toggle('is-active', c.getAttribute('data-stage') === filters.stage);
+        });
+      }
+
+      /* ==========================================================
+         START
+         ========================================================== */
+
+      updateFileBar();
+      render();
+
+    })();
+  </script>
+
+</body>
+
+</html>
