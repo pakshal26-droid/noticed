@@ -610,21 +610,22 @@
     .testimonial-section {
       padding: var(--section-pad) 24px;
       background: var(--surface);
+      position: relative;
     }
 
     .testimonial-head {
       text-align: center;
       max-width: 640px;
-      margin: 0 auto 64px;
+      margin: 0 auto 56px;
     }
 
     .testimonial-head h2 {
-      margin-top: 20px;
-      font-size: clamp(30px, 4.2vw, 38px);
+      margin-top: 18px;
+      font-size: clamp(30px, 4.2vw, 40px);
       font-weight: 300;
-      letter-spacing: -0.06em;
+      letter-spacing: -0.05em;
       color: var(--ink);
-      line-height: 1.15;
+      line-height: 1.18;
     }
 
     .testimonial-head h2 .highlight {
@@ -636,23 +637,132 @@
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 24px;
     }
 
+    /* Modern text card with bottom ambient color bloom (inspired by sleek modern UI cards) */
     .testimonial-card {
-      border-radius: var(--radius);
-      overflow: hidden;
+      position: relative;
       background: var(--white);
-      border: 1px solid var(--border);
-      transition: transform var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 28px;
+      padding: 36px 32px 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 290px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
     }
 
     .testimonial-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.08), 0 6px 16px -2px rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.13);
     }
 
-    /* Video testimonial */
+    /* Ambient bloom overlay at card bottom */
+    .testimonial-card::before {
+      content: "";
+      position: absolute;
+      bottom: -45px;
+      left: -20px;
+      right: -20px;
+      height: 175px;
+      border-radius: 50% 50% 0 0;
+      filter: blur(48px);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+    }
+
+    .testimonial-card:hover::before {
+      opacity: 0.85;
+      transform: scale(1.06) translateY(-4px);
+    }
+
+    /* Ambient Color Variants */
+    .testimonial-card.glow-gold::before {
+      background: radial-gradient(ellipse at center bottom, #fbbf24 0%, #fef08a 55%, transparent 78%);
+    }
+
+    .testimonial-card.glow-cyan::before {
+      background: radial-gradient(ellipse at center bottom, #38bdf8 0%, #7dd3fc 55%, transparent 78%);
+    }
+
+    .testimonial-card.glow-rose::before {
+      background: radial-gradient(ellipse at center bottom, #fb7185 0%, #fecdd3 55%, transparent 78%);
+    }
+
+    .testimonial-card.glow-indigo::before {
+      background: radial-gradient(ellipse at center bottom, #818cf8 0%, #c7d2fe 55%, transparent 78%);
+    }
+
+    .testimonial-card.glow-emerald::before {
+      background: radial-gradient(ellipse at center bottom, #34d399 0%, #a7f3d0 55%, transparent 78%);
+    }
+
+    .testimonial-card.glow-orange::before {
+      background: radial-gradient(ellipse at center bottom, #fb923c 0%, #fed7aa 55%, transparent 78%);
+    }
+
+    .testimonial-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .testimonial-card .quote-text {
+      font-size: 16px;
+      line-height: 1.62;
+      color: var(--ink);
+      font-weight: 450;
+      letter-spacing: -0.015em;
+      margin: 0;
+      font-style: normal;
+    }
+
+    .testimonial-card .author-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .testimonial-card .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      background: var(--surface-alt);
+    }
+
+    .testimonial-card .author-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .testimonial-card .author-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .testimonial-card .author-role {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+
+    /* Video testimonial (styles preserved for future video assets) */
     .testimonial-card.is-video {
       aspect-ratio: 9 / 14;
       position: relative;
@@ -727,66 +837,6 @@
     .testimonial-video-label .tvl-role {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.55);
-      margin-top: 2px;
-    }
-
-    /* Text testimonial */
-    .testimonial-card.is-text {
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .testimonial-stars {
-      display: flex;
-      gap: 3px;
-      margin-bottom: 18px;
-    }
-
-    .testimonial-stars svg {
-      width: 16px;
-      height: 16px;
-      fill: #f59e0b;
-    }
-
-    .testimonial-card.is-text blockquote {
-      font-size: 15px;
-      line-height: 1.65;
-      color: var(--ink-secondary);
-      flex: 1;
-      font-style: italic;
-    }
-
-    .testimonial-author {
-      margin-top: 24px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .testimonial-avatar {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: var(--accent-blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--blue);
-      flex-shrink: 0;
-    }
-
-    .testimonial-author-info .ta-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .testimonial-author-info .ta-role {
-      font-size: 12px;
-      color: var(--ink-tertiary);
       margin-top: 2px;
     }
 
@@ -1706,6 +1756,16 @@
         padding: 28px 24px;
       }
 
+      .testimonial-card {
+        padding: 28px 22px 26px;
+        border-radius: 22px;
+        min-height: auto;
+      }
+
+      .testimonial-card .quote-text {
+        font-size: 15px;
+      }
+
       .cta-buttons {
         flex-direction: column;
         align-items: center;
@@ -2406,6 +2466,123 @@
     </div>
   </section>
 
+  <!-- ================= TESTIMONIAL WALL ================= -->
+  <section class="testimonial-section">
+    <div class="testimonial-head reveal">
+      <span class="eyebrow-label">What People Say</span>
+      <h2>Trusted by brands <span class="highlight">across industries.</span></h2>
+    </div>
+    <div class="testimonial-grid">
+      <!-- 
+        ================================================================
+        VIDEO TESTIMONIALS (Commented out until video assets are ready)
+        ================================================================
+        <div class="testimonial-card is-video reveal">
+          <div class="testimonial-video-placeholder">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24">
+                <polygon points="6,3 20,12 6,21" />
+              </svg>
+            </div>
+            <span>Video testimonial</span>
+          </div>
+          <div class="testimonial-video-label">
+            <div class="tvl-name">Brand Partner Name</div>
+            <div class="tvl-role">Marketing Head, Brand</div>
+          </div>
+        </div>
+
+        <div class="testimonial-card is-video reveal">
+          <div class="testimonial-video-placeholder">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24">
+                <polygon points="6,3 20,12 6,21" />
+              </svg>
+            </div>
+            <span>Video testimonial</span>
+          </div>
+          <div class="testimonial-video-label">
+            <div class="tvl-name">Brand Partner Name</div>
+            <div class="tvl-role">Founder, D2C Brand</div>
+          </div>
+        </div>
+        ================================================================
+      -->
+
+      <!-- Testimonial 1: Nirmal (Core Fitness) -->
+      <div class="testimonial-card glow-gold reveal">
+        <p class="quote-text">“Noticed helped us get in front of people who were already in and around our area. It’s been a simple way to keep Core Fitness top of mind without feeling like traditional advertising.”</p>
+        <div class="author-row">
+          <img src="avatars/nirmal.jpg" alt="Nirmal" class="author-avatar" loading="lazy" />
+          <div class="author-info">
+            <div class="author-name">Nirmal</div>
+            <div class="author-role">Core Fitness</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 2: Pranav (Polar Xpress) -->
+      <div class="testimonial-card glow-cyan reveal">
+        <p class="quote-text">“We wanted something more local and visible than just running ads online. Noticed gave Polar Xpress a physical presence around the neighbourhood, and we started seeing more people recognise the brand.”</p>
+        <div class="author-row">
+          <img src="avatars/pranav.jpg" alt="Pranav" class="author-avatar" loading="lazy" />
+          <div class="author-info">
+            <div class="author-name">Pranav</div>
+            <div class="author-role">Polar Xpress</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 3: Nita (Waffle Cafe) -->
+      <div class="testimonial-card glow-rose reveal">
+        <p class="quote-text">“For a neighbourhood cafe, visibility matters a lot. Noticed helps us stay visible to people who are actually around us, which makes the advertising feel much more relevant.”</p>
+        <div class="author-row">
+          <img src="avatars/nita.jpg" alt="Nita" class="author-avatar" loading="lazy" />
+          <div class="author-info">
+            <div class="author-name">Nita</div>
+            <div class="author-role">Waffle Cafe</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 4: Abhishek (Locus Learning) -->
+      <div class="testimonial-card glow-indigo reveal">
+        <p class="quote-text">“What I liked about Noticed is that it doesn’t feel like another digital ad. We’re reaching students and parents in the places they actually spend time, which makes a big difference.”</p>
+        <div class="author-row">
+          <img src="avatars/abhishek.jpg" alt="Abhishek" class="author-avatar" loading="lazy" />
+          <div class="author-info">
+            <div class="author-name">Abhishek</div>
+            <div class="author-role">Locus Learning</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 5: Isaac Sharin (Health & Smiles) -->
+      <div class="testimonial-card glow-emerald reveal">
+        <p class="quote-text">“For a dental clinic, trust and familiarity are important. Noticed has helped us build that familiarity locally and keep Health & Smiles visible to people in our community.”</p>
+        <div class="author-row">
+          <img src="avatars/isaac.jpg" alt="Isaac Sharin" class="author-avatar" loading="lazy" />
+          <div class="author-info">
+            <div class="author-name">Isaac Sharin</div>
+            <div class="author-role">Health &amp; Smiles</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 6: Surabhi (Sportscape) -->
+      <div class="testimonial-card glow-orange reveal">
+        <p class="quote-text">“Noticed has been a great way to create awareness around our events beyond our usual social media audience. It gives Sportscape visibility in the physical spaces where our audience already is.”</p>
+        <div class="author-row">
+          <img src="avatars/surabhi.jpg" alt="Surabhi" class="author-avatar" loading="lazy" />
+          <div class="author-info">
+            <div class="author-name">Surabhi</div>
+            <div class="author-role">Sportscape</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ================= PROBLEM ================= -->
   <section class="problem-section">
     <div class="problem-grid">
@@ -2526,187 +2703,6 @@
           <h4>Reach people in premium lifestyle moments when your message feels relevant, not interruptive.</h4>
           <p>Connect with residents when they are already in a more positive, receptive, and lifestyle-driven mindset.
           </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= TESTIMONIAL WALL ================= -->
-  <section class="testimonial-section">
-    <div class="testimonial-head reveal">
-      <span class="eyebrow-label">What People Say</span>
-      <h2>Trusted by brands <span class="highlight">across industries.</span></h2>
-    </div>
-    <div class="testimonial-grid">
-      <!-- Video Testimonial 1 -->
-      <div class="testimonial-card is-video reveal">
-        <div class="testimonial-video-placeholder">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24">
-              <polygon points="6,3 20,12 6,21" />
-            </svg>
-          </div>
-          <span>Video testimonial</span>
-        </div>
-        <div class="testimonial-video-label">
-          <div class="tvl-name">Brand Partner Name</div>
-          <div class="tvl-role">Marketing Head, Brand</div>
-        </div>
-      </div>
-
-      <!-- Text Testimonial 1 -->
-      <div class="testimonial-card is-text reveal">
-        <div class="testimonial-stars">
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-        </div>
-        <blockquote>"Noticed gave us incredible visibility inside premium residential buildings. The audience quality
-          and engagement were far beyond what traditional OOH could deliver."</blockquote>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">AB</div>
-          <div class="testimonial-author-info">
-            <div class="ta-name">Placeholder Name</div>
-            <div class="ta-role">CEO, Brand Partner</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Text Testimonial 2 -->
-      <div class="testimonial-card is-text reveal">
-        <div class="testimonial-stars">
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-        </div>
-        <blockquote>"The proof-of-play reports and real-time data made it easy to justify the investment. We saw a clear
-          lift in foot traffic from the campaign areas."</blockquote>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">CD</div>
-          <div class="testimonial-author-info">
-            <div class="ta-name">Placeholder Name</div>
-            <div class="ta-role">Marketing Director, D2C Brand</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Video Testimonial 2 -->
-      <div class="testimonial-card is-video reveal">
-        <div class="testimonial-video-placeholder">
-          <div class="play-btn">
-            <svg viewBox="0 0 24 24">
-              <polygon points="6,3 20,12 6,21" />
-            </svg>
-          </div>
-          <span>Video testimonial</span>
-        </div>
-        <div class="testimonial-video-label">
-          <div class="tvl-name">Brand Partner Name</div>
-          <div class="tvl-role">Founder, D2C Brand</div>
-        </div>
-      </div>
-
-      <!-- Text Testimonial 3 -->
-      <div class="testimonial-card is-text reveal">
-        <div class="testimonial-stars">
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-        </div>
-        <blockquote>"What stood out was the premium context. Our ads weren't competing with noise — they were the only
-          thing on screen in a captive environment."</blockquote>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">EF</div>
-          <div class="testimonial-author-info">
-            <div class="ta-name">Placeholder Name</div>
-            <div class="ta-role">Brand Manager, F&amp;B Company</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Text Testimonial 4 -->
-      <div class="testimonial-card is-text reveal">
-        <div class="testimonial-stars">
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-          <svg viewBox="0 0 24 24">
-            <polygon
-              points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-          </svg>
-        </div>
-        <blockquote>"We ran a 30-day campaign across 8 buildings and saw incredible recall rates. The team was
-          responsive and the setup was seamless."</blockquote>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">GH</div>
-          <div class="testimonial-author-info">
-            <div class="ta-name">Placeholder Name</div>
-            <div class="ta-role">CMO, Fitness Brand</div>
-          </div>
         </div>
       </div>
     </div>
