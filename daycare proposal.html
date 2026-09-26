@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noticed × Esplora Montessori — Partnership Proposal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       NOTICED × ESPLORA MONTESSORI — PARTNERSHIP PROPOSAL
+       A4 print-ready. Cmd/Ctrl+P → Save as PDF
+       Margins: None · Background graphics: ON
+       ============================================================ */
+    :root {
+      --navy: #0E2337;
+      --navy-2: #16304a;
+      --cyan: #4ECDDE;
+      --ink: #1a1a1a;
+      --ink-2: #5c6b7a;
+      --ink-3: #94a3b1;
+      --line: #dfe5ec;
+      --line-2: #eef2f6;
+      --paper: #fff;
+      --wash: #f4f7fb;
+      --gold: #C9A227;
+      --green: #1a7a52;
+      --green-soft: #e8f5ef;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--ink);
+      background: #6b7280;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 10mm auto;
+      background: var(--paper);
+      position: relative;
+      padding: 15mm 15mm 16mm;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, .25);
+    }
+
+    .page.dark {
+      background: var(--navy);
+      color: #fff;
+    }
+
+    .rh {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 5mm;
+      margin-bottom: 8mm;
+      border-bottom: 1px solid var(--line);
+      flex: 0 0 auto;
+    }
+
+    .dark .rh {
+      border-bottom-color: rgba(255, 255, 255, .14);
+    }
+
+    .wordmark {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      color: var(--navy);
+    }
+
+    .dark .wordmark {
+      color: #fff;
+    }
+
+    .wordmark span {
+      color: var(--cyan);
+    }
+
+    .rh em {
+      font-style: normal;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    .rf {
+      margin-top: auto;
+      padding-top: 5mm;
+      border-top: 1px solid var(--line-2);
+      display: flex;
+      justify-content: space-between;
+      font-size: 8.5px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      flex: 0 0 auto;
+    }
+
+    .dark .rf {
+      border-top-color: rgba(255, 255, 255, .12);
+      color: rgba(255, 255, 255, .4);
+    }
+
+    .eyebrow {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+
+    .eyebrow.dim {
+      color: var(--ink-3);
+    }
+
+    h1 {
+      font-size: 42px;
+      line-height: 1.04;
+      letter-spacing: -.035em;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 26px;
+      line-height: 1.12;
+      letter-spacing: -.025em;
+      font-weight: 700;
+    }
+
+    h3 {
+      font-size: 14.5px;
+      letter-spacing: -.01em;
+      font-weight: 700;
+    }
+
+    .lead {
+      font-size: 12.5px;
+      line-height: 1.7;
+      color: var(--ink-2);
+      max-width: 108mm;
+    }
+
+    .dark .lead {
+      color: rgba(255, 255, 255, .7);
+    }
+
+    .cy {
+      color: var(--cyan);
+    }
+
+    .body {
+      flex: 1 1 auto;
+    }
+
+    .mt {
+      margin-top: 8mm;
+    }
+
+    .mt-s {
+      margin-top: 5mm;
+    }
+
+    .cover-meta {
+      margin-top: 12mm;
+      border-left: 2px solid var(--cyan);
+      padding-left: 14px;
+    }
+
+    .cover-meta small {
+      display: block;
+      font-size: 9px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+      margin-bottom: 4px;
+    }
+
+    .cover-meta b {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ---- tables ---- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      padding: 0 8px 7px;
+      border-bottom: 1.5px solid var(--navy);
+    }
+
+    tbody td {
+      font-size: 10.5px;
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--line-2);
+      vertical-align: middle;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafcfe;
+    }
+
+    td.r,
+    th.r {
+      text-align: right;
+    }
+
+    td.nm {
+      font-weight: 600;
+    }
+
+    tr.tot td {
+      border-top: 1.5px solid var(--navy);
+      border-bottom: none;
+      font-weight: 700;
+      font-size: 11.5px;
+      padding-top: 9px;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .pill.res {
+      background: #e8f6f9;
+      color: #17697a;
+    }
+
+    .pill.com {
+      background: #eef0f6;
+      color: #4a5468;
+    }
+
+    .pill.up {
+      background: #fdf3e2;
+      color: #9a6b16;
+    }
+
+    /* ---- stat band ---- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 7mm;
+    }
+
+    .dark .stats {
+      border-color: rgba(255, 255, 255, .16);
+    }
+
+    .stat {
+      padding: 5.5mm 4.5mm;
+      border-right: 1px solid var(--line);
+    }
+
+    .dark .stat {
+      border-right-color: rgba(255, 255, 255, .16);
+    }
+
+    .stat:last-child {
+      border-right: none;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -.03em;
+      color: var(--navy);
+    }
+
+    .dark .stat b {
+      color: var(--cyan);
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      font-size: 9px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      line-height: 1.5;
+    }
+
+    /* ---- option cards ---- */
+    .opts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6mm;
+      margin-top: 7mm;
+    }
+
+    .hero-offer {
+      border: 2px solid var(--navy);
+      border-radius: 12px;
+      background: var(--wash);
+      padding: 9mm 8mm;
+      margin-top: 7mm;
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 8mm;
+      align-items: center;
+    }
+
+    .hero-offer .lhs .tag {
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .hero-offer .price {
+      font-size: 46px;
+      font-weight: 700;
+      letter-spacing: -.035em;
+      color: var(--navy);
+      line-height: 1;
+      margin: 4px 0 3px;
+    }
+
+    .hero-offer .per {
+      font-size: 12px;
+      color: var(--ink-2);
+      font-weight: 600;
+    }
+
+    .hero-offer .was {
+      font-size: 11.5px;
+      color: var(--ink-3);
+      text-decoration: line-through;
+      margin-top: 6px;
+    }
+
+    .hero-offer .save {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      background: var(--green-soft);
+      color: var(--green);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 9px;
+    }
+
+    .hero-offer ul {
+      list-style: none;
+    }
+
+    .hero-offer li {
+      font-size: 10.5px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      padding: 4.5px 0 4.5px 16px;
+      position: relative;
+    }
+
+    .hero-offer li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .hero-offer li b {
+      color: var(--ink);
+    }
+
+    .quals {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5mm;
+      margin-top: 6mm;
+    }
+
+    .qual {
+      border-top: 2px solid var(--cyan);
+      padding-top: 4mm;
+    }
+
+    .qual b {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .qual p {
+      font-size: 10.5px;
+      line-height: 1.55;
+      color: var(--ink-2);
+    }
+
+    .opt {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 7mm 6mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .opt.best {
+      border: 2px solid var(--navy);
+      background: var(--wash);
+      position: relative;
+    }
+
+    .opt .tag {
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 8px;
+    }
+
+    .opt.best .tag {
+      color: var(--navy);
+    }
+
+    .opt h3 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .opt .price {
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -.03em;
+      color: var(--navy);
+      line-height: 1;
+      margin: 6px 0 2px;
+    }
+
+    .opt .was {
+      font-size: 11px;
+      color: var(--ink-3);
+      text-decoration: line-through;
+      margin-bottom: 8px;
+    }
+
+    .opt .save {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--green-soft);
+      color: var(--green);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .opt ul {
+      list-style: none;
+      margin-top: auto;
+    }
+
+    .opt li {
+      font-size: 10.5px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      padding: 4px 0 4px 15px;
+      position: relative;
+    }
+
+    .opt li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .badge {
+      position: absolute;
+      top: -9px;
+      right: 14px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 8.5px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .note {
+      border-left: 2px solid var(--cyan);
+      padding-left: 12px;
+      font-size: 10.5px;
+      line-height: 1.65;
+      color: var(--ink-2);
+      margin-top: 6mm;
+    }
+
+    .dark .note {
+      color: rgba(255, 255, 255, .72);
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6mm;
+    }
+
+    .pillar {
+      border-top: 2px solid var(--navy);
+      padding-top: 4mm;
+    }
+
+    .dark .pillar {
+      border-top-color: var(--cyan);
+    }
+
+    .pillar h3 {
+      margin-bottom: 5px;
+    }
+
+    .pillar p {
+      font-size: 10.5px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+
+    .dark .pillar p {
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .pillar .n {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      color: var(--cyan);
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .incl {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm 7mm;
+      margin-top: 6mm;
+    }
+
+    .incl div {
+      font-size: 11px;
+      color: var(--ink-2);
+      padding: 6px 0 6px 20px;
+      position: relative;
+      border-bottom: 1px solid var(--line-2);
+    }
+
+    .incl div::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 6px;
+      color: var(--green);
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .incl b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .step {
+      display: flex;
+      gap: 5mm;
+      padding: 4.5mm 0;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .step:last-child {
+      border-bottom: none;
+    }
+
+    .step .sn {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--cyan);
+      line-height: 1;
+      width: 11mm;
+      flex: 0 0 11mm;
+      letter-spacing: -.03em;
+    }
+
+    .step h3 {
+      margin-bottom: 3px;
+    }
+
+    .step p {
+      font-size: 10.5px;
+      color: rgba(255, 255, 255, .62);
+      line-height: 1.6;
+    }
+
+    .sign {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8mm;
+      margin-top: 10mm;
+    }
+
+    .sign div {
+      border-top: 1px solid rgba(255, 255, 255, .3);
+      padding-top: 5px;
+    }
+
+    .sign small {
+      font-size: 9px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .45);
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page {
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+        break-after: page;
+      }
+
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==================== 1 · COVER ==================== -->
+  <section class="page dark">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Partnership Proposal</em>
+    </div>
+
+    <div>
+      <p class="eyebrow">Esplora Montessori · 1 month</p>
+      <h1>One brand.<br>Four screens.<br><span class="cy">One neighbourhood.</span></h1>
+      <p class="lead mt-s">A dedicated advertising partnership across four residential screens in your
+        neighbourhood — putting Esplora Montessori in front of thousands of families, every single day, for one month.</p>
+
+      <div class="cover-meta">
+        <small>Prepared for</small>
+        <b>Esplora Montessori</b>
+      </div>
+      <div class="cover-meta" style="margin-top:6mm">
+        <small>Prepared by</small>
+        <b>Noticed Engineering Solutions</b>
+      </div>
+    </div>
+
+    <div class="stats" style="margin-top:auto">
+      <div class="stat"><b>1</b><span>Brand<br>covered</span></div>
+      <div class="stat"><b>4</b><span>Screens<br>live</span></div>
+      <div class="stat"><b>30</b><span>Days<br>on air</span></div>
+      <div class="stat"><b>30 sec</b><span>Slot held<br>per loop</span></div>
+    </div>
+
+    <div class="rf">
+      <span>noticed.adv@gmail.com</span>
+      <span>Noticed. · 2026</span>
+    </div>
+  </section>
+
+  <!-- ==================== 2 · THE NETWORK ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>The Network</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">What you are buying</p>
+      <h2>Four screens. One brand.<br>No rotation, no sharing.</h2>
+      <p class="lead mt-s">Esplora Montessori runs on all four screens, simultaneously, for the
+        full thirty days. Your brand holds its own 30-second slot in the loop — guaranteed airtime on every screen, every day.</p>
+
+      <table class="mt">
+        <thead>
+          <tr>
+            <th>Location</th>
+            <th>Area</th>
+            <th>Type</th>
+            <th class="r">Screens</th>
+            <th>Format</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="nm">Earth View</td>
+            <td>Prarthna Samaj, Girgaon</td>
+            <td><span class="pill res">Residential</span></td>
+            <td class="r">1</td>
+            <td>Vertical · Audio + Video</td>
+          </tr>
+          <tr>
+            <td class="nm">Siddhesh Darshan</td>
+            <td>Prarthna Samaj, Girgaon</td>
+            <td><span class="pill res">Residential</span></td>
+            <td class="r">2</td>
+            <td>Vertical · Audio + Video</td>
+          </tr>
+          <tr>
+            <td class="nm">Bayvue</td>
+            <td>Chira Bazaar, Marine Lines</td>
+            <td><span class="pill res">Residential</span></td>
+            <td class="r">1</td>
+            <td>Vertical · Audio + Video</td>
+          </tr>
+          <tr class="tot">
+            <td colspan="3">Total screens</td>
+            <td class="r">4</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="note">All four screens are residential buildings in the Girgaon–Marine Lines belt — placing your brand directly in front of the families you want to reach.</p>
+    </div>
+
+    <div class="rf"><span>Noticed × Esplora Montessori</span><span>02</span></div>
+  </section>
+
+  <!-- ==================== 3 · THE NUMBERS ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>The Numbers</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">What you get</p>
+      <h2>Per brand, over thirty days.</h2>
+
+      <div class="stats">
+        <div class="stat"><b>360×</b><span>Plays per screen<br>per day</span></div>
+        <div class="stat"><b>43,200</b><span>Total plays<br>across 4 screens</span></div>
+        <div class="stat"><b>~2.5 lakh</b><span>Estimated<br>impressions</span></div>
+        <div class="stat"><b>30 sec</b><span>Slot length<br>per loop</span></div>
+      </div>
+
+      <p class="lead mt-s" style="max-width:none">360 plays per screen per day × 4 screens × 30 days = <b>43,200 total plays</b>. With roughly 2,100 people passing through each building daily, that translates to approximately <b>2.5 lakh impressions</b> over the month — at an effective cost of about <b>₹22 per thousand impressions</b>, a fraction of what the same money buys on print, radio or hoardings in this catchment.</p>
+
+      <div class="grid3 mt">
+        <div class="pillar">
+          <span class="n">01</span>
+          <h3>Repetition, not reach</h3>
+          <p>The same residents see your brand 360 times a day for thirty days. That is how
+            a name becomes familiar enough to be chosen without thinking.</p>
+        </div>
+        <div class="pillar">
+          <span class="n">02</span>
+          <h3>Residential focus</h3>
+          <p>All four screens are inside residential buildings — your ad reaches families at home, in the lobby, at the entrance. The most receptive audience for a Montessori brand.</p>
+        </div>
+        <div class="pillar">
+          <span class="n">03</span>
+          <h3>Thirty days of presence</h3>
+          <p>One full month of uninterrupted visibility. Enough time for your brand to move from unfamiliar to trusted in the neighbourhood.</p>
+        </div>
+      </div>
+
+      <p class="note">Impression estimates are based on average daily lift-lobby and entrance traffic
+        across our buildings — roughly 2,100 people per building per day, including residents, families
+        and visitors. Actual figures are reported to you at the end of the month.</p>
+    </div>
+
+    <div class="rf"><span>Noticed × Esplora Montessori</span><span>03</span></div>
+  </section>
+
+  <!-- ==================== 4 · RATE CARD ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Standard Rates</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">Where we start from</p>
+      <h2>The standard rate,<br>and your rate.</h2>
+      <p class="lead mt-s">Our published rate for a 30-second slot on a residential screen is ₹1,500 per month. Your rate is ₹1,375 per screen per month.</p>
+
+      <table class="mt">
+        <thead>
+          <tr>
+            <th>Screen type</th>
+            <th class="r">Screens</th>
+            <th class="r">Standard rate / screen / month</th>
+            <th class="r">Your rate / screen / month</th>
+            <th class="r">1 month total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="nm">Residential</td>
+            <td class="r">4</td>
+            <td class="r">₹1,500</td>
+            <td class="r">₹1,375</td>
+            <td class="r">₹5,500</td>
+          </tr>
+          <tr class="tot">
+            <td>Total</td>
+            <td class="r">4</td>
+            <td class="r"></td>
+            <td class="r"></td>
+            <td class="r">₹5,500</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="mt">
+        <thead>
+          <tr>
+            <th>Breakdown</th>
+            <th class="r">Standard</th>
+            <th class="r">Your rate</th>
+            <th class="r">You save</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Per screen, per month</td>
+            <td class="r">₹1,500</td>
+            <td class="r">₹1,375</td>
+            <td class="r">₹125</td>
+          </tr>
+          <tr>
+            <td>All 4 screens, 1 month</td>
+            <td class="r">₹6,000</td>
+            <td class="r">₹5,500</td>
+            <td class="r">₹500</td>
+          </tr>
+          <tr>
+            <td>Per screen, per day</td>
+            <td class="r">₹50</td>
+            <td class="r">₹46</td>
+            <td class="r">₹4</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="note">Settled upfront on signing. Your slots are held for the full month from the day your ad goes live.</p>
+
+      <div class="rf"><span>Noticed × Esplora Montessori</span><span>04</span></div>
+  </section>
+
+  <!-- ==================== 5 · THE OFFER ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Your Partnership Rate</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">Your rate</p>
+      <h2>Four screens, thirty days,<br>₹5,500 all in.</h2>
+      <p class="lead mt-s">One straightforward rate for Esplora Montessori — four residential screens across the Girgaon–Marine Lines belt for one full month.</p>
+
+      <div class="hero-offer">
+        <div class="lhs">
+          <div class="tag">Esplora Montessori</div>
+          <div class="price">₹5,500</div>
+          <div class="per">for 1 month · 4 screens</div>
+          <div class="was">₹6,000 at standard rate</div><br>
+          <span class="save">Save ₹500 · ₹1,375 per screen</span>
+        </div>
+        <div>
+          <ul>
+            <li><b>4 residential screens</b> — Bayvue, Earth View, Siddhesh Darshan (×2)</li>
+            <li><b>30-second slot</b> held in the loop</li>
+            <li><b>360 plays a day</b>, per screen</li>
+            <li><b>30 consecutive days</b> on air</li>
+            <li><b>₹1,375 per screen per month</b></li>
+            <li><b>Total: ₹5,500</b> for the month</li>
+          </ul>
+        </div>
+      </div>
+
+      <table class="mt">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="r">Standard rate</th>
+            <th class="r">Your rate</th>
+            <th class="r">You save</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Per screen / month</td>
+            <td class="r">₹1,500</td>
+            <td class="r">₹1,375</td>
+            <td class="r">₹125</td>
+          </tr>
+          <tr>
+            <td>4 screens × 1 month</td>
+            <td class="r">₹6,000</td>
+            <td class="r">₹5,500</td>
+            <td class="r">₹500</td>
+          </tr>
+          <tr>
+            <td>Per screen, per day</td>
+            <td class="r">₹50</td>
+            <td class="r">₹46</td>
+            <td class="r">₹4</td>
+          </tr>
+          <tr>
+            <td>Cost per 1,000 impressions</td>
+            <td class="r">₹24</td>
+            <td class="r">₹22</td>
+            <td class="r">₹2</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="note">Under ₹46 per screen per day. One screen, for one day, costs less than a cup
+        of coffee — and speaks to roughly 2,100 people who live within walking distance.</p>
+
+      <div class="rf"><span>Noticed × Esplora Montessori</span><span>05</span></div>
+  </section>
+
+  <!-- ==================== 6 · INCLUDED ==================== -->
+  <section class="page">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Included</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow dim">No extras, no surprises</p>
+      <h2>Everything below is<br>part of the deal.</h2>
+
+      <div class="incl">
+        <div><b>All 4 screens</b> — your brand on every screen, no rotation</div>
+        <div><b>30-second slot</b> held for the full month</div>
+        <div><b>24-hour operation</b> — screens run all day, every day</div>
+        <div><b>Unlimited creative changes</b> throughout the term</div>
+        <div><b>Proof-of-play report</b> with photos from every location</div>
+        <div><b>Live within 24 hours</b> of receiving your files</div>
+        <div><b>Renewal rate locked</b> for 6 months</div>
+        <div><b>Priority slot position</b> in the loop</div>
+        <div><b>First refusal</b> on every new screen we launch</div>
+        <div><b>Single invoice</b> — ₹5,500, settled on signing</div>
+      </div>
+
+
+
+      <div class="rf"><span>Noticed × Esplora Montessori</span><span>06</span></div>
+  </section>
+
+  <!-- ==================== 7 · NEXT STEPS ==================== -->
+  <section class="page dark">
+    <div class="rh">
+      <div class="wordmark">Noticed<span>.</span></div>
+      <em>Next Steps</em>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow">Getting started</p>
+      <h2>Live in your neighbourhood<br><span class="cy">within 24 hours.</span></h2>
+
+      <div class="mt">
+        <div class="step">
+          <div class="sn">01</div>
+          <div>
+            <h3>Confirm and settle</h3>
+            <p>We send a one-page agreement covering the term, the screens and the rate, plus an
+              invoice of ₹5,500. Slots are held on payment.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">02</div>
+          <div>
+            <h3>Send your video</h3>
+            <p>One video for Esplora Montessori. Anything already on your Instagram works. We handle resizing for
+              vertical screens at no cost.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">03</div>
+          <div>
+            <h3>Approve the preview</h3>
+            <p>We film your ad running on an actual screen and send it to you before it goes live
+              across all four locations.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="sn">04</div>
+          <div>
+            <h3>Thirty days on air</h3>
+            <p>Esplora Montessori, on all four screens, from day one. Proof-of-play photos at the end of
+              the month.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="note" style="margin-top:8mm">This proposal is valid for 14 days from the date of issue.
+        Screen availability is allocated on confirmation.</p>
+
+      <div class="sign">
+        <div>
+          <small>For Esplora Montessori</small>
+        </div>
+        <div>
+          <small>For Noticed Engineering Solutions</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="rf">
+      <span>Pakshal Jain +91 84528 50788 · Rishi Chowatia +91 84520 61757</span>
+      <span>noticed.adv@gmail.com</span>
+    </div>
+  </section>
+
+</body>
+
+</html>
